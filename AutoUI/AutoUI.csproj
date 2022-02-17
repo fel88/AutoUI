@@ -45,11 +45,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AutoTest.cs" />
-    <Compile Include="AutoTestItem.cs" />
-    <Compile Include="AutoTestRunContext.cs" />
-    <Compile Include="ClickAutoTestItem.cs" />
-    <Compile Include="DelayAutoTestItem.cs" />
+    <Compile Include="EnvironmentEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EnvironmentEditor.Designer.cs">
+      <DependentUpon>EnvironmentEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="mdi.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="mdi.Designer.cs">
+      <DependentUpon>mdi.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TestItems\AutoTest.cs" />
+    <Compile Include="TestItems\AutoTestItem.cs" />
+    <Compile Include="TestItems\AutoTestRunContext.cs" />
+    <Compile Include="TestItems\ClickAutoTestItem.cs" />
+    <Compile Include="TestItems\DelayAutoTestItem.cs" />
     <Compile Include="DirectBitmap.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
@@ -57,15 +69,21 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="GotoAutoTestItem.cs" />
-    <Compile Include="LabelAutoTestItem.cs" />
-    <Compile Include="MouseUpDownTestItem.cs" />
+    <Compile Include="TestItems\GotoAutoTestItem.cs" />
+    <Compile Include="TestItems\LabelAutoTestItem.cs" />
+    <Compile Include="TestItems\MouseUpDownTestItem.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SearchByPatternImage.cs" />
+    <Compile Include="TestItems\SearchByPatternImage.cs" />
     <Compile Include="XmlParseAttribute.cs" />
+    <EmbeddedResource Include="EnvironmentEditor.resx">
+      <DependentUpon>EnvironmentEditor.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="mdi.resx">
+      <DependentUpon>mdi.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

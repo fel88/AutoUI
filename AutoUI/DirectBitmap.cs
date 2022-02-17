@@ -31,6 +31,9 @@ namespace AutoUI
                 BitsHandle.AddrOfPinnedObject());
 
             var gr = Graphics.FromImage(Bitmap);
+            gr.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceCopy;
+            gr.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighSpeed;
+            gr.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
             gr.DrawImage(bb, 0, 0);
             gr.Dispose();
         }

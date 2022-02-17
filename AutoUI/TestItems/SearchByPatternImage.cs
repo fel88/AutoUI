@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Xml.Linq;
 
-namespace AutoUI
+namespace AutoUI.TestItems
 {
     [XmlParse(XmlKey = "searchPattern")]
     public class SearchByPatternImage : AutoTestItem
@@ -24,7 +24,7 @@ namespace AutoUI
         }
 
         public bool NextSearch { get; set; }
-        public override void Process(AutoTestRunContext ctx)
+        public override TestItemProcessResultEnum Process(AutoTestRunContext ctx)
         {
             if (NextSearch)
             {
@@ -41,8 +41,13 @@ namespace AutoUI
             else
             {
                 var ret = searchPattern();
+                if (ret == null)
+                {
+                    return TestItemProcessResultEnum.Failed;
+                }
                 ctx.LastSearchPosition = ret;
             }
+            return TestItemProcessResultEnum.Success;
         }
         public Bitmap GetScreenshot()
         {

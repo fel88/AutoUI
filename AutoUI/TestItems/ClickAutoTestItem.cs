@@ -1,10 +1,12 @@
 ﻿using System.Runtime.InteropServices;
+using System.Threading;
 using System.Windows.Forms;
+using System.Xml.Linq;
 
-namespace AutoUI
+namespace AutoUI.TestItems
 {
-    [XmlParse(XmlKey = "mouseUpDown")]
-    public class MouseUpDownTestItem : AutoTestItem
+    [XmlParse(XmlKey = "click")]
+    public class ClickAutoTestItem : AutoTestItem
     {
         [DllImport("user32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
         public static extern void mouse_event(uint dwFlags, uint dx, uint dy, uint cButtons, uint dwExtraInfo);
@@ -14,6 +16,7 @@ namespace AutoUI
         private const int MOUSEEVENTF_RIGHTDOWN = 0x08;
         private const int MOUSEEVENTF_RIGHTUP = 0x10;
 
+        public bool DoubleClick { get; set; } = false;
         public void DoMouseClick()
         {
             //Call the imported function with the cursor's current position
@@ -21,36 +24,29 @@ namespace AutoUI
             uint Y = (uint)Cursor.Position.Y;
             mouse_event(MOUSEEVENTF_LEFTDOWN | MOUSEEVENTF_LEFTUP, X, Y, 0, 0);
         }
-        public void DoMouseDown()
+        public override TestItemProcessResultEnum Process(AutoTestRunContext ctx)
         {
-            //Call the imported function with the cursor's current position
-            uint X = (uint)Cursor.Position.X;
-            uint Y = (uint)Cursor.Position.Y;
-            mouse_event(MOUSEEVENTF_LEFTDOWN, X, Y, 0, 0);
-        }
-        public void DoMouseUp()
-        {
-            //Call the imported function with the cursor's current position
-            uint X = (uint)Cursor.Position.X;
-            uint Y = (uint)Cursor.Position.Y;
-            mouse_event(MOUSEEVENTF_LEFTUP, X, Y, 0, 0);
-        }
-        public bool Down { get; set; }
-        public override void Process(AutoTestRunContext ctx)
-        {
-            if (Down)
+            DoMouseClick();
+            if (DoubleClick)
             {
-                DoMouseDown();
+                Thread.Sleep(50);
+                DoMouseClick();
             }
-            else
-            {
-                DoMouseUp();
-            }
+            return TestItemProcessResultEnum.Success;
+                
         }
 
+        public override void ParseXml(XElement item)
+        {
+            if (item.Attribute("double") != null)
+            {
+                DoubleClick = bool.Parse(item.Attribute("double").Value);
+            }
+            base.ParseXml(item);
+        }
         internal override string ToXml()
         {
-            return $"<mouseUpDown down=\"{Down}\"/>";
+            return $"<click double=\"{DoubleClick}\"/>";
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace AutoUI
+namespace AutoUI.TestItems
 {
     public class GotoAutoTestItem : AutoTestItem
     {
@@ -15,7 +15,7 @@ namespace AutoUI
         public bool UseCounter { get; set; }
         public string Label { get; set; }
 
-        public override void Process(AutoTestRunContext ctx)
+        public override TestItemProcessResultEnum Process(AutoTestRunContext ctx)
         {
             bool skip = false;
 
@@ -33,6 +33,8 @@ namespace AutoUI
                 ctx.CodePointer = ctx.Test.Items.IndexOf(fr);
                 ctx.ForceCodePointer = true;
             }
+
+            return TestItemProcessResultEnum.Success;
 
         }
 

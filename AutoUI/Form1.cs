@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AutoUI.TestItems;
+using System;
 using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
@@ -48,6 +49,11 @@ namespace AutoUI
             return base.ProcessCmdKey(ref msg, keyData);
         }
 
+        internal void Init(AutoTest test)
+        {
+            this.test = test;
+        }
+
         public Bitmap GetScreenshot()
         {
             Rectangle bounds = Screen.GetBounds(Point.Empty);
@@ -86,15 +92,7 @@ namespace AutoUI
             if (currentItem is SearchByPatternImage b)
             {
                 pictureBox1.Image = b.Pattern;
-            }
-            if (currentItem is LabelAutoTestItem la)
-            {
-                textBox1.Text = la.Label;
-            }
-            if (currentItem is GotoAutoTestItem gg)
-            {
-                textBox1.Text = gg.Label;
-            }
+            }            
         }
 
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
@@ -119,17 +117,7 @@ namespace AutoUI
             UpdateTestItemsList();
         }
 
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-            if (currentItem is GotoAutoTestItem g)
-            {
-                g.Label = textBox1.Text;
-            }
-            if (currentItem is LabelAutoTestItem l)
-            {
-                l.Label = textBox1.Text;
-            }
-        }
+        
 
         private void clickToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -150,13 +138,7 @@ namespace AutoUI
 
         private void button5_Click(object sender, EventArgs e)
         {
-            Thread th = new Thread(() =>
-            {
-
-                test.Run();
-            });
-            th.IsBackground = true;
-            th.Start();
+            
         }
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
@@ -259,6 +241,61 @@ namespace AutoUI
         {
             test.Items.Add(new ClickAutoTestItem());
             UpdateTestItemsList();
+        }
+
+        private void delayToolStripMenuItem_Click_1(object sender, EventArgs e)
+        {
+            test.Items.Add(new DelayAutoTestItem());
+            UpdateTestItemsList();
+        }
+
+        private void mouseUpDownToolStripMenuItem_Click_1(object sender, EventArgs e)
+        {
+            test.Items.Add(new MouseUpDownTestItem());
+            UpdateTestItemsList();
+        }
+
+        private void toolStripButton1_Click(object sender, EventArgs e)
+        {
+            Thread th = new Thread(() =>
+            {
+                listView1.Invoke((Action)(() =>
+                {
+                    for (int i = 0; i < listView1.Items.Count; i++)
+                    {
+
+                        listView1.Items[i].BackColor = Color.White;
+                    }
+                }));
+                var sw = Stopwatch.StartNew();
+                var ctx = test.Run();
+                sw.Stop();
+                listView1.Invoke((Action)(() =>
+                {
+                    toolStripStatusLabel1.Text = "test took: " + sw.ElapsedMilliseconds + "ms";
+                }));
+
+                if (ctx.WrongState != null)
+                {
+                    listView1.Invoke((Action)(() =>
+                    {
+                        for (int i = 0; i < listView1.Items.Count; i++)
+                        {
+                            if (listView1.Items[i].Tag == ctx.WrongState)
+                            {
+                                listView1.Items[i].BackColor = Color.Red;
+                            }
+                        }
+                    }));
+                }
+            });
+            th.IsBackground = true;
+            th.Start();
+        }
+
+        private void textBox1_TextChanged_1(object sender, EventArgs e)
+        {
+
         }
     }
 }

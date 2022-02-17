@@ -1,14 +1,14 @@
 ﻿using System;
 
-namespace AutoUI
+namespace AutoUI.TestItems
 {
     public class LabelAutoTestItem : AutoTestItem
     {
 
         public string Label { get; set; }
-        public override void Process(AutoTestRunContext ctx)
+        public override TestItemProcessResultEnum Process(AutoTestRunContext ctx)
         {
-
+            return TestItemProcessResultEnum.Success;
         }
 
         internal override string ToXml()
