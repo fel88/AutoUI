@@ -36,13 +36,13 @@ namespace AutoUI.TestItems
                 
         }
 
-        public override void ParseXml(XElement item)
+        public override void ParseXml(TestSet set, XElement item)
         {
             if (item.Attribute("double") != null)
             {
                 DoubleClick = bool.Parse(item.Attribute("double").Value);
             }
-            base.ParseXml(item);
+            base.ParseXml(set, item);
         }
         internal override string ToXml()
         {

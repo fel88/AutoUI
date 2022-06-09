@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System.Collections.Generic;
+using System.Drawing;
 
 namespace AutoUI.TestItems
 {
@@ -11,5 +12,6 @@ namespace AutoUI.TestItems
         public bool Finished;
 
         public Point? LastSearchPosition;
+        public Dictionary<string, object> Vars = new Dictionary<string, object>();
     }
 }

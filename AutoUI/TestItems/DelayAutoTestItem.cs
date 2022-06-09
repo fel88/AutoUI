@@ -13,10 +13,10 @@ namespace AutoUI.TestItems
             return TestItemProcessResultEnum.Success;
         }
 
-        public override void ParseXml(XElement item)
+        public override void ParseXml(TestSet set, XElement item)
         {
             Delay = int.Parse(item.Attribute("delay").Value);
-            base.ParseXml(item);
+            base.ParseXml(set, item);
         }
 
         internal override string ToXml()

@@ -8,9 +8,10 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>AutoUI</RootNamespace>
     <AssemblyName>AutoUI</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -45,6 +46,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AboutBox1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AboutBox1.Designer.cs">
+      <DependentUpon>AboutBox1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DrawingContext.cs" />
     <Compile Include="EnvironmentEditor.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -57,10 +65,25 @@
     <Compile Include="mdi.Designer.cs">
       <DependentUpon>mdi.cs</DependentUpon>
     </Compile>
+    <Compile Include="MessageFilter.cs" />
+    <Compile Include="PatternMatchingPool.cs" />
+    <Compile Include="PatternsEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PatternsEditor.Designer.cs">
+      <DependentUpon>PatternsEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PatternSelector.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PatternSelector.Designer.cs">
+      <DependentUpon>PatternSelector.cs</DependentUpon>
+    </Compile>
     <Compile Include="TestItems\AutoTest.cs" />
     <Compile Include="TestItems\AutoTestItem.cs" />
     <Compile Include="TestItems\AutoTestRunContext.cs" />
     <Compile Include="TestItems\ClickAutoTestItem.cs" />
+    <Compile Include="TestItems\CompilingTestItem.cs" />
     <Compile Include="TestItems\DelayAutoTestItem.cs" />
     <Compile Include="DirectBitmap.cs" />
     <Compile Include="Form1.cs">
@@ -69,13 +92,31 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="TestItems\Editors\CompilerTestItem.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="TestItems\Editors\CompilerTestItem.Designer.cs">
+      <DependentUpon>CompilerTestItem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TestItems\Editors\ITestItemEditor.cs" />
+    <Compile Include="TestItems\Editors\SearchByPatternEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="TestItems\Editors\SearchByPatternEditor.Designer.cs">
+      <DependentUpon>SearchByPatternEditor.cs</DependentUpon>
+    </Compile>
     <Compile Include="TestItems\GotoAutoTestItem.cs" />
+    <Compile Include="TestItems\Helpers.cs" />
     <Compile Include="TestItems\LabelAutoTestItem.cs" />
     <Compile Include="TestItems\MouseUpDownTestItem.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestItems\PatternMatchingImage.cs" />
     <Compile Include="TestItems\SearchByPatternImage.cs" />
     <Compile Include="XmlParseAttribute.cs" />
+    <EmbeddedResource Include="AboutBox1.resx">
+      <DependentUpon>AboutBox1.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="EnvironmentEditor.resx">
       <DependentUpon>EnvironmentEditor.cs</DependentUpon>
     </EmbeddedResource>
@@ -85,6 +126,12 @@
     <EmbeddedResource Include="mdi.resx">
       <DependentUpon>mdi.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="PatternsEditor.resx">
+      <DependentUpon>PatternsEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PatternSelector.resx">
+      <DependentUpon>PatternSelector.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -93,7 +140,14 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="TestItems\Editors\CompilerTestItem.resx">
+      <DependentUpon>CompilerTestItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestItems\Editors\SearchByPatternEditor.resx">
+      <DependentUpon>SearchByPatternEditor.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

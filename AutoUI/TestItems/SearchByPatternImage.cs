@@ -1,26 +1,38 @@
-﻿using System;
+﻿using AutoUI.TestItems.Editors;
+using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Xml.Linq;
 
 namespace AutoUI.TestItems
 {
+    [TestItemEditor(Editor = typeof(SearchByPatternEditor))]
     [XmlParse(XmlKey = "searchPattern")]
     public class SearchByPatternImage : AutoTestItem
     {
-        public Bitmap Pattern;
+        public PatternMatchingImage Pattern;
 
-        public override void ParseXml(XElement item)
+        public bool ClickOnSucceseed { get; set; }
+
+        public string PatternName { get => Pattern.Name; }
+        public override void ParseXml(TestSet parent, XElement item)
         {
-            var data = Convert.FromBase64String(item.Value);
-            MemoryStream ms = new MemoryStream(data);
-            Pattern = Bitmap.FromStream(ms) as Bitmap;
+            //var data = Convert.FromBase64String(item.Value);
+            //MemoryStream ms = new MemoryStream(data);
+            //Pattern = Bitmap.FromStream(ms) as Bitmap;
 
-            base.ParseXml(item);
+            if (item.Attribute("clickOnSucceseed") != null)
+                ClickOnSucceseed = bool.Parse(item.Attribute("clickOnSucceseed").Value);
+
+            var pId = int.Parse(item.Attribute("patternId").Value);
+            var p = parent.Pool.Patterns.First(z => z.Id == pId);
+            Pattern = p;
+            base.ParseXml(parent, item);
         }
 
         public bool NextSearch { get; set; }
@@ -35,17 +47,39 @@ namespace AutoUI.TestItems
                     startX = ctx.LastSearchPosition.Value.X;
                     startY = ctx.LastSearchPosition.Value.Y + 1;
                 }
-                var ret = searchPattern(startX, startY);
+                Point? ret = null;
+                foreach (var item in Pattern.Items)
+                {
+                    ret = searchPattern(item.Bitmap, startX, startY);
+                    if (ret != null)
+                    {
+                        break;
+                    }
+                }
+                //var ret = searchPattern(startX, startY);
                 ctx.LastSearchPosition = ret;
             }
             else
             {
-                var ret = searchPattern();
+                Point? ret = null;
+                foreach (var item in Pattern.Items)
+                {
+                    ret = searchPattern(item.Bitmap);
+                    if (ret != null)
+                    {
+                        break;
+                    }
+                }
                 if (ret == null)
                 {
                     return TestItemProcessResultEnum.Failed;
                 }
                 ctx.LastSearchPosition = ret;
+            }
+            if (ClickOnSucceseed)
+            {
+                var cc = new ClickAutoTestItem();
+                cc.Process(ctx);
             }
             return TestItemProcessResultEnum.Success;
         }
@@ -67,10 +101,10 @@ namespace AutoUI.TestItems
         {
             return px.R == px2.R && px.G == px2.G && px.B == px2.B;
         }
-        Point? searchPattern(int startX = 0, int startY = 0)
+        Point? searchPattern(Bitmap pattern, int startX = 0, int startY = 0)
         {
             var scrs = GetScreenshot();
-            var pattern = Pattern;
+
 
             DirectBitmap d = new DirectBitmap(scrs);
             DirectBitmap d2 = new DirectBitmap(pattern);
@@ -124,9 +158,11 @@ namespace AutoUI.TestItems
         internal override string ToXml()
         {
             MemoryStream ms = new MemoryStream();
-            Pattern.Save(ms, ImageFormat.Png);
-            var b64 = Convert.ToBase64String(ms.ToArray());
-            return $"<searchPattern>{b64}</searchPattern>";
+            //Pattern.Save(ms, ImageFormat.Png);
+            //var b64 = Convert.ToBase64String(ms.ToArray());
+            return $"<searchPattern patternId=\"{Pattern.Id}\" clickOnSucceseed=\"{ClickOnSucceseed}\" ></searchPattern>";
         }
+
+        public bool Assert { get; set; }
     }
 }
