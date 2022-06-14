@@ -16,13 +16,18 @@ namespace AutoUI.TestItems
         private const int MOUSEEVENTF_RIGHTDOWN = 0x08;
         private const int MOUSEEVENTF_RIGHTUP = 0x10;
 
+        public bool IsRight { get; set; } = false;
         public bool DoubleClick { get; set; } = false;
         public void DoMouseClick()
         {
             //Call the imported function with the cursor's current position
             uint X = (uint)Cursor.Position.X;
             uint Y = (uint)Cursor.Position.Y;
-            mouse_event(MOUSEEVENTF_LEFTDOWN | MOUSEEVENTF_LEFTUP, X, Y, 0, 0);
+            if (IsRight)
+            {
+                mouse_event(MOUSEEVENTF_RIGHTDOWN | MOUSEEVENTF_RIGHTUP, X, Y, 0, 0);
+            }
+            else { mouse_event(MOUSEEVENTF_LEFTDOWN | MOUSEEVENTF_LEFTUP, X, Y, 0, 0); }
         }
         public override TestItemProcessResultEnum Process(AutoTestRunContext ctx)
         {
@@ -42,11 +47,15 @@ namespace AutoUI.TestItems
             {
                 DoubleClick = bool.Parse(item.Attribute("double").Value);
             }
+            if (item.Attribute("isRight") != null)
+            {
+                IsRight= bool.Parse(item.Attribute("isRight").Value);
+            }
             base.ParseXml(set, item);
         }
         internal override string ToXml()
         {
-            return $"<click double=\"{DoubleClick}\"/>";
+            return $"<click double=\"{DoubleClick}\" isRight=\"{IsRight}\"/>";
         }
     }
 }

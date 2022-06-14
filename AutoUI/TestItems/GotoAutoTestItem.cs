@@ -29,8 +29,8 @@ namespace AutoUI.TestItems
             }
             if (!skip)
             {
-                var fr = ctx.Test.Items.OfType<LabelAutoTestItem>().First(z => z.Label == Label);
-                ctx.CodePointer = ctx.Test.Items.IndexOf(fr);
+                var fr = ctx.Test.Main.Items.OfType<LabelAutoTestItem>().First(z => z.Label == Label);
+                ctx.CodePointer = ctx.Test.Main.Items.IndexOf(fr);
                 ctx.ForceCodePointer = true;
             }
 

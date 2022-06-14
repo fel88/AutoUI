@@ -62,6 +62,7 @@ namespace AutoUI
         internal void Init(AutoTest test)
         {
             this.test = test;
+            currentCodeSection = test.Main;
             UpdateTestItemsList();
         }
 
@@ -81,14 +82,14 @@ namespace AutoUI
         public void UpdateTestItemsList()
         {
             listView1.Items.Clear();
-            foreach (var t in test.Items)
+            foreach (var t in currentCodeSection.Items)
             {
                 listView1.Items.Add(new ListViewItem(new string[] { t.GetType().Name }) { Tag = t });
             }
         }
         private void searchPatternImageToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            test.Items.Add(new SearchByPatternImage());
+            currentCodeSection.Items.Add(new SearchByPatternImage());
             UpdateTestItemsList();
         }
 
@@ -111,17 +112,22 @@ namespace AutoUI
                     tableLayoutPanel1.Controls.Remove(del as Control);                    
             }            
                 tableLayoutPanel1.Controls.Add(tie as Control, 0, 0);
+                (tie as Control).Dock = DockStyle.Fill;
         }
-
         }
 
         void deleteSelected()
         {
             if (listView1.SelectedItems.Count == 0) return;
             currentItem = listView1.SelectedItems[0].Tag as AutoTestItem;
-            if (MessageBox.Show("sure?", Text, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            if (MessageBox.Show($"sure to delete: {listView1.SelectedItems.Count}?", Text, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
-            test.Items.Remove(currentItem);
+                for (int i = 0; i < listView1.SelectedItems.Count; i++)
+            {
+                    var tt = listView1.SelectedItems[i].Tag as AutoTestItem;
+                    currentCodeSection.Items.Remove(tt);
+                }
+
             UpdateTestItemsList();
             }
         }
@@ -132,13 +138,13 @@ namespace AutoUI
 
         private void gotoToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            test.Items.Add(new GotoAutoTestItem());
+            currentCodeSection.Items.Add(new GotoAutoTestItem());
             UpdateTestItemsList();
         }
 
         private void labelToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            test.Items.Add(new LabelAutoTestItem());
+            currentCodeSection.Items.Add(new LabelAutoTestItem());
             UpdateTestItemsList();
         }
 
@@ -146,7 +152,7 @@ namespace AutoUI
 
         private void clickToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            test.Items.Add(new ClickAutoTestItem());
+            currentCodeSection.Items.Add(new ClickAutoTestItem());
             UpdateTestItemsList();
         }
 
@@ -157,7 +163,7 @@ namespace AutoUI
 
         private void clearToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            test.Items.Clear();
+            currentCodeSection.Items.Clear();
             UpdateTestItemsList();
         }
 
@@ -186,7 +192,7 @@ namespace AutoUI
 
         private void delayToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            test.Items.Add(new DelayAutoTestItem());
+            currentCodeSection.Items.Add(new DelayAutoTestItem());
             UpdateTestItemsList();
         }
 
@@ -194,12 +200,12 @@ namespace AutoUI
         {
             if (listView1.SelectedItems.Count == 0) return;
             var ind1 = listView1.Items.IndexOf(listView1.SelectedItems[0]);
-            var elem = test.Items[ind1];
+            var elem = currentCodeSection.Items[ind1];
 
             if (ind1 > 0)
             {
-                test.Items.RemoveAt(ind1);
-                test.Items.Insert(ind1 - 1, elem);
+                currentCodeSection.Items.RemoveAt(ind1);
+                currentCodeSection.Items.Insert(ind1 - 1, elem);
             }
             UpdateTestItemsList();
 
@@ -209,11 +215,11 @@ namespace AutoUI
         {
             if (listView1.SelectedItems.Count == 0) return;
             var ind1 = listView1.Items.IndexOf(listView1.SelectedItems[0]);
-            var elem = test.Items[ind1];
+            var elem = currentCodeSection.Items[ind1];
             if (ind1 < listView1.Items.Count - 1)
             {
-                test.Items.RemoveAt(ind1);
-                test.Items.Insert(ind1 + 1, elem);
+                currentCodeSection.Items.RemoveAt(ind1);
+                currentCodeSection.Items.Insert(ind1 + 1, elem);
             }
             UpdateTestItemsList();
         }
@@ -225,7 +231,7 @@ namespace AutoUI
 
         private void mouseUpdownToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            test.Items.Add(new MouseUpDownTestItem());
+            currentCodeSection.Items.Add(new MouseUpDownTestItem());
             UpdateTestItemsList();
         }
 
@@ -258,25 +264,25 @@ namespace AutoUI
 
         private void searchByPatternToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            test.Items.Add(new SearchByPatternImage());
+            currentCodeSection.Items.Add(new SearchByPatternImage());
             UpdateTestItemsList();
         }
 
         private void clickToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
-            test.Items.Add(new ClickAutoTestItem());
+            currentCodeSection.Items.Add(new ClickAutoTestItem());
             UpdateTestItemsList();
         }
 
         private void delayToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
-            test.Items.Add(new DelayAutoTestItem());
+            currentCodeSection.Items.Add(new DelayAutoTestItem());
             UpdateTestItemsList();
         }
 
         private void mouseUpDownToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
-            test.Items.Add(new MouseUpDownTestItem());
+            currentCodeSection.Items.Add(new MouseUpDownTestItem());
             UpdateTestItemsList();
         }
 
@@ -368,8 +374,86 @@ namespace AutoUI
 
         private void scriptToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            test.Items.Add(new CompilingTestItem());
+            currentCodeSection.Items.Add(new CompilingTestItem());
+            UpdateTestItemsList();
+        }
+
+        private void runToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            currentCodeSection.Items.Add(new ProcessRunTestItem());
+            UpdateTestItemsList();
+        }
+
+        CodeSection currentCodeSection = null;
+        private void cursorPositionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            currentCodeSection.Items.Add(new CursorPositionTestItem());
+            UpdateTestItemsList();
+        }
+
+        private void runToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            if (listView1.SelectedItems.Count == 0) return;
+            currentItem = listView1.SelectedItems[0].Tag as AutoTestItem;
+
+            currentItem.Process(new AutoTestRunContext() { Test = test });
+        }
+
+        private void terminateToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            currentCodeSection.Items.Add(new ProcessTerminateTestItem());
+            UpdateTestItemsList();
+        }
+
+        private void listView2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void listView2_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            if (listView2.SelectedItems.Count == 0) return;
+            if (listView2.SelectedIndices[0] == 1)
+            {
+                if (currentCodeSection != test.Finalizer && Helpers.Question("switch to finalizer?", ParentForm.Text))
+                {
+                    currentCodeSection = test.Finalizer;
+                    listView2.Items[1].BackColor = Color.LightGreen;
+                    listView2.Items[0].BackColor = Color.White;
             UpdateTestItemsList();
         }
     }
+            else if (listView2.SelectedIndices[0] == 0)
+            {
+                if (currentCodeSection != test.Main && Helpers.Question("switch to main?", ParentForm.Text))
+                {
+                    currentCodeSection = test.Main;
+                    listView2.Items[0].BackColor = Color.LightGreen;
+                    listView2.Items[1].BackColor = Color.White;
+                    UpdateTestItemsList();
+                }
+            }
+            else if (listView2.SelectedIndices[0] == 2)
+            {
+                if (currentCodeSection != test.Emitter && Helpers.Question("switch to emitter?", ParentForm.Text))
+                {
+                    currentCodeSection = test.Emitter;
+                    listView2.Items[0].BackColor = Color.LightGreen;
+                    listView2.Items[1].BackColor = Color.White;
+                    UpdateTestItemsList();
+                }
+            }
+        }
+
+        private void topToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (listView1.SelectedItems.Count == 0) return;
+            var ind1 = listView1.Items.IndexOf(listView1.SelectedItems[0]);
+            var elem = currentCodeSection.Items[ind1];
+
+            currentCodeSection.Items.RemoveAt(ind1);
+            currentCodeSection.Items.Insert(0, elem);
+            UpdateTestItemsList();
+        }
+}
 }

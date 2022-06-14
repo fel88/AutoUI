@@ -46,6 +46,10 @@ namespace AutoUI.TestItems
                         mf2.Invoke(inst, new object[] { ctx });
                         //MessageBox.Show(ctx.Vars["temp"] + "");
                     }
+                    else
+                    {
+                        return TestItemProcessResultEnum.Failed;//not found entry point
+                    }
                     //MessageBox.Show(v.sum(3, 5));
                     //TryLoadCompiledType(res, t.ToString());
                     //Debug.WriteLine(t.ToString());
@@ -77,6 +81,7 @@ namespace AutoUI.TestItems
             parameters.GenerateExecutable = false;
             parameters.ReferencedAssemblies.Add("AutoUI.exe");
             parameters.ReferencedAssemblies.Add("System.Diagnostics.Process.dll");
+            parameters.ReferencedAssemblies.Add("System.Windows.Forms.dll");
             parameters.ReferencedAssemblies.Add("System.dll");
             
             //parameters.OutputAssembly = Output;

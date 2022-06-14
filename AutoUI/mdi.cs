@@ -57,18 +57,8 @@ namespace AutoUI
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("<?xml version=\"1.0\"?>");
             sb.AppendLine("<root>");
-            foreach (var test in set.Tests)
-            {
-                sb.AppendLine($"<test id=\"{test.Id}\" name=\"{test.Name}\">");
+            set.AppendXml(sb);
 
-                foreach (var item in test.Items)
-                {
-                    sb.AppendLine(item.ToXml());
-                }
-                sb.AppendLine("</test>");
-            }
-
-            set.Pool.ToXml(sb);
 
             sb.AppendLine("</root>");
             sb.ToString();
@@ -91,25 +81,7 @@ namespace AutoUI
             if (root.Element("pool") != null)
                 set.Pool.ParseXml(set, root.Element("pool"));
 
-            foreach (var titem in root.Descendants("test"))
-            {
-                var test = new AutoTest(set);
-                test.ParseXml(titem);               
-
-                set.Tests.Add(test);
-                //get all types
-                Type[] types = Assembly.GetExecutingAssembly().GetTypes().Where(z => z.GetCustomAttribute(typeof(XmlParseAttribute)) != null).ToArray();
-                foreach (var item in titem.Elements())
-                {
-                    var fr = types.FirstOrDefault(z => (z.GetCustomAttribute(typeof(XmlParseAttribute)) as XmlParseAttribute).XmlKey == item.Name);
-                    if (fr != null)
-                    {
-                        var tp = Activator.CreateInstance(fr) as AutoTestItem;
-                        tp.ParseXml(set, item);
-                        test.Items.Add(tp);
-                    }
-                }
-            }
+            set.ParseXml(root);
             EnvironmentEditor f = new EnvironmentEditor();
             f.Init(set);
             f.MdiParent = this;

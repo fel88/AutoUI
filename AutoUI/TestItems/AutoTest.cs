@@ -12,7 +12,7 @@ namespace AutoUI.TestItems
 
         }
 
-
+        public TestFailedbehaviour FailedAction { get; set; }
         
         public AutoTest(TestSet parent)
         {
@@ -23,25 +23,50 @@ namespace AutoUI.TestItems
         public int Id { get; private set; }
         public string Name { get; set; }
         public int Delay = 0;
-        public List<AutoTestItem> Items = new List<AutoTestItem>();
-        public AutoTestRunContext Run()
+
+        public bool UseEmitter { get; set; } = false;
+        public CodeSection Finalizer = new CodeSection();
+        public CodeSection Main = new CodeSection();
+        public CodeSection Emitter = new CodeSection();
+
+        public AutoTestRunContext lastContext;
+        public AutoTestRunContext Run(AutoTestRunContext ctx = null)
         {
-            foreach (var item in Items)
+            CodeSection main = Main;
+            if (UseEmitter)
+        {
+                main = Emitter;
+                State = TestStateEnum.Emitter;
+            }
+            if (ctx != null && ctx.IsSubTest)
+            {
+                main = Main;
+            }
+            foreach (var item in main.Items)
             {
                 item.Init();
             }
 
-
-
-            AutoTestRunContext ctx = new AutoTestRunContext() { Test = this };
-            while (ctx.CodePointer < Items.Count && !ctx.Finished)
+            if (ctx == null)
+            {
+                ctx = new AutoTestRunContext() { Test = this };
+            }
+            if (!ctx.IsSubTest)
+            {
+                //ctx.Test = this;
+                lastContext = ctx;
+            }
+            while (ctx.CodePointer < main.Items.Count && !ctx.Finished)
             {
                 ctx.ForceCodePointer = false;
-                var result = Items[ctx.CodePointer].Process(ctx);
+                var result = main.Items[ctx.CodePointer].Process(ctx);
                 if (result == TestItemProcessResultEnum.Failed)
                 {
+                    if (FailedAction == TestFailedbehaviour.Terminate)
+                    {
                     ctx.Finished = true;
-                    ctx.WrongState = Items[ctx.CodePointer];
+                    }
+                    ctx.WrongState = main.Items[ctx.CodePointer];
                     State = TestStateEnum.Failed;
                 }
                 if (ctx.Finished) break;
@@ -54,9 +79,22 @@ namespace AutoUI.TestItems
             {
                 State = TestStateEnum.Success;
             }
-            return ctx;
 
+            if (main != Emitter)
+                foreach (var item in Finalizer.Items)
+                {
+                    item.Process(ctx);
+                }
+
+            if (main == Emitter)
+            {
+                State = TestStateEnum.Emitter;
+            }
+            return ctx;
         }
+
+
+
         public TestStateEnum State;
 
         internal void ParseXml(XElement titem)
@@ -69,7 +107,41 @@ namespace AutoUI.TestItems
 
     public enum TestStateEnum
     {
-        NotStarted, Failed, Success
+        NotStarted, Failed, Success, Emitter
     }
 
+    public class EmittedSubTest
+    {
+        public AutoTest SourceTest;
+        public Dictionary<string, object> Data = new Dictionary<string, object>();
+        public TestStateEnum State;
+        public DateTime FinishTime;
+        public AutoTestRunContext lastContext;
+        public AutoTestItem WrongState => lastContext.WrongState;
+
+        internal AutoTestRunContext Run()
+        {
+            AutoTestRunContext ctx = new AutoTestRunContext() { Test = SourceTest };
+            ctx.IsSubTest = true;
+            lastContext = ctx;
+            foreach (var item in Data)
+            {
+                ctx.Vars.Add(item.Key, item.Value);
+    }
+
+            SourceTest.Run(ctx);
+            State = SourceTest.State;
+            FinishTime = DateTime.Now;
+            return ctx;
+        }
+    }
+
+    public enum TestFailedbehaviour
+    {
+        Terminate, Ignore
+    }
+    public class CodeSection
+    {
+        public List<AutoTestItem> Items = new List<AutoTestItem>();
+    }
 }
