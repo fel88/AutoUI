@@ -455,5 +455,11 @@ namespace AutoUI
             currentCodeSection.Items.Insert(0, elem);
             UpdateTestItemsList();
         }
+
+        private void waitPatternToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            currentCodeSection.Items.Add(new WaitPatternImage() { ParentTest = test });
+            UpdateTestItemsList();
+        }
 }
 }

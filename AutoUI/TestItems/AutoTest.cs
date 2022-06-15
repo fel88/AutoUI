@@ -12,6 +12,7 @@ namespace AutoUI.TestItems
 
         }
 
+        public Dictionary<string, object> Data = new Dictionary<string, object>();
         public TestFailedbehaviour FailedAction { get; set; }
         
         public AutoTest(TestSet parent)
@@ -55,6 +56,10 @@ namespace AutoUI.TestItems
             {
                 //ctx.Test = this;
                 lastContext = ctx;
+            }
+            foreach (var item in Data)
+            {
+                ctx.Vars.Add(item.Key, item.Value);
             }
             while (ctx.CodePointer < main.Items.Count && !ctx.Finished)
             {

@@ -62,6 +62,12 @@
     <Compile Include="EnvironmentEditor.Designer.cs">
       <DependentUpon>EnvironmentEditor.cs</DependentUpon>
     </Compile>
+    <Compile Include="KeyValueDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="KeyValueDialog.Designer.cs">
+      <DependentUpon>KeyValueDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="mdi.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -109,6 +115,12 @@
     <Compile Include="TestItems\Editors\SearchByPatternEditor.Designer.cs">
       <DependentUpon>SearchByPatternEditor.cs</DependentUpon>
     </Compile>
+    <Compile Include="TestItems\Editors\WaitPatternEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="TestItems\Editors\WaitPatternEditor.Designer.cs">
+      <DependentUpon>WaitPatternEditor.cs</DependentUpon>
+    </Compile>
     <Compile Include="TestItems\GotoAutoTestItem.cs" />
     <Compile Include="TestItems\Helpers.cs" />
     <Compile Include="TestItems\LabelAutoTestItem.cs" />
@@ -119,6 +131,7 @@
     <Compile Include="TestItems\ProcessRunTestItem.cs" />
     <Compile Include="TestItems\ProcessTerminateTestItem.cs" />
     <Compile Include="TestItems\SearchByPatternImage.cs" />
+    <Compile Include="TestItems\WaitPatternImage.cs" />
     <Compile Include="TestSet.cs" />
     <Compile Include="XmlParseAttribute.cs" />
     <EmbeddedResource Include="AboutBox1.resx">
@@ -129,6 +142,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="KeyValueDialog.resx">
+      <DependentUpon>KeyValueDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="mdi.resx">
       <DependentUpon>mdi.cs</DependentUpon>
@@ -154,6 +170,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="TestItems\Editors\SearchByPatternEditor.resx">
       <DependentUpon>SearchByPatternEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestItems\Editors\WaitPatternEditor.resx">
+      <DependentUpon>WaitPatternEditor.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

@@ -1,7 +1,12 @@
 ﻿using AutoUI.TestItems;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
+using System.IO;
+using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -127,9 +132,16 @@ namespace AutoUI
             editSelected();
         }
 
+
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (listView1.SelectedItems.Count == 0) return;
+            if (listView1.SelectedItems.Count == 0)
+            {
+
+                listView3.Items.Clear();
+                return;
+
+            }
             var test = listView1.SelectedItems[0].Tag as AutoTest;
             propertyGrid1.SelectedObject = listView1.SelectedItems[0].Tag;
             if (test.lastContext != null && test.lastContext.WrongState != null)
@@ -138,6 +150,13 @@ namespace AutoUI
             }
             if (test.lastContext != null)
                 updateSubTestList(test.lastContext);
+
+            listView3.Items.Clear();
+            foreach (var item in test.Data)
+            {
+                listView3.Items.Add(new ListViewItem(new string[] { item.Key, item.Value.ToString() }) { Tag = item });
+            }
+            listView3.Tag = test;
         }
 
         private void updateSubTestList(AutoTestRunContext lastContext)
@@ -168,7 +187,11 @@ namespace AutoUI
 
         private void listView2_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (listView2.SelectedItems.Count == 0) return;
+            if (listView2.SelectedItems.Count == 0)
+            {
+                listView3.Items.Clear();
+                return;
+            }
             var et = listView2.SelectedItems[0].Tag as EmittedSubTest;
             if (et.lastContext != null && et.lastContext.WrongState != null)
             {
@@ -178,6 +201,85 @@ namespace AutoUI
             foreach (var item in et.Data)
     {
                 listView3.Items.Add(new ListViewItem(new string[] { item.Key, item.Value.ToString() }) { Tag = item });
+            }
+            listView3.Tag = et;
+        }
+
+        private void exportReportToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //form for custom report?
+            StringBuilder sb = new StringBuilder();
+            int failed = 0;
+            int total = 0;
+            for (int i = 0; i < listView2.Items.Count; i++)
+            {
+                var et = listView2.Items[i].Tag as EmittedSubTest;
+                if (et.State == TestStateEnum.Failed) failed++;
+                total++;
+                sb.AppendLine($"{et.Data[et.Data.Keys.First()]};{et.FinishTime.ToLongTimeString()};{et.State}");
+            }
+            sb.AppendLine("");
+            sb.AppendLine($"Total;{total};Failed;{failed}");
+            SaveFileDialog sfd = new SaveFileDialog();
+            if (sfd.ShowDialog() != DialogResult.OK) return;
+            File.WriteAllText(sfd.FileName, sb.ToString(), Encoding.Default);
+
+            if(Helpers.Question("Open report?", Text))
+            {
+                Process.Start(sfd.FileName);
+            }
+        }
+
+        private void addKeyvaleToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var test = listView3.Tag as AutoTest;
+            KeyValueDialog kvd = new KeyValueDialog();
+            if (kvd.ShowDialog() == DialogResult.OK)
+            {
+                test.Data.Add(kvd.Key, kvd.Value);
+            }
+            //update lv3
+            updateKeyValueList();
+        }
+        void updateKeyValueList()
+        {
+            if (listView3.Tag is AutoTest test)
+            {
+                listView3.Items.Clear();
+                foreach (var item in test.Data)
+                {
+                    listView3.Items.Add(new ListViewItem(new string[] { item.Key, item.Value.ToString() }) { Tag = item });
+                }
+            }
+        }
+
+        private void contextMenuStrip3_Opening(object sender, CancelEventArgs e)
+        {
+            if (!(listView3.Tag is AutoTest))
+                e.Cancel = true;
+        }
+
+        private void deleteToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            if (listView3.SelectedItems.Count == 0) return;
+            var p = (KeyValuePair<string, object>)listView3.SelectedItems[0].Tag;
+            var test = listView3.Tag as AutoTest;
+            test.Data.Remove(p.Key);
+            updateKeyValueList();
+        }
+
+        private void listView3_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            if (listView3.Tag is AutoTest test)
+            {
+                var pair = (KeyValuePair<string, object>)listView3.SelectedItems[0].Tag;
+                KeyValueDialog kvd = new KeyValueDialog();
+                kvd.Init(pair);
+                if (kvd.ShowDialog() == DialogResult.OK)
+                {
+                    test.Data[pair.Key] = kvd.Value;
+                    updateKeyValueList();
+                }
             }
         }
     }

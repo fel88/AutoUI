@@ -1,89 +1,59 @@
 ﻿using AutoUI.TestItems.Editors;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
-using System.Drawing.Imaging;
-using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Xml.Linq;
 
 namespace AutoUI.TestItems
 {
-    [TestItemEditor(Editor = typeof(SearchByPatternEditor))]
-    [XmlParse(XmlKey = "searchPattern")]
-    public class SearchByPatternImage : AutoTestItem
+    [TestItemEditor(Editor = typeof(WaitPatternEditor))]
+    [XmlParse(XmlKey = "waitPattern")]
+    public class WaitPatternImage : AutoTestItem
     {
-        public PatternMatchingImage Pattern;
+        public List<PatternMatchingImage> Patterns = new List<PatternMatchingImage>();
 
-        public bool ClickOnSucceseed { get; set; }
 
-        public string PatternName { get => Pattern.Name; }
         public override void ParseXml(TestSet parent, XElement item)
         {
-            //var data = Convert.FromBase64String(item.Value);
-            //MemoryStream ms = new MemoryStream(data);
-            //Pattern = Bitmap.FromStream(ms) as Bitmap;
+            var pIds = item.Attribute("patternIds").Value.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToArray();
 
-            if (item.Attribute("clickOnSucceseed") != null)
-                ClickOnSucceseed = bool.Parse(item.Attribute("clickOnSucceseed").Value);
-
-            var pId = int.Parse(item.Attribute("patternId").Value);
-            var p = parent.Pool.Patterns.First(z => z.Id == pId);
-            Pattern = p;
+            var pns = pIds.Select(zz => parent.Pool.Patterns.First(z => z.Id == zz)).ToList();
+            Patterns = pns;
             base.ParseXml(parent, item);
         }
 
-        public bool NextSearch { get; set; }
+
+        public int Timeout { get; set; } = 100 * 1000;
         public override TestItemProcessResultEnum Process(AutoTestRunContext ctx)
         {
-            if (NextSearch)
+            Stopwatch start = Stopwatch.StartNew();
+            Point? ret = null;
+            while (true)
             {
-                int startX = 0;
-                int startY = 0;
-                if (ctx.LastSearchPosition != null)
-                {
-                    startX = ctx.LastSearchPosition.Value.X;
-                    startY = ctx.LastSearchPosition.Value.Y + 1;
-                }
-                Point? ret = null;
-                foreach (var item in Pattern.Items)
-                {
-                    ret = searchPattern(item.Bitmap, startX, startY);
-                    if (ret != null)
-                    {
-                        break;
-                    }
-                }
-                //var ret = searchPattern(startX, startY);
-                ctx.LastSearchPosition = ret;
-            }
-            else
-            {
-                Point? ret = null;
-                foreach (var item in Pattern.Items)
-                {
-                    ret = searchPattern(item.Bitmap);
-                    if (ret != null)
-                    {
-                        break;
-                    }
-                }
-                if (ret == null)
+                if (start.Elapsed.TotalMilliseconds > Timeout)
                 {
                     return TestItemProcessResultEnum.Failed;
                 }
+                var screen = GetScreenshot();
+                foreach (var pattern in Patterns)
+                {
+                    foreach (var item in pattern.Items)
+                    {
+                        ret = searchPattern(screen, item.Bitmap);
+                        if (ret != null)
+                        {
+                            break;
+                        }
+                    }
+                    if (ret != null) return TestItemProcessResultEnum.Success;
+                }
+                screen.Dispose();
                 ctx.LastSearchPosition = ret;
             }
-            if (ClickOnSucceseed)
-            {
-                var cc = new ClickAutoTestItem();
-                cc.Process(ctx);
-            }
-            return TestItemProcessResultEnum.Success;
         }
-
         public Bitmap GetScreenshot()
         {
             Rectangle bounds = Screen.GetBounds(Point.Empty);
@@ -96,21 +66,17 @@ namespace AutoUI.TestItems
 
             return bitmap;
         }
-
-        [DllImport("user32.dll")]
-        static extern bool SetCursorPos(int X, int Y);
+        
         private bool IsPixelsEqual(Color px, Color px2)
         {
             return px.R == px2.R && px.G == px2.G && px.B == px2.B;
         }
-        Point? searchPattern(Bitmap pattern, int startX = 0, int startY = 0)
+
+        Point? searchPattern(Bitmap scrs, Bitmap pattern, int startX = 0, int startY = 0)
         {
-            var scrs = GetScreenshot();
-
-
             DirectBitmap d = new DirectBitmap(scrs);
             DirectBitmap d2 = new DirectBitmap(pattern);
-            int cursor = 0;
+            
             Stopwatch sw = Stopwatch.StartNew();
 
             Random r = new Random();
@@ -146,17 +112,14 @@ namespace AutoUI.TestItems
 
                     if (good)
                     {
-                        scrs.Dispose();
-                        d.Dispose();
-                        d2.Dispose();
 
                         sw.Stop();
-                        SetCursorPos(i + pattern.Width / 2, j + pattern.Height / 2);
+                        d.Dispose();
+                        d2.Dispose();
                         return new Point(i, j);
                     }
                 }
             }
-            scrs.Dispose();
             d.Dispose();
             d2.Dispose();
 
@@ -165,10 +128,7 @@ namespace AutoUI.TestItems
 
         internal override string ToXml()
         {
-            MemoryStream ms = new MemoryStream();
-            //Pattern.Save(ms, ImageFormat.Png);
-            //var b64 = Convert.ToBase64String(ms.ToArray());
-            return $"<searchPattern patternId=\"{Pattern.Id}\" clickOnSucceseed=\"{ClickOnSucceseed}\" ></searchPattern>";
+            return $"<waitPattern patternIds=\"{string.Join(";", Patterns.Select(z => z.Id).ToArray())}\"  ></waitPattern>";
         }
 
         public bool Assert { get; set; }

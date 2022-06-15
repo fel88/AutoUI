@@ -22,6 +22,12 @@ namespace AutoUI
             {
                 sb.AppendLine($"<test id=\"{test.Id}\" name=\"{test.Name}\" useEmitter=\"{test.UseEmitter}\">");
 
+                sb.AppendLine("<vars>");
+                foreach (var item in test.Data)
+                {
+                    sb.AppendLine($"<item key=\"{item.Key}\" value=\"{item.Value}\"/>");
+                }
+                sb.AppendLine("</vars>");
                 sb.AppendLine("<section name=\"main\">");
                 foreach (var item in test.Main.Items)
                 {
@@ -52,6 +58,13 @@ namespace AutoUI
             {
                 var test = new AutoTest(this);
 
+                if (titem.Element("vars") != null)
+                {
+                    foreach (var kitem in titem.Element("vars").Elements("item"))
+                    {
+                        test.Data.Add(kitem.Attribute("key").Value, kitem.Attribute("value").Value);
+                    }
+                }
                 if (titem.Attribute("useEmitter") != null)
                     test.UseEmitter = bool.Parse(titem.Attribute("useEmitter").Value);
 

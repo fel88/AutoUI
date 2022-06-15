@@ -16,6 +16,7 @@ namespace AutoUI.TestItems
         internal abstract string ToXml();
 
         public AutoTestItem Parent;
+        public AutoTest ParentTest;//?
         public List<AutoTestItem> Childs = new List<AutoTestItem>();
     }
 
