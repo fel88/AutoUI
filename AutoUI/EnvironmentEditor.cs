@@ -75,9 +75,9 @@ namespace AutoUI
         {
             Thread th = new Thread(() =>
             {
-            foreach (var item in Set.Tests)
-            {
-                var res = item.Run();
+                foreach (var item in Set.Tests)
+                {
+                    var res = item.Run();
                     int cc = 0;
                     foreach (var sub in res.SubTests)
                     {
@@ -90,7 +90,7 @@ namespace AutoUI
                     if (item.UseEmitter)
                         item.State = TestStateEnum.Emitter;
 
-                var lvi = getLvi(item);
+                    var lvi = getLvi(item);
                     if (item.State == TestStateEnum.Failed)
                     {
                         lvi.BackColor = Color.Red;
@@ -100,7 +100,7 @@ namespace AutoUI
                     {
                         lvi.BackColor = Color.LightGreen;
                         lvi.ForeColor = Color.Black;
-            }
+                    }
                     if (item.State == TestStateEnum.Emitter)
                     {
                         lvi.BackColor = Color.Violet;
@@ -164,7 +164,7 @@ namespace AutoUI
             listView2.Items.Clear();
             foreach (var item in lastContext.SubTests)
             {
-                var lvi = new ListViewItem(new string[] { "sub", item.State.ToString(), item.FinishTime.ToLongTimeString() }) { Tag = item };
+                var lvi = new ListViewItem(new string[] { "sub", item.State.ToString(), item.Duration.TotalSeconds + "s", item.FinishTime.ToLongTimeString() }) { Tag = item };
                 listView2.Items.Add(lvi);
 
                 if (item.State == TestStateEnum.Failed)
@@ -196,10 +196,10 @@ namespace AutoUI
             if (et.lastContext != null && et.lastContext.WrongState != null)
             {
                 label1.Text = "wrong state: " + et.lastContext.WrongState.Id + "  " + et.lastContext.WrongState.GetType().Name;
-    }
+            }
             listView3.Items.Clear();
             foreach (var item in et.Data)
-    {
+            {
                 listView3.Items.Add(new ListViewItem(new string[] { item.Key, item.Value.ToString() }) { Tag = item });
             }
             listView3.Tag = et;
@@ -211,12 +211,13 @@ namespace AutoUI
             StringBuilder sb = new StringBuilder();
             int failed = 0;
             int total = 0;
+            sb.AppendLine($"Param;Duration (sec);State");
             for (int i = 0; i < listView2.Items.Count; i++)
             {
                 var et = listView2.Items[i].Tag as EmittedSubTest;
                 if (et.State == TestStateEnum.Failed) failed++;
                 total++;
-                sb.AppendLine($"{et.Data[et.Data.Keys.First()]};{et.FinishTime.ToLongTimeString()};{et.State}");
+                sb.AppendLine($"{et.Data[et.Data.Keys.First()]};{et.Duration.TotalSeconds};{et.State}");
             }
             sb.AppendLine("");
             sb.AppendLine($"Total;{total};Failed;{failed}");
@@ -224,7 +225,7 @@ namespace AutoUI
             if (sfd.ShowDialog() != DialogResult.OK) return;
             File.WriteAllText(sfd.FileName, sb.ToString(), Encoding.Default);
 
-            if(Helpers.Question("Open report?", Text))
+            if (Helpers.Question("Open report?", Text))
             {
                 Process.Start(sfd.FileName);
             }

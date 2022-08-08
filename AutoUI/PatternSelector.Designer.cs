@@ -89,6 +89,7 @@ namespace AutoUI
             this.ClientSize = new System.Drawing.Size(210, 450);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "PatternSelector";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "PatternSelector";
             this.tableLayoutPanel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();

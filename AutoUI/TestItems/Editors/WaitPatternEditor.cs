@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace AutoUI.TestItems.Editors
@@ -49,8 +43,16 @@ namespace AutoUI.TestItems.Editors
         {
             PatternSelector s = new PatternSelector();
             s.Init(TestItem.ParentTest.Parent.Pool);
-            if (s.ShowDialog() == DialogResult.OK) return;
+            if (s.ShowDialog() != DialogResult.OK) return;
             TestItem.Patterns.Add(s.Selected);
+            UpdateList();
+        }
+
+        private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (listView1.SelectedItems.Count == 0) return;
+            var p = listView1.SelectedItems[0].Tag as PatternMatchingImage;
+            TestItem.Patterns.Remove(p);
             UpdateList();
         }
     }

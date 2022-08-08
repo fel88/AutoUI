@@ -108,12 +108,12 @@ namespace AutoUI
 
                 var del = tableLayoutPanel1.Controls.OfType<ITestItemEditor>().FirstOrDefault();
                 if (del != null)
-            {
-                    tableLayoutPanel1.Controls.Remove(del as Control);                    
-            }            
+                {
+                    tableLayoutPanel1.Controls.Remove(del as Control);
+                }
                 tableLayoutPanel1.Controls.Add(tie as Control, 0, 0);
                 (tie as Control).Dock = DockStyle.Fill;
-        }
+            }
         }
 
         void deleteSelected()
@@ -123,12 +123,12 @@ namespace AutoUI
             if (MessageBox.Show($"sure to delete: {listView1.SelectedItems.Count}?", Text, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
                 for (int i = 0; i < listView1.SelectedItems.Count; i++)
-            {
+                {
                     var tt = listView1.SelectedItems[i].Tag as AutoTestItem;
                     currentCodeSection.Items.Remove(tt);
                 }
 
-            UpdateTestItemsList();
+                UpdateTestItemsList();
             }
         }
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
@@ -148,7 +148,7 @@ namespace AutoUI
             UpdateTestItemsList();
         }
 
-        
+
 
         private void clickToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -169,7 +169,7 @@ namespace AutoUI
 
         private void button5_Click(object sender, EventArgs e)
         {
-            
+
         }
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
@@ -270,8 +270,7 @@ namespace AutoUI
 
         private void clickToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
-            currentCodeSection.Items.Add(new ClickAutoTestItem());
-            UpdateTestItemsList();
+            addOrInsertItem(new ClickAutoTestItem());            
         }
 
         private void delayToolStripMenuItem_Click_1(object sender, EventArgs e)
@@ -367,7 +366,7 @@ namespace AutoUI
         private void listView1_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Delete)
-        {
+            {
                 deleteSelected();
             }
         }
@@ -395,8 +394,10 @@ namespace AutoUI
         {
             if (listView1.SelectedItems.Count == 0) return;
             currentItem = listView1.SelectedItems[0].Tag as AutoTestItem;
-
+            var sw = Stopwatch.StartNew();
             currentItem.Process(new AutoTestRunContext() { Test = test });
+            sw.Stop();
+            toolStripStatusLabel1.Text = sw.ElapsedMilliseconds + "ms";
         }
 
         private void terminateToolStripMenuItem_Click(object sender, EventArgs e)
@@ -420,9 +421,9 @@ namespace AutoUI
                     currentCodeSection = test.Finalizer;
                     listView2.Items[1].BackColor = Color.LightGreen;
                     listView2.Items[0].BackColor = Color.White;
-            UpdateTestItemsList();
-        }
-    }
+                    UpdateTestItemsList();
+                }
+            }
             else if (listView2.SelectedIndices[0] == 0)
             {
                 if (currentCodeSection != test.Main && Helpers.Question("switch to main?", ParentForm.Text))
@@ -456,10 +457,24 @@ namespace AutoUI
             UpdateTestItemsList();
         }
 
-        private void waitPatternToolStripMenuItem_Click(object sender, EventArgs e)
+        void addOrInsertItem(AutoTestItem ati)
         {
-            currentCodeSection.Items.Add(new WaitPatternImage() { ParentTest = test });
+            ati.ParentTest = test;
+            if (listView1.SelectedIndices.Count > 0)
+            {
+                var ind1 = listView1.SelectedIndices[0];
+                currentCodeSection.Items.Insert(ind1, ati);
+            }
+            else
+            {
+                currentCodeSection.Items.Add(ati);           
+            }
             UpdateTestItemsList();
         }
-}
+
+        private void waitPatternToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            addOrInsertItem(new WaitPatternImage() { ParentTest = test });
+        }
+    }
 }
