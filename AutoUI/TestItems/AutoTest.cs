@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading;
 using System.Xml.Linq;
 
@@ -113,32 +112,6 @@ namespace AutoUI.TestItems
     public enum TestStateEnum
     {
         NotStarted, Failed, Success, Emitter
-    }
-
-    public class EmittedSubTest
-    {
-        public AutoTest SourceTest;
-        public Dictionary<string, object> Data = new Dictionary<string, object>();
-        public TestStateEnum State;
-        public DateTime FinishTime;
-        public AutoTestRunContext lastContext;
-        public AutoTestItem WrongState => lastContext.WrongState;
-
-        internal AutoTestRunContext Run()
-        {
-            AutoTestRunContext ctx = new AutoTestRunContext() { Test = SourceTest };
-            ctx.IsSubTest = true;
-            lastContext = ctx;
-            foreach (var item in Data)
-            {
-                ctx.Vars.Add(item.Key, item.Value);
-    }
-
-            SourceTest.Run(ctx);
-            State = SourceTest.State;
-            FinishTime = DateTime.Now;
-            return ctx;
-        }
     }
 
     public enum TestFailedbehaviour

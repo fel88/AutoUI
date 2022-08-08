@@ -1,8 +1,8 @@
 ﻿using AutoUI.TestItems.Editors;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -20,24 +20,26 @@ namespace AutoUI.TestItems
         public bool ClickOnSucceseed { get; set; }
 
         public string PatternName { get => Pattern.Name; }
+
         public override void ParseXml(TestSet parent, XElement item)
         {
-            //var data = Convert.FromBase64String(item.Value);
-            //MemoryStream ms = new MemoryStream(data);
-            //Pattern = Bitmap.FromStream(ms) as Bitmap;
-
             if (item.Attribute("clickOnSucceseed") != null)
                 ClickOnSucceseed = bool.Parse(item.Attribute("clickOnSucceseed").Value);
+            if (item.Attribute("preCheck") != null)
+                PreCheckCurrentPosition = bool.Parse(item.Attribute("preCheck").Value);
 
             var pId = int.Parse(item.Attribute("patternId").Value);
             var p = parent.Pool.Patterns.First(z => z.Id == pId);
             Pattern = p;
             base.ParseXml(parent, item);
         }
+        public bool PreCheckCurrentPosition { get; set; } = false;
 
         public bool NextSearch { get; set; }
         public override TestItemProcessResultEnum Process(AutoTestRunContext ctx)
         {
+            var screen = GetScreenshot();
+
             if (NextSearch)
             {
                 int startX = 0;
@@ -50,9 +52,19 @@ namespace AutoUI.TestItems
                 Point? ret = null;
                 foreach (var item in Pattern.Items)
                 {
-                    ret = searchPattern(item.Bitmap, startX, startY);
+                    int? maxW = null;
+                    int? maxH = null;
+                    if (PreCheckCurrentPosition)
+                    {
+                        maxW = item.Bitmap.Width * 2 + 1;
+                        maxH = item.Bitmap.Height * 2 + 1;
+                        ret = SearchPattern(screen, item.Bitmap, Cursor.Position.X - item.Bitmap.Width, Cursor.Position.Y - item.Bitmap.Height, maxW, maxH);
+                    }
+                    if (ret == null)
+                        ret = SearchPattern(screen, item.Bitmap, startX, startY);
                     if (ret != null)
                     {
+                        SetCursorPos(ret.Value.X + item.Bitmap.Width / 2, ret.Value.Y + item.Bitmap.Height / 2);
                         break;
                     }
                 }
@@ -64,9 +76,19 @@ namespace AutoUI.TestItems
                 Point? ret = null;
                 foreach (var item in Pattern.Items)
                 {
-                    ret = searchPattern(item.Bitmap);
+                    int? maxW = null;
+                    int? maxH = null;
+                    if (PreCheckCurrentPosition)
+                    {
+                        maxW = item.Bitmap.Width * 2 + 1;
+                        maxH = item.Bitmap.Height * 2 + 1;
+                        ret = SearchPattern(screen, item.Bitmap, Cursor.Position.X - item.Bitmap.Width, Cursor.Position.Y - item.Bitmap.Height, maxW, maxH);
+                    }
+                    if (ret == null)
+                        ret = SearchPattern(screen, item.Bitmap);
                     if (ret != null)
                     {
+                        SetCursorPos(ret.Value.X + item.Bitmap.Width / 2, ret.Value.Y + item.Bitmap.Height / 2);
                         break;
                     }
                 }
@@ -76,6 +98,8 @@ namespace AutoUI.TestItems
                 }
                 ctx.LastSearchPosition = ret;
             }
+
+            screen.Dispose();
             if (ClickOnSucceseed)
             {
                 var cc = new ClickAutoTestItem();
@@ -84,7 +108,7 @@ namespace AutoUI.TestItems
             return TestItemProcessResultEnum.Success;
         }
 
-        public Bitmap GetScreenshot()
+        public static Bitmap GetScreenshot()
         {
             Rectangle bounds = Screen.GetBounds(Point.Empty);
             Bitmap bitmap = new Bitmap(bounds.Width, bounds.Height);
@@ -98,36 +122,51 @@ namespace AutoUI.TestItems
         }
 
         [DllImport("user32.dll")]
-        static extern bool SetCursorPos(int X, int Y);
-        private bool IsPixelsEqual(Color px, Color px2)
+        public static extern bool SetCursorPos(int X, int Y);
+        public static bool IsPixelsEqual(Color px, Color px2)
         {
             return px.R == px2.R && px.G == px2.G && px.B == px2.B;
         }
-        Point? searchPattern(Bitmap pattern, int startX = 0, int startY = 0)
+
+        public static Point? SearchPattern(Bitmap screen, Bitmap pattern, int startX = 0, int startY = 0, int? maxWidth = null, int? maxHeight = null)
         {
-            var scrs = GetScreenshot();
-
-
-            DirectBitmap d = new DirectBitmap(scrs);
+            DirectBitmap d = new DirectBitmap(screen);
             DirectBitmap d2 = new DirectBitmap(pattern);
-            int cursor = 0;
+
             Stopwatch sw = Stopwatch.StartNew();
 
             Random r = new Random();
-            //slide window
-            for (int i = startX; i < d.Width - pattern.Width; i++)
+            List<Point> points = new List<Point>();
+            List<Color> clrs = new List<Color>();
+            for (int t = 0; t < 10; t++)
             {
-                for (int j = startY; j < d.Height - pattern.Height; j++)
+                var rx = r.Next(pattern.Width);
+                var ry = r.Next(pattern.Height);
+                points.Add(new Point(rx, ry));
+                clrs.Add(d2.GetPixel(rx, ry));
+            }
+
+            //slide window
+            var www = d.Width - pattern.Width;
+            var hhh = d.Height - pattern.Height;
+            if (maxWidth != null)
+                www = Math.Min(maxWidth.Value, www);
+
+            if (maxHeight != null)
+                hhh = Math.Min(maxHeight.Value, hhh);
+
+            for (int i = startX; i < www; i++)
+            {
+                for (int j = startY; j < hhh; j++)
                 {
                     bool good = true;
                     //pre check random pixels
-                    for (int t = 0; t < 10; t++)
+                    for (int t = 0; t < points.Count; t++)
                     {
-                        var rx = r.Next(pattern.Width);
-                        var ry = r.Next(pattern.Height);
+                        var rx = points[t].X;
+                        var ry = points[t].Y;
                         var px = d.GetPixel(i + rx, j + ry);
-                        var px2 = d2.GetPixel(rx, ry);
-                        if (!IsPixelsEqual(px, px2)) { good = false; break; }
+                        if (!IsPixelsEqual(px, clrs[t])) { good = false; break; }
                     }
 
                     if (!good) continue;
@@ -146,17 +185,15 @@ namespace AutoUI.TestItems
 
                     if (good)
                     {
-                        scrs.Dispose();
                         d.Dispose();
                         d2.Dispose();
 
                         sw.Stop();
-                        SetCursorPos(i + pattern.Width / 2, j + pattern.Height / 2);
+
                         return new Point(i, j);
                     }
                 }
             }
-            scrs.Dispose();
             d.Dispose();
             d2.Dispose();
 
@@ -168,7 +205,7 @@ namespace AutoUI.TestItems
             MemoryStream ms = new MemoryStream();
             //Pattern.Save(ms, ImageFormat.Png);
             //var b64 = Convert.ToBase64String(ms.ToArray());
-            return $"<searchPattern patternId=\"{Pattern.Id}\" clickOnSucceseed=\"{ClickOnSucceseed}\" ></searchPattern>";
+            return $"<searchPattern patternId=\"{Pattern.Id}\" preCheck=\"{PreCheckCurrentPosition}\" clickOnSucceseed=\"{ClickOnSucceseed}\" ></searchPattern>";
         }
 
         public bool Assert { get; set; }

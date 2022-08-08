@@ -121,6 +121,7 @@
     <Compile Include="TestItems\Editors\WaitPatternEditor.Designer.cs">
       <DependentUpon>WaitPatternEditor.cs</DependentUpon>
     </Compile>
+    <Compile Include="TestItems\EmittedSubTest.cs" />
     <Compile Include="TestItems\GotoAutoTestItem.cs" />
     <Compile Include="TestItems\Helpers.cs" />
     <Compile Include="TestItems\LabelAutoTestItem.cs" />

@@ -84,6 +84,7 @@ namespace AutoUI
                         {
                             var tp = Activator.CreateInstance(fr) as AutoTestItem;
                             tp.ParseXml(this, item);
+                            tp.ParentTest = test;
                             if (sname == "main")
                             {
                                 test.Main.Items.Add(tp);
