@@ -36,6 +36,9 @@
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripDropDownButton2 = new System.Windows.Forms.ToolStripDropDownButton();
+            this.fontMatcherToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.searchDebugToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -45,7 +48,8 @@
             this.toolStripDropDownButton1,
             this.toolStripButton1,
             this.toolStripButton2,
-            this.toolStripButton3});
+            this.toolStripButton3,
+            this.toolStripDropDownButton2});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(952, 25);
@@ -110,6 +114,32 @@
             this.toolStripButton3.Text = "toolStripButton3";
             this.toolStripButton3.Click += new System.EventHandler(this.toolStripButton3_Click);
             // 
+            // toolStripDropDownButton2
+            // 
+            this.toolStripDropDownButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.toolStripDropDownButton2.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fontMatcherToolStripMenuItem,
+            this.searchDebugToolStripMenuItem});
+            this.toolStripDropDownButton2.Image = ((System.Drawing.Image)(resources.GetObject("toolStripDropDownButton2.Image")));
+            this.toolStripDropDownButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripDropDownButton2.Name = "toolStripDropDownButton2";
+            this.toolStripDropDownButton2.Size = new System.Drawing.Size(46, 22);
+            this.toolStripDropDownButton2.Text = "tools";
+            // 
+            // fontMatcherToolStripMenuItem
+            // 
+            this.fontMatcherToolStripMenuItem.Name = "fontMatcherToolStripMenuItem";
+            this.fontMatcherToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.fontMatcherToolStripMenuItem.Text = "font matcher";
+            this.fontMatcherToolStripMenuItem.Click += new System.EventHandler(this.fontMatcherToolStripMenuItem_Click);
+            // 
+            // searchDebugToolStripMenuItem
+            // 
+            this.searchDebugToolStripMenuItem.Name = "searchDebugToolStripMenuItem";
+            this.searchDebugToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.searchDebugToolStripMenuItem.Text = "search debug";
+            this.searchDebugToolStripMenuItem.Click += new System.EventHandler(this.searchDebugToolStripMenuItem_Click);
+            // 
             // mdi
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -137,5 +167,8 @@
         private System.Windows.Forms.ToolStripButton toolStripButton1;
         private System.Windows.Forms.ToolStripButton toolStripButton2;
         private System.Windows.Forms.ToolStripButton toolStripButton3;
+        private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownButton2;
+        private System.Windows.Forms.ToolStripMenuItem fontMatcherToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem searchDebugToolStripMenuItem;
     }
 }

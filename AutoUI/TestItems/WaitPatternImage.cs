@@ -46,7 +46,7 @@ namespace AutoUI.TestItems
                 {
                     foreach (var item in pattern.Items)
                     {
-                        ret = SearchByPatternImage.SearchPattern(screen, item.Bitmap);
+                        ret = SearchByPatternImage.SearchPattern(screen, item);
                         if (ret != null)
                         {
                             target = item.Bitmap;

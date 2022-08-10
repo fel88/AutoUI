@@ -10,7 +10,8 @@ namespace AutoUI.TestItems
         public bool ForceCodePointer;
         public AutoTestItem WrongState;
         public bool Finished;
-        public bool IsSubTest = false;
+        public bool IsSubTest => SubTest != null;
+        public EmittedSubTest SubTest;
 
         public Point? LastSearchPosition;
         public Dictionary<string, object> Vars = new Dictionary<string, object>();

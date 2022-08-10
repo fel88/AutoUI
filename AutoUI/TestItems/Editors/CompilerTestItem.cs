@@ -23,8 +23,9 @@ namespace AutoUI.TestItems.Editors
             lv.GridLines = true;
             lv.FullRowSelect = true;
             lv.View = View.Details;
-            lv.Columns.Add("a", 100);
+            lv.Columns.Add("Line", 100);
             lv.Columns.Add("b", 100);
+            lv.Columns.Add("c", 100);
             errorPanel.Controls.Add(lv, 0, 0);
             lv.Dock = DockStyle.Fill;
             richTextBox1.Controls.Add(errorPanel);
@@ -49,8 +50,8 @@ namespace AutoUI.TestItems.Editors
             lv.Items.Clear();
             foreach (var item in results.Errors.OfType<CompilerError>())
             {
-                errorPanel.Visible = true;
-                lv.Items.Add(new ListViewItem(new string[] { item.ErrorNumber + ": " + item.ErrorText }) { Tag = item, BackColor = Color.Pink, ForeColor = Color.White });
+                errorPanel.Visible = true;           
+                lv.Items.Add(new ListViewItem(new string[] { item.Line+"", item.ErrorNumber + ": " + item.ErrorText }) { Tag = item, BackColor = Color.Pink, ForeColor = Color.White });
             }
             try
             {
@@ -91,4 +92,5 @@ namespace AutoUI.TestItems.Editors
             TestItem.ProgramText = richTextBox1.Text;
         }
     }
+
 }

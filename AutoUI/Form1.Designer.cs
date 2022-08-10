@@ -45,10 +45,13 @@
             this.delayToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mouseUpDownToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.scriptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.gotoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.labelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.processToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.runToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.terminateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cursorPositionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.waitPatternToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.clearToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
@@ -70,7 +73,7 @@
             this.listView2 = new System.Windows.Forms.ListView();
             this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.waitPatternToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.screenshotToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
@@ -125,6 +128,9 @@
             this.delayToolStripMenuItem,
             this.mouseUpDownToolStripMenuItem,
             this.scriptToolStripMenuItem,
+            this.screenshotToolStripMenuItem,
+            this.gotoToolStripMenuItem,
+            this.labelToolStripMenuItem,
             this.processToolStripMenuItem,
             this.cursorPositionToolStripMenuItem,
             this.waitPatternToolStripMenuItem});
@@ -167,6 +173,20 @@
             this.scriptToolStripMenuItem.Text = "script";
             this.scriptToolStripMenuItem.Click += new System.EventHandler(this.scriptToolStripMenuItem_Click);
             // 
+            // gotoToolStripMenuItem
+            // 
+            this.gotoToolStripMenuItem.Name = "gotoToolStripMenuItem";
+            this.gotoToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.gotoToolStripMenuItem.Text = "goto";
+            this.gotoToolStripMenuItem.Click += new System.EventHandler(this.gotoToolStripMenuItem_Click_1);
+            // 
+            // labelToolStripMenuItem
+            // 
+            this.labelToolStripMenuItem.Name = "labelToolStripMenuItem";
+            this.labelToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.labelToolStripMenuItem.Text = "label";
+            this.labelToolStripMenuItem.Click += new System.EventHandler(this.labelToolStripMenuItem_Click_1);
+            // 
             // processToolStripMenuItem
             // 
             this.processToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -196,6 +216,13 @@
             this.cursorPositionToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.cursorPositionToolStripMenuItem.Text = "cursor position";
             this.cursorPositionToolStripMenuItem.Click += new System.EventHandler(this.cursorPositionToolStripMenuItem_Click);
+            // 
+            // waitPatternToolStripMenuItem
+            // 
+            this.waitPatternToolStripMenuItem.Name = "waitPatternToolStripMenuItem";
+            this.waitPatternToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.waitPatternToolStripMenuItem.Text = "wait pattern";
+            this.waitPatternToolStripMenuItem.Click += new System.EventHandler(this.waitPatternToolStripMenuItem_Click);
             // 
             // deleteToolStripMenuItem
             // 
@@ -379,12 +406,12 @@
             this.timer1.Interval = 25;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // waitPatternToolStripMenuItem
+            // screenshotToolStripMenuItem
             // 
-            this.waitPatternToolStripMenuItem.Name = "waitPatternToolStripMenuItem";
-            this.waitPatternToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.waitPatternToolStripMenuItem.Text = "wait pattern";
-            this.waitPatternToolStripMenuItem.Click += new System.EventHandler(this.waitPatternToolStripMenuItem_Click);
+            this.screenshotToolStripMenuItem.Name = "screenshotToolStripMenuItem";
+            this.screenshotToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.screenshotToolStripMenuItem.Text = "screenshot";
+            this.screenshotToolStripMenuItem.Click += new System.EventHandler(this.screenshotToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -448,6 +475,9 @@
         private System.Windows.Forms.ColumnHeader columnHeader5;
         private System.Windows.Forms.ToolStripMenuItem topToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem waitPatternToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem gotoToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem labelToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem screenshotToolStripMenuItem;
     }
 }
 

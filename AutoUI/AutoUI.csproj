@@ -14,7 +14,7 @@
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x86</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -22,6 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -62,6 +63,12 @@
     <Compile Include="EnvironmentEditor.Designer.cs">
       <DependentUpon>EnvironmentEditor.cs</DependentUpon>
     </Compile>
+    <Compile Include="FontMatcher.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FontMatcher.Designer.cs">
+      <DependentUpon>FontMatcher.cs</DependentUpon>
+    </Compile>
     <Compile Include="KeyValueDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -87,6 +94,15 @@
     </Compile>
     <Compile Include="PatternSelector.Designer.cs">
       <DependentUpon>PatternSelector.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PictureBoxWithInterpolationMode.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="SearchDebug.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SearchDebug.Designer.cs">
+      <DependentUpon>SearchDebug.cs</DependentUpon>
     </Compile>
     <Compile Include="TestItems\AutoTest.cs" />
     <Compile Include="TestItems\AutoTestItem.cs" />
@@ -131,6 +147,7 @@
     <Compile Include="TestItems\PatternMatchingImage.cs" />
     <Compile Include="TestItems\ProcessRunTestItem.cs" />
     <Compile Include="TestItems\ProcessTerminateTestItem.cs" />
+    <Compile Include="TestItems\ScreenshotTestItem.cs" />
     <Compile Include="TestItems\SearchByPatternImage.cs" />
     <Compile Include="TestItems\WaitPatternImage.cs" />
     <Compile Include="TestSet.cs" />
@@ -140,6 +157,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="EnvironmentEditor.resx">
       <DependentUpon>EnvironmentEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FontMatcher.resx">
+      <DependentUpon>FontMatcher.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
@@ -166,6 +186,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="SearchDebug.resx">
+      <DependentUpon>SearchDebug.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="TestItems\Editors\CompilerTestItem.resx">
       <DependentUpon>CompilerTestItem.cs</DependentUpon>
     </EmbeddedResource>

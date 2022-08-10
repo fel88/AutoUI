@@ -35,7 +35,7 @@ namespace AutoUI
             InitializeComponent();
         }
 
-        TestSet set = new TestSet();
+        public static TestSet set = new TestSet();
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
             EnvironmentEditor f = new EnvironmentEditor();
@@ -97,6 +97,20 @@ namespace AutoUI
         private void toolStripDropDownButton1_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void fontMatcherToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FontMatcher f = new FontMatcher();
+            f.MdiParent = this;
+            f.Show();
+        }
+
+        private void searchDebugToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SearchDebug f = new SearchDebug();
+            f.MdiParent = this;
+            f.Show();
         }
     }
 }

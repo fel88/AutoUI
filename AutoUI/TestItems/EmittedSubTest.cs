@@ -19,7 +19,7 @@ namespace AutoUI.TestItems
             StartTime = DateTime.Now;
 
             AutoTestRunContext ctx = new AutoTestRunContext() { Test = SourceTest };
-            ctx.IsSubTest = true;
+            ctx.SubTest = this;
             lastContext = ctx;
             foreach (var item in Data)
             {
