@@ -30,13 +30,8 @@ namespace AutoUI
 
 
         }
-        List<DrawInfo> infos = new List<DrawInfo>();
+        List<PatternFindInfo> infos = new List<PatternFindInfo>();
 
-        public class DrawInfo
-        {
-            public PatternMatchingImageItem Pattern;
-            public Rectangle Rect;
-        }
         Bitmap bmp;
 
 
@@ -51,7 +46,7 @@ namespace AutoUI
                 {
                     res = SearchByPatternImage.SearchPattern(bmp, item, res == null ? 0 : (res.Value.X), res == null ? 0 : (res.Value.Y + 1));
                     if (res != null)
-                        infos.Add(new DrawInfo()
+                        infos.Add(new PatternFindInfo()
                         {
                             Pattern = item,
                             Rect = new Rectangle(res.Value.X, res.Value.Y, item.Bitmap.Width, item.Bitmap.Height)
@@ -63,7 +58,7 @@ namespace AutoUI
             //non-max suppress
 
             var ord = infos.OrderByDescending(z => z.Rect.Width * z.Rect.Height).ToArray();
-            List<DrawInfo> todel = new List<DrawInfo>();
+            List<PatternFindInfo> todel = new List<PatternFindInfo>();
             for (int i = 0; i < ord.Length; i++)
             {
                 for (int j = i + 1; j < ord.Length; j++)
@@ -83,6 +78,8 @@ namespace AutoUI
             infos = infos.OrderBy(z => z.Rect.Left).ThenBy(z => z.Rect.Top).ToList();
             sw.Stop();
             toolStripStatusLabel1.Text = "Complete. Founded: " + infos.Count + "; time: " + sw.ElapsedMilliseconds + "ms";
+
+            listView1.Items.Clear();
             foreach (var item in infos)
             {
                 listView1.Items.Add(new ListViewItem(new string[] { item.Rect.ToString() }) { Tag = item });
@@ -120,7 +117,7 @@ namespace AutoUI
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (listView1.SelectedItems.Count == 0) return;
-            var t = listView1.SelectedItems[0].Tag as DrawInfo;
+            var t = listView1.SelectedItems[0].Tag as PatternFindInfo;
             Bitmap bb = new Bitmap(t.Pattern.Bitmap.Width, t.Pattern.Bitmap.Height);
             var gr = Graphics.FromImage(bb);
             gr.DrawImage(bmp, -t.Rect.X, -t.Rect.Y);
@@ -129,5 +126,10 @@ namespace AutoUI
             pictureBox2.Image = bb;
             pictureBox3.Image = t.Pattern.Bitmap;
         }
+    }
+    public class PatternFindInfo
+    {
+        public PatternMatchingImageItem Pattern;
+        public Rectangle Rect;
     }
 }

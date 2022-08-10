@@ -25,6 +25,7 @@ namespace AutoUI.TestItems
         {
             if (item.Attribute("clickOnSucceseed") != null)
                 ClickOnSucceseed = bool.Parse(item.Attribute("clickOnSucceseed").Value);
+
             if (item.Attribute("preCheck") != null)
                 PreCheckCurrentPosition = bool.Parse(item.Attribute("preCheck").Value);
 

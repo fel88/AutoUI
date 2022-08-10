@@ -112,5 +112,5 @@ namespace AutoUI
             f.MdiParent = this;
             f.Show();
         }
-    }
+    }    
 }

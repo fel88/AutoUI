@@ -45,6 +45,7 @@
             this.delayToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mouseUpDownToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.scriptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.screenshotToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.gotoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.labelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.processToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -73,7 +74,8 @@
             this.listView2 = new System.Windows.Forms.ListView();
             this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.screenshotToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.findAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.iterateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
@@ -133,7 +135,9 @@
             this.labelToolStripMenuItem,
             this.processToolStripMenuItem,
             this.cursorPositionToolStripMenuItem,
-            this.waitPatternToolStripMenuItem});
+            this.waitPatternToolStripMenuItem,
+            this.findAllToolStripMenuItem,
+            this.iterateToolStripMenuItem});
             this.addToolStripMenuItem.Name = "addToolStripMenuItem";
             this.addToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.addToolStripMenuItem.Text = "add";
@@ -172,6 +176,13 @@
             this.scriptToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.scriptToolStripMenuItem.Text = "script";
             this.scriptToolStripMenuItem.Click += new System.EventHandler(this.scriptToolStripMenuItem_Click);
+            // 
+            // screenshotToolStripMenuItem
+            // 
+            this.screenshotToolStripMenuItem.Name = "screenshotToolStripMenuItem";
+            this.screenshotToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.screenshotToolStripMenuItem.Text = "screenshot";
+            this.screenshotToolStripMenuItem.Click += new System.EventHandler(this.screenshotToolStripMenuItem_Click);
             // 
             // gotoToolStripMenuItem
             // 
@@ -406,12 +417,19 @@
             this.timer1.Interval = 25;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // screenshotToolStripMenuItem
+            // findAllToolStripMenuItem
             // 
-            this.screenshotToolStripMenuItem.Name = "screenshotToolStripMenuItem";
-            this.screenshotToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.screenshotToolStripMenuItem.Text = "screenshot";
-            this.screenshotToolStripMenuItem.Click += new System.EventHandler(this.screenshotToolStripMenuItem_Click);
+            this.findAllToolStripMenuItem.Name = "findAllToolStripMenuItem";
+            this.findAllToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.findAllToolStripMenuItem.Text = "find all";
+            this.findAllToolStripMenuItem.Click += new System.EventHandler(this.findAllToolStripMenuItem_Click);
+            // 
+            // iterateToolStripMenuItem
+            // 
+            this.iterateToolStripMenuItem.Name = "iterateToolStripMenuItem";
+            this.iterateToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.iterateToolStripMenuItem.Text = "iterate";
+            this.iterateToolStripMenuItem.Click += new System.EventHandler(this.iterateToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -478,6 +496,8 @@
         private System.Windows.Forms.ToolStripMenuItem gotoToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem labelToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem screenshotToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem findAllToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem iterateToolStripMenuItem;
     }
 }
 

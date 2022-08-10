@@ -135,7 +135,7 @@ namespace AutoUI
         {
             deleteSelected();
         }
-        
+
         private void clickToolStripMenuItem_Click(object sender, EventArgs e)
         {
             currentCodeSection.Items.Add(new ClickAutoTestItem());
@@ -256,7 +256,7 @@ namespace AutoUI
 
         private void clickToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
-            addOrInsertItem(new ClickAutoTestItem());            
+            addOrInsertItem(new ClickAutoTestItem());
         }
 
         private void delayToolStripMenuItem_Click_1(object sender, EventArgs e)
@@ -340,6 +340,16 @@ namespace AutoUI
                 if (s.Selected != null)
                 {
                     b.Pattern = s.Selected;
+                }
+            }
+            if (currentItem is FindAllByPatternImage ff)
+            {
+                PatternSelector s = new PatternSelector();
+                s.Init(test.Parent.Pool);
+                s.ShowDialog();
+                if (s.Selected != null)
+                {
+                    ff.Pattern = s.Selected;
                 }
             }
         }
@@ -453,7 +463,7 @@ namespace AutoUI
             }
             else
             {
-                currentCodeSection.Items.Add(ati);           
+                currentCodeSection.Items.Add(ati);
             }
             UpdateTestItemsList();
         }
@@ -465,17 +475,29 @@ namespace AutoUI
 
         private void gotoToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
-            addOrInsertItem(new GotoAutoTestItem());            
+            addOrInsertItem(new GotoAutoTestItem());
         }
 
         private void labelToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
-            addOrInsertItem(new LabelAutoTestItem());            
+            addOrInsertItem(new LabelAutoTestItem());
         }
 
         private void screenshotToolStripMenuItem_Click(object sender, EventArgs e)
         {
             addOrInsertItem(new ScreenshotTestItem());
+        }
+
+        private void findAllToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            addOrInsertItem(new FindAllByPatternImage());
+
+        }
+
+        private void iterateToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            addOrInsertItem(new Iterator());
+
         }
     }
 }

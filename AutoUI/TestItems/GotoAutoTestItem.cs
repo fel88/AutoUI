@@ -1,8 +1,9 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
+using System.Xml.Linq;
 
 namespace AutoUI.TestItems
 {
+    [XmlParse(XmlKey = "goto")]
     public class GotoAutoTestItem : AutoTestItem
     {
         public override void Init()
@@ -36,6 +37,13 @@ namespace AutoUI.TestItems
 
             return TestItemProcessResultEnum.Success;
 
+        }
+
+        public override void ParseXml(TestSet set, XElement item)
+        {
+            Label = (item.Attribute("label").Value);            
+
+            base.ParseXml(set, item);
         }
 
         internal override string ToXml()

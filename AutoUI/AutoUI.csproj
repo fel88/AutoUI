@@ -138,8 +138,10 @@
       <DependentUpon>WaitPatternEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="TestItems\EmittedSubTest.cs" />
+    <Compile Include="TestItems\FindAllByPatternImage.cs" />
     <Compile Include="TestItems\GotoAutoTestItem.cs" />
     <Compile Include="TestItems\Helpers.cs" />
+    <Compile Include="TestItems\Iterator.cs" />
     <Compile Include="TestItems\LabelAutoTestItem.cs" />
     <Compile Include="TestItems\MouseUpDownTestItem.cs" />
     <Compile Include="Program.cs" />
