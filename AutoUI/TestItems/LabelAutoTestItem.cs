@@ -13,7 +13,7 @@ namespace AutoUI.TestItems
 
         internal override string ToXml()
         {
-            throw new NotImplementedException();
+            return $"<label label=\"{Label}\"/>";
         }
     }
 }

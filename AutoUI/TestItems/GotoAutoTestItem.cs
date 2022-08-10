@@ -40,7 +40,7 @@ namespace AutoUI.TestItems
 
         internal override string ToXml()
         {
-            throw new NotImplementedException();
+            return $"<goto label=\"{Label}\"/>";
         }
     }
 }

@@ -135,21 +135,7 @@ namespace AutoUI
         {
             deleteSelected();
         }
-
-        private void gotoToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            currentCodeSection.Items.Add(new GotoAutoTestItem());
-            UpdateTestItemsList();
-        }
-
-        private void labelToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            currentCodeSection.Items.Add(new LabelAutoTestItem());
-            UpdateTestItemsList();
-        }
-
-
-
+        
         private void clickToolStripMenuItem_Click(object sender, EventArgs e)
         {
             currentCodeSection.Items.Add(new ClickAutoTestItem());
@@ -475,6 +461,21 @@ namespace AutoUI
         private void waitPatternToolStripMenuItem_Click(object sender, EventArgs e)
         {
             addOrInsertItem(new WaitPatternImage() { ParentTest = test });
+        }
+
+        private void gotoToolStripMenuItem_Click_1(object sender, EventArgs e)
+        {
+            addOrInsertItem(new GotoAutoTestItem());            
+        }
+
+        private void labelToolStripMenuItem_Click_1(object sender, EventArgs e)
+        {
+            addOrInsertItem(new LabelAutoTestItem());            
+        }
+
+        private void screenshotToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            addOrInsertItem(new ScreenshotTestItem());
         }
     }
 }

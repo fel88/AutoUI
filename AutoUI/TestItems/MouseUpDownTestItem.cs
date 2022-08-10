@@ -51,7 +51,7 @@ namespace AutoUI.TestItems
             return TestItemProcessResultEnum.Success;
         }
 
-        public override void ParseXml(TestSet set,  XElement item)
+        public override void ParseXml(TestSet set, XElement item)
         {
             Down = bool.Parse(item.Attribute("down").Value);
             base.ParseXml(set, item);

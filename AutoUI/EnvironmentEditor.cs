@@ -65,11 +65,16 @@ namespace AutoUI
 
         ListViewItem getLvi(object tag)
         {
-            for (int i = 0; i < listView1.Items.Count; i++)
+            ListViewItem ret = null;
+            listView1.Invoke((Action)(() =>
             {
-                if (listView1.Items[i].Tag == tag) return listView1.Items[i];
-            }
-            return null;
+                for (int i = 0; i < listView1.Items.Count; i++)
+                {
+                    if (listView1.Items[i].Tag == tag) { ret = listView1.Items[i]; break; }
+                }
+            }));
+
+            return ret;
         }
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
@@ -271,6 +276,20 @@ namespace AutoUI
 
         private void listView3_MouseDoubleClick(object sender, MouseEventArgs e)
         {
+            if (listView3.SelectedItems.Count > 0)
+            {
+                var tag = listView3.SelectedItems[0].Tag;
+                if (tag is KeyValuePair<string, object> s1)
+                {
+                    if (s1.Value is Bitmap b)
+                    {
+                        b.Save("temp1.png");
+                        Process.Start("temp1.png");
+                    }
+                }
+            }
+
+
             if (listView3.Tag is AutoTest test)
             {
                 var pair = (KeyValuePair<string, object>)listView3.SelectedItems[0].Tag;
@@ -282,6 +301,16 @@ namespace AutoUI
                     updateKeyValueList();
                 }
             }
+            if (listView3.Tag is EmittedSubTest esub)
+            {
+                if (listView3.SelectedItems.Count == 0) return;
+                var tag = listView3.SelectedItems[0].Tag;
+            }
+        }
+
+        private void listView3_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

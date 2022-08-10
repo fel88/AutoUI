@@ -19,7 +19,7 @@ namespace AutoUI.TestItems
 
         public bool ClickOnSucceseed { get; set; }
 
-        public string PatternName { get => Pattern.Name; }
+        public string PatternName { get => Pattern == null ? null : Pattern.Name; }
 
         public override void ParseXml(TestSet parent, XElement item)
         {
@@ -33,6 +33,7 @@ namespace AutoUI.TestItems
             Pattern = p;
             base.ParseXml(parent, item);
         }
+
         public bool PreCheckCurrentPosition { get; set; } = false;
 
         public bool NextSearch { get; set; }
@@ -58,10 +59,10 @@ namespace AutoUI.TestItems
                     {
                         maxW = item.Bitmap.Width * 2 + 1;
                         maxH = item.Bitmap.Height * 2 + 1;
-                        ret = SearchPattern(screen, item.Bitmap, Cursor.Position.X - item.Bitmap.Width, Cursor.Position.Y - item.Bitmap.Height, maxW, maxH);
+                        ret = SearchPattern(screen, item, Cursor.Position.X - item.Bitmap.Width, Cursor.Position.Y - item.Bitmap.Height, maxW, maxH);
                     }
                     if (ret == null)
-                        ret = SearchPattern(screen, item.Bitmap, startX, startY);
+                        ret = SearchPattern(screen, item, startX, startY);
                     if (ret != null)
                     {
                         SetCursorPos(ret.Value.X + item.Bitmap.Width / 2, ret.Value.Y + item.Bitmap.Height / 2);
@@ -82,10 +83,10 @@ namespace AutoUI.TestItems
                     {
                         maxW = item.Bitmap.Width * 2 + 1;
                         maxH = item.Bitmap.Height * 2 + 1;
-                        ret = SearchPattern(screen, item.Bitmap, Cursor.Position.X - item.Bitmap.Width, Cursor.Position.Y - item.Bitmap.Height, maxW, maxH);
+                        ret = SearchPattern(screen, item, Cursor.Position.X - item.Bitmap.Width, Cursor.Position.Y - item.Bitmap.Height, maxW, maxH);
                     }
                     if (ret == null)
-                        ret = SearchPattern(screen, item.Bitmap);
+                        ret = SearchPattern(screen, item);
                     if (ret != null)
                     {
                         SetCursorPos(ret.Value.X + item.Bitmap.Width / 2, ret.Value.Y + item.Bitmap.Height / 2);
@@ -123,13 +124,50 @@ namespace AutoUI.TestItems
 
         [DllImport("user32.dll")]
         public static extern bool SetCursorPos(int X, int Y);
+
+
         public static bool IsPixelsEqual(Color px, Color px2)
         {
             return px.R == px2.R && px.G == px2.G && px.B == px2.B;
         }
 
-        public static Point? SearchPattern(Bitmap screen, Bitmap pattern, int startX = 0, int startY = 0, int? maxWidth = null, int? maxHeight = null)
+        public static Color ToGrayscale(Color clr)
         {
+            var mean = (clr.R + clr.G + clr.B) / 3;
+            return Color.FromArgb(mean, mean, mean);
+        }
+        public static Color ToBinaryMean(Color clr)
+        {
+            var g = ToGrayscale(clr);
+            return g.R > 128 ? Color.White : Color.Black;
+        }
+
+        public static Bitmap GetConvertedBitmap(PatternMatchingImageItem _pattern, Bitmap bmp)
+        {
+            Bitmap ret = new Bitmap(bmp.Width, bmp.Height);
+            for (int i = 0; i < ret.Width; i++)
+            {
+                for (int j = 0; j < ret.Height; j++)
+                {
+                    ret.SetPixel(i, j, ConvertPixel(_pattern, bmp.GetPixel(i, j)));
+                }
+            }
+            return ret;
+        }
+
+        public static Point? SearchPattern(Bitmap screen, PatternMatchingImageItem _pattern, int startX = 0, int startY = 0, int? maxWidth = null, int? maxHeight = null)
+        {
+            /*if (Debugger.IsAttached)
+            {
+                Helpers.ExecuteSTA(() => { Clipboard.SetImage(GetConvertedBitmap(_pattern, screen)); });
+
+                Helpers.ExecuteSTA(() =>
+                {
+                    Clipboard.SetImage(GetConvertedBitmap(_pattern, _pattern.Bitmap));
+                });
+            }*/
+
+            var pattern = _pattern.Bitmap;
             DirectBitmap d = new DirectBitmap(screen);
             DirectBitmap d2 = new DirectBitmap(pattern);
 
@@ -143,7 +181,9 @@ namespace AutoUI.TestItems
                 var rx = r.Next(pattern.Width);
                 var ry = r.Next(pattern.Height);
                 points.Add(new Point(rx, ry));
-                clrs.Add(d2.GetPixel(rx, ry));
+                var px = ConvertPixel(_pattern, d2.GetPixel(rx, ry));
+
+                clrs.Add(px);
             }
 
             //slide window
@@ -159,6 +199,7 @@ namespace AutoUI.TestItems
             {
                 for (int j = startY; j < hhh; j++)
                 {
+                    startY = 0;
                     bool good = true;
                     //pre check random pixels
                     for (int t = 0; t < points.Count; t++)
@@ -166,6 +207,8 @@ namespace AutoUI.TestItems
                         var rx = points[t].X;
                         var ry = points[t].Y;
                         var px = d.GetPixel(i + rx, j + ry);
+                        px = ConvertPixel(_pattern, px);
+
                         if (!IsPixelsEqual(px, clrs[t])) { good = false; break; }
                     }
 
@@ -176,8 +219,9 @@ namespace AutoUI.TestItems
                     {
                         for (int j1 = 0; j1 < pattern.Height; j1++)
                         {
-                            var px = d.GetPixel(i + i1, j + j1);
-                            var px2 = d2.GetPixel(i1, j1);
+                            var px = ConvertPixel(_pattern, d.GetPixel(i + i1, j + j1));
+                            var px2 = ConvertPixel(_pattern, d2.GetPixel(i1, j1));
+
                             if (!IsPixelsEqual(px, px2)) { good = false; break; }
                         }
                         if (!good) break;
@@ -198,6 +242,21 @@ namespace AutoUI.TestItems
             d2.Dispose();
 
             return null;
+        }
+
+        private static Color ConvertPixel(PatternMatchingImageItem pattern, Color px)
+        {
+            switch (pattern.Mode)
+            {
+                case PatternMatchingMode.BinaryMean:
+                    return ToGrayscale(px).R > 128 ? Color.White : Color.Black;
+
+                case PatternMatchingMode.Grayscale:
+                    return ToGrayscale(px);
+
+                default:
+                    return px;
+            }
         }
 
         internal override string ToXml()
