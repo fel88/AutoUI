@@ -64,16 +64,20 @@ namespace AutoUI
             sb.ToString();
 
             SaveFileDialog sfd = new SaveFileDialog();
-            sfd.Filter = "xml files|*.xml";
-            if (sfd.ShowDialog() != DialogResult.OK) return;
+            sfd.Filter = "Auto UI (axml files)|*.axml";
+            if (sfd.ShowDialog() != DialogResult.OK) 
+                return;
+
             File.WriteAllText(sfd.FileName, sb.ToString());
         }
 
         private void loadToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Filter = "Xml files|*.xml";
-            if (ofd.ShowDialog() != DialogResult.OK) return;
+            ofd.Filter = "Auto UI (axml files)|*.axml";
+
+            if (ofd.ShowDialog() != DialogResult.OK) 
+                return;
 
             set = new TestSet();
             var doc = XDocument.Load(ofd.FileName);

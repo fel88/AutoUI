@@ -499,5 +499,60 @@ namespace AutoUI
             addOrInsertItem(new Iterator());
 
         }
+
+        private void editToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (listView1.SelectedItems.Count != 1)
+                return;
+
+            var d = AutoDialog.DialogHelpers.StartDialog();
+            var ati = listView1.SelectedItems[0].Tag as AutoTestItem;
+
+            foreach (var pitem in ati.GetType().GetProperties())
+            {
+                if (pitem.SetMethod == null)
+                    continue;
+
+                if (pitem.PropertyType == typeof(bool))
+                {
+                    d.AddBoolField(pitem.Name, pitem.Name, (bool)pitem.GetValue(ati));
+                }
+                if (pitem.PropertyType == typeof(string))
+                {
+                    d.AddStringField(pitem.Name, pitem.Name, (string)pitem.GetValue(ati));
+                }
+                if (pitem.PropertyType == typeof(int))
+                {
+                    d.AddNumericField(pitem.Name, pitem.Name, (int)pitem.GetValue(ati),decimalPlaces:0);
+                }
+
+            }
+
+            if (!d.ShowDialog())
+                return;
+
+            foreach (var pitem in ati.GetType().GetProperties())
+            {
+                if (pitem.SetMethod == null)
+                    continue;
+
+                if (pitem.PropertyType == typeof(bool))
+                {
+                    pitem.SetValue(ati, d.GetBoolField(pitem.Name));
+                }
+                if (pitem.PropertyType == typeof(string))
+                {
+                    pitem.SetValue(ati, d.GetStringField(pitem.Name));
+                }
+                if (pitem.PropertyType == typeof(int))
+                {
+                    pitem.SetValue(ati, d.GetIntegerNumericField(pitem.Name));
+                }
+            }
+
+
+            UpdateTestItemsList();
+
+        }
     }
 }
