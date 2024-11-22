@@ -56,6 +56,7 @@
     <Compile Include="AboutBox1.Designer.cs">
       <DependentUpon>AboutBox1.cs</DependentUpon>
     </Compile>
+    <Compile Include="ConnectedComponent.cs" />
     <Compile Include="DrawingContext.cs" />
     <Compile Include="EnvironmentEditor.cs">
       <SubType>Form</SubType>
@@ -147,12 +148,15 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestItems\PatternMatchingImage.cs" />
+    <Compile Include="TestItems\PatternMatchingImageItem.cs" />
+    <Compile Include="TestItems\PatternMatchingMode.cs" />
     <Compile Include="TestItems\ProcessRunTestItem.cs" />
     <Compile Include="TestItems\ProcessTerminateTestItem.cs" />
     <Compile Include="TestItems\ScreenshotTestItem.cs" />
     <Compile Include="TestItems\SearchByPatternImage.cs" />
     <Compile Include="TestItems\WaitPatternImage.cs" />
     <Compile Include="TestSet.cs" />
+    <Compile Include="UIHelpers.cs" />
     <Compile Include="XmlParseAttribute.cs" />
     <EmbeddedResource Include="AboutBox1.resx">
       <DependentUpon>AboutBox1.cs</DependentUpon>
@@ -215,6 +219,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="flask.ico" />
+    <None Include="Resources\plus-white.png" />
+    <None Include="Resources\plus.png" />
+    <None Include="Resources\cross.png" />
+    <None Include="Resources\pencil.png" />
     <None Include="Resources\folder-open.png" />
     <None Include="Resources\disk.png" />
   </ItemGroup>

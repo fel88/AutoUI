@@ -17,8 +17,8 @@ namespace AutoUI.TestItems
         }
         public string Name { get; set; } = "patternMatchingImage";
         public int Id { get; private set; }
-        public List<PatternMatchingImageItem> Items = new List<PatternMatchingImageItem>();
 
+        public List<PatternMatchingImageItem> Items = new List<PatternMatchingImageItem>();
 
         internal void ToXml(StringBuilder sb)
         {
@@ -51,21 +51,5 @@ namespace AutoUI.TestItems
                     Items.Last().Name = item.Attribute("mode").Value;
             }
         }
-    }
-
-    public class PatternMatchingImageItem
-    {
-        public int Id;
-        public string Name { get; set; } = "pm image item";
-        public Bitmap Bitmap;
-        public PatternMatchingMode Mode { get; set; }
-
-    }
-
-    public enum PatternMatchingMode
-    {
-        Precise,
-        Grayscale,
-        BinaryMean//binary mean>128
     }
 }

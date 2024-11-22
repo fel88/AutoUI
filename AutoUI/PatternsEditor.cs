@@ -38,7 +38,7 @@ namespace AutoUI
 
         private void addPatternToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Pool.Patterns.Add(new TestItems.PatternMatchingImage());
+            Pool.Patterns.Add(new PatternMatchingImage());
             updatePatternsList();
         }
 
@@ -47,7 +47,7 @@ namespace AutoUI
             if (listView1.SelectedItems.Count == 0) return;
             var tag = listView1.SelectedItems[0].Tag as PatternMatchingImage;
             updateSecondList(tag);
-            propertyGrid1.SelectedObject = tag;
+
             if (tag.Items.Any() && tag.Items.First().Bitmap != null)
                 pictureBox1.Image = tag.Items.First().Bitmap;
             else
@@ -59,7 +59,7 @@ namespace AutoUI
             listView2.Items.Clear();
             foreach (var t in tag.Items)
             {
-                listView2.Items.Add(new ListViewItem(new string[] { t.Name }) { Tag = t });
+                listView2.Items.Add(new ListViewItem(new string[] { t.Name, t.Mode.ToString() }) { Tag = t });
             }
         }
 
@@ -67,8 +67,9 @@ namespace AutoUI
         {
             if (listView2.SelectedItems.Count == 0) return;
             var tag = listView2.SelectedItems[0].Tag as PatternMatchingImageItem;
-            propertyGrid1.SelectedObject = tag;
+
             pictureBox1.Image = tag.Bitmap;
+            toolStripStatusLabel1.Text = tag.Bitmap == null ? "null image" : $"Image: {tag.Bitmap.Width}x{tag.Bitmap.Height}";
         }
 
         private void addItemToolStripMenuItem_Click(object sender, EventArgs e)
@@ -81,7 +82,9 @@ namespace AutoUI
             if (listView1.SelectedItems.Count == 0) return;
 
             OpenFileDialog ofd = new OpenFileDialog();
-            if (ofd.ShowDialog() != DialogResult.OK) return;
+            if (ofd.ShowDialog() != DialogResult.OK)
+                return;
+
             var tag = listView1.SelectedItems[0].Tag as PatternMatchingImage;
             tag.Items.Add(new PatternMatchingImageItem() { Bitmap = Bitmap.FromFile(ofd.FileName) as Bitmap });
             updateSecondList(tag);
@@ -104,17 +107,37 @@ namespace AutoUI
 
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (listView1.SelectedItems.Count == 0) return;
-            var tag = listView1.SelectedItems[0].Tag as PatternMatchingImage;
-            Pool.Patterns.Remove(tag);
+            if (listView1.SelectedItems.Count == 0)
+                return;
+
+            if (listView1.SelectedItems.Count == 1)
+            {
+                var tag = (PatternMatchingImage)listView1.SelectedItems[0].Tag;
+                if (!UIHelpers.ShowQuestion($"Are you sure you want to delete {tag.Name}?"))
+                    return;
+            }
+            else if (!UIHelpers.ShowQuestion($"Are you sure to delete {listView1.SelectedItems.Count} elements?"))
+                return;
+
+            for (int i = 0; i < listView1.SelectedItems.Count; i++)
+            {
+                var tag = listView1.SelectedItems[i].Tag as PatternMatchingImage;
+                Pool.Patterns.Remove(tag);
+            }
+
+            listView2.Items.Clear();
             updatePatternsList();
         }
 
         private void deleteToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            if (listView1.SelectedItems.Count == 0) return;
+            if (listView1.SelectedItems.Count == 0)
+                return;
+
             var tag = listView1.SelectedItems[0].Tag as PatternMatchingImage;
-            if (listView2.SelectedItems.Count == 0) return;
+            if (listView2.SelectedItems.Count == 0)
+                return;
+
             var tag2 = listView2.SelectedItems[0].Tag as PatternMatchingImageItem;
             tag.Items.Remove(tag2);
             updateSecondList(tag);
@@ -223,7 +246,7 @@ namespace AutoUI
                 }
             }
             cc = cc.Except(toDel).ToArray();
-      
+
 
 
             var pmi = new PatternMatchingImage() { Name = "generatedFont" };
@@ -280,65 +303,53 @@ namespace AutoUI
 
             return components.ToArray();
         }
-    }
 
-    public class ConnectedComponent
-    {
-        public void Crop()
+        private void editToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var bbox = BoundingBox();
-            for (int i = 0; i < Points.Count; i++)
-            {
-                Points[i] = new Point(Points[i].X - bbox.X, Points[i].Y - bbox.Y);
-            }
+            if (listView1.SelectedItems.Count == 0)
+                return;
+
+            var tag = listView1.SelectedItems[0].Tag as PatternMatchingImage;
+
+            var d = AutoDialog.DialogHelpers.StartDialog();
+            d.AddStringField("name", "Name", tag.Name);
+
+            if (!d.ShowDialog())
+                return;
+
+            tag.Name = d.GetStringField("name");
+
+            updatePatternsList();
         }
 
-        public Rectangle BoundingBox()
+        private void generatePaaternToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var minx = Points.Min(z => z.X);
-            var miny = Points.Min(z => z.Y);
-            var maxx = Points.Max(z => z.X);
-            var maxy = Points.Max(z => z.Y);
-            return new Rectangle(minx, miny, maxx - minx + 1, maxy - miny + 1);
+
         }
 
-        public Bitmap ToBitmap()
+        private void ditToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var bb = BoundingBox();
-            Bitmap bmp = new Bitmap(bb.Width, bb.Height);
-            var gr = Graphics.FromImage(bmp);
-            gr.Clear(Color.White);
-            foreach (var item in Points)
-            {
-                bmp.SetPixel(item.X - bb.Left, item.Y - bb.Top, Color.Black);
-            }
+            if (listView1.SelectedItems.Count == 0)
+                return;
 
-            return bmp;
+            var tag = listView1.SelectedItems[0].Tag as PatternMatchingImage;
+            if (listView2.SelectedItems.Count == 0)
+                return;
+
+            var tag2 = listView2.SelectedItems[0].Tag as PatternMatchingImageItem;
+
+            var d = AutoDialog.DialogHelpers.StartDialog();
+            d.AddStringField("name", "Name", tag2.Name);
+            d.AddOptionsField("mode", "Mode", Enum.GetNames(typeof(PatternMatchingMode)), tag2.Mode.ToString());
+
+            if (!d.ShowDialog())
+                return;
+
+            tag2.Name = d.GetStringField("name");
+            tag2.Mode = (PatternMatchingMode)Enum.Parse(typeof(PatternMatchingMode), d.GetOptionsField("mode"));
+
+            updateSecondList(tag);
         }
-
-        public bool IsEqual(ConnectedComponent cc)
-        {
-            if (Points.Count != cc.Points.Count) return false;
-            HashSet<string> ss = new HashSet<string>();
-            foreach (var item in Points)
-            {
-                ss.Add(item.X + ";" + item.Y);
-            }
-            if (ss.Count != Points.Count)
-            {
-                //error. count mismatch
-            }
-            foreach (var item in cc.Points)
-            {
-                if (ss.Add(item.X + ";" + item.Y))
-                {
-                    return false;
-                }
-            }
-            return true;
-        }
-
-        public List<Point> Points = new List<Point>();
     }
 }
 

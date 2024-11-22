@@ -41,41 +41,43 @@ namespace AutoUI
             this.deleteToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.listView1 = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.addPatternToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.updateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.newFromClipboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.generatePaaternToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fromFontToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.pictureBox1 = new AutoUI.PictureBoxWithInterpolationMode();
-            this.propertyGrid1 = new System.Windows.Forms.PropertyGrid();
             this.fromScreenshotToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.addPatternToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.newFromClipboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ditToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pictureBox1 = new AutoUI.PictureBoxWithInterpolationMode();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.tableLayoutPanel1.SuspendLayout();
             this.contextMenuStrip2.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
             // 
-            this.tableLayoutPanel1.ColumnCount = 3;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 250F));
+            this.tableLayoutPanel1.ColumnCount = 2;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Controls.Add(this.listView2, 1, 1);
-            this.tableLayoutPanel1.Controls.Add(this.listView1, 1, 0);
-            this.tableLayoutPanel1.Controls.Add(this.pictureBox1, 2, 0);
-            this.tableLayoutPanel1.Controls.Add(this.propertyGrid1, 0, 0);
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.Controls.Add(this.listView2, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.listView1, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.pictureBox1, 1, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(800, 450);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(800, 428);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // listView2
@@ -88,27 +90,39 @@ namespace AutoUI
             this.listView2.FullRowSelect = true;
             this.listView2.GridLines = true;
             this.listView2.HideSelection = false;
-            this.listView2.Location = new System.Drawing.Point(253, 228);
+            this.listView2.Location = new System.Drawing.Point(3, 217);
             this.listView2.Name = "listView2";
-            this.listView2.Size = new System.Drawing.Size(269, 219);
+            this.listView2.Size = new System.Drawing.Size(394, 208);
             this.listView2.TabIndex = 1;
             this.listView2.UseCompatibleStateImageBehavior = false;
             this.listView2.View = System.Windows.Forms.View.Details;
             this.listView2.SelectedIndexChanged += new System.EventHandler(this.listView2_SelectedIndexChanged);
             // 
+            // columnHeader3
+            // 
+            this.columnHeader3.Text = "Name";
+            this.columnHeader3.Width = 120;
+            // 
+            // columnHeader4
+            // 
+            this.columnHeader4.Text = "Mode";
+            this.columnHeader4.Width = 120;
+            // 
             // contextMenuStrip2
             // 
             this.contextMenuStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.addItemToolStripMenuItem,
+            this.ditToolStripMenuItem,
             this.deleteToolStripMenuItem1});
             this.contextMenuStrip2.Name = "contextMenuStrip2";
-            this.contextMenuStrip2.Size = new System.Drawing.Size(122, 48);
+            this.contextMenuStrip2.Size = new System.Drawing.Size(122, 70);
             // 
             // addItemToolStripMenuItem
             // 
             this.addItemToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fromFileToolStripMenuItem,
             this.fromClipboardToolStripMenuItem});
+            this.addItemToolStripMenuItem.Image = global::AutoUI.Properties.Resources.plus;
             this.addItemToolStripMenuItem.Name = "addItemToolStripMenuItem";
             this.addItemToolStripMenuItem.Size = new System.Drawing.Size(121, 22);
             this.addItemToolStripMenuItem.Text = "add item";
@@ -130,6 +144,7 @@ namespace AutoUI
             // 
             // deleteToolStripMenuItem1
             // 
+            this.deleteToolStripMenuItem1.Image = global::AutoUI.Properties.Resources.cross;
             this.deleteToolStripMenuItem1.Name = "deleteToolStripMenuItem1";
             this.deleteToolStripMenuItem1.Size = new System.Drawing.Size(121, 22);
             this.deleteToolStripMenuItem1.Text = "delete";
@@ -138,59 +153,44 @@ namespace AutoUI
             // listView1
             // 
             this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader1,
-            this.columnHeader2});
+            this.columnHeader1});
             this.listView1.ContextMenuStrip = this.contextMenuStrip1;
             this.listView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listView1.FullRowSelect = true;
             this.listView1.GridLines = true;
             this.listView1.HideSelection = false;
-            this.listView1.Location = new System.Drawing.Point(253, 3);
+            this.listView1.Location = new System.Drawing.Point(3, 3);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(269, 219);
+            this.listView1.Size = new System.Drawing.Size(394, 208);
             this.listView1.TabIndex = 0;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
             this.listView1.SelectedIndexChanged += new System.EventHandler(this.listView1_SelectedIndexChanged);
             // 
+            // columnHeader1
+            // 
+            this.columnHeader1.Text = "Name";
+            this.columnHeader1.Width = 350;
+            // 
             // contextMenuStrip1
             // 
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.addPatternToolStripMenuItem,
+            this.editToolStripMenuItem,
             this.deleteToolStripMenuItem,
+            this.toolStripSeparator1,
             this.updateToolStripMenuItem,
             this.newFromClipboardToolStripMenuItem,
             this.generatePaaternToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(179, 114);
-            // 
-            // addPatternToolStripMenuItem
-            // 
-            this.addPatternToolStripMenuItem.Name = "addPatternToolStripMenuItem";
-            this.addPatternToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
-            this.addPatternToolStripMenuItem.Text = "add pattern";
-            this.addPatternToolStripMenuItem.Click += new System.EventHandler(this.addPatternToolStripMenuItem_Click);
-            // 
-            // deleteToolStripMenuItem
-            // 
-            this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
-            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
-            this.deleteToolStripMenuItem.Text = "delete";
-            this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(179, 142);
             // 
             // updateToolStripMenuItem
             // 
             this.updateToolStripMenuItem.Name = "updateToolStripMenuItem";
             this.updateToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
-            this.updateToolStripMenuItem.Text = "update";
+            this.updateToolStripMenuItem.Text = "update list";
             this.updateToolStripMenuItem.Click += new System.EventHandler(this.updateToolStripMenuItem_Click);
-            // 
-            // newFromClipboardToolStripMenuItem
-            // 
-            this.newFromClipboardToolStripMenuItem.Name = "newFromClipboardToolStripMenuItem";
-            this.newFromClipboardToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
-            this.newFromClipboardToolStripMenuItem.Text = "new from clipboard";
-            this.newFromClipboardToolStripMenuItem.Click += new System.EventHandler(this.newFromClipboardToolStripMenuItem_Click);
             // 
             // generatePaaternToolStripMenuItem
             // 
@@ -200,44 +200,96 @@ namespace AutoUI
             this.generatePaaternToolStripMenuItem.Name = "generatePaaternToolStripMenuItem";
             this.generatePaaternToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
             this.generatePaaternToolStripMenuItem.Text = "generate pattern";
+            this.generatePaaternToolStripMenuItem.Click += new System.EventHandler(this.generatePaaternToolStripMenuItem_Click);
             // 
             // fromFontToolStripMenuItem
             // 
             this.fromFontToolStripMenuItem.Name = "fromFontToolStripMenuItem";
-            this.fromFontToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.fromFontToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
             this.fromFontToolStripMenuItem.Text = "from font";
             this.fromFontToolStripMenuItem.Click += new System.EventHandler(this.fromFontToolStripMenuItem_Click);
+            // 
+            // fromScreenshotToolStripMenuItem
+            // 
+            this.fromScreenshotToolStripMenuItem.Name = "fromScreenshotToolStripMenuItem";
+            this.fromScreenshotToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.fromScreenshotToolStripMenuItem.Text = "from screenshot";
+            this.fromScreenshotToolStripMenuItem.Click += new System.EventHandler(this.fromScreenshotToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(175, 6);
+            // 
+            // addPatternToolStripMenuItem
+            // 
+            this.addPatternToolStripMenuItem.Image = global::AutoUI.Properties.Resources.plus;
+            this.addPatternToolStripMenuItem.Name = "addPatternToolStripMenuItem";
+            this.addPatternToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            this.addPatternToolStripMenuItem.Text = "add pattern";
+            this.addPatternToolStripMenuItem.Click += new System.EventHandler(this.addPatternToolStripMenuItem_Click);
+            // 
+            // editToolStripMenuItem
+            // 
+            this.editToolStripMenuItem.Image = global::AutoUI.Properties.Resources.pencil;
+            this.editToolStripMenuItem.Name = "editToolStripMenuItem";
+            this.editToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            this.editToolStripMenuItem.Text = "edit";
+            this.editToolStripMenuItem.Click += new System.EventHandler(this.editToolStripMenuItem_Click);
+            // 
+            // deleteToolStripMenuItem
+            // 
+            this.deleteToolStripMenuItem.Image = global::AutoUI.Properties.Resources.cross;
+            this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
+            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            this.deleteToolStripMenuItem.Text = "delete";
+            this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
+            // 
+            // newFromClipboardToolStripMenuItem
+            // 
+            this.newFromClipboardToolStripMenuItem.Image = global::AutoUI.Properties.Resources.plus_white;
+            this.newFromClipboardToolStripMenuItem.Name = "newFromClipboardToolStripMenuItem";
+            this.newFromClipboardToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            this.newFromClipboardToolStripMenuItem.Text = "new from clipboard";
+            this.newFromClipboardToolStripMenuItem.Click += new System.EventHandler(this.newFromClipboardToolStripMenuItem_Click);
+            // 
+            // ditToolStripMenuItem
+            // 
+            this.ditToolStripMenuItem.Image = global::AutoUI.Properties.Resources.pencil;
+            this.ditToolStripMenuItem.Name = "ditToolStripMenuItem";
+            this.ditToolStripMenuItem.Size = new System.Drawing.Size(121, 22);
+            this.ditToolStripMenuItem.Text = "edit";
+            this.ditToolStripMenuItem.Click += new System.EventHandler(this.ditToolStripMenuItem_Click);
             // 
             // pictureBox1
             // 
             this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pictureBox1.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.Default;
-            this.pictureBox1.Location = new System.Drawing.Point(528, 3);
+            this.pictureBox1.Location = new System.Drawing.Point(403, 3);
             this.pictureBox1.Name = "pictureBox1";
             this.tableLayoutPanel1.SetRowSpan(this.pictureBox1, 2);
-            this.pictureBox1.Size = new System.Drawing.Size(269, 444);
+            this.pictureBox1.Size = new System.Drawing.Size(394, 422);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 2;
             this.pictureBox1.TabStop = false;
             this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
             // 
-            // propertyGrid1
+            // statusStrip1
             // 
-            this.propertyGrid1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.propertyGrid1.HelpVisible = false;
-            this.propertyGrid1.Location = new System.Drawing.Point(3, 3);
-            this.propertyGrid1.Name = "propertyGrid1";
-            this.tableLayoutPanel1.SetRowSpan(this.propertyGrid1, 2);
-            this.propertyGrid1.Size = new System.Drawing.Size(244, 444);
-            this.propertyGrid1.TabIndex = 3;
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripStatusLabel1});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 428);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(800, 22);
+            this.statusStrip1.TabIndex = 2;
+            this.statusStrip1.Text = "statusStrip1";
             // 
-            // fromScreenshotToolStripMenuItem
+            // toolStripStatusLabel1
             // 
-            this.fromScreenshotToolStripMenuItem.Name = "fromScreenshotToolStripMenuItem";
-            this.fromScreenshotToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.fromScreenshotToolStripMenuItem.Text = "from screenshot";
-            this.fromScreenshotToolStripMenuItem.Click += new System.EventHandler(this.fromScreenshotToolStripMenuItem_Click);
+            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(13, 17);
+            this.toolStripStatusLabel1.Text = "..";
             // 
             // PatternsEditor
             // 
@@ -245,13 +297,17 @@ namespace AutoUI
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.tableLayoutPanel1);
+            this.Controls.Add(this.statusStrip1);
             this.Name = "PatternsEditor";
-            this.Text = "PatternsEditor";
+            this.Text = "Patterns editor";
             this.tableLayoutPanel1.ResumeLayout(false);
             this.contextMenuStrip2.ResumeLayout(false);
             this.contextMenuStrip1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -260,7 +316,6 @@ namespace AutoUI
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.ListView listView1;
         private System.Windows.Forms.ColumnHeader columnHeader1;
-        private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.ListView listView2;
         private System.Windows.Forms.ColumnHeader columnHeader3;
         private System.Windows.Forms.ColumnHeader columnHeader4;
@@ -273,11 +328,15 @@ namespace AutoUI
         private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem fromFileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem fromClipboardToolStripMenuItem;
-        private System.Windows.Forms.PropertyGrid propertyGrid1;
         private System.Windows.Forms.ToolStripMenuItem updateToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem newFromClipboardToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem generatePaaternToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem fromFontToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem fromScreenshotToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem ditToolStripMenuItem;
+        private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
     }
 }
