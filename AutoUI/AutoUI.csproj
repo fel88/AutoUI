@@ -105,10 +105,12 @@
     <Compile Include="SearchDebug.Designer.cs">
       <DependentUpon>SearchDebug.cs</DependentUpon>
     </Compile>
+    <Compile Include="TestItemEditorAttribute.cs" />
     <Compile Include="TestItems\AutoTest.cs" />
     <Compile Include="TestItems\AutoTestItem.cs" />
     <Compile Include="TestItems\AutoTestRunContext.cs" />
     <Compile Include="TestItems\ClickAutoTestItem.cs" />
+    <Compile Include="TestItems\CodeSection.cs" />
     <Compile Include="TestItems\CompilingTestItem.cs" />
     <Compile Include="TestItems\CursorPositionTestItem.cs" />
     <Compile Include="TestItems\DelayAutoTestItem.cs" />
@@ -154,9 +156,17 @@
     <Compile Include="TestItems\ProcessTerminateTestItem.cs" />
     <Compile Include="TestItems\ScreenshotTestItem.cs" />
     <Compile Include="TestItems\SearchByPatternImage.cs" />
+    <Compile Include="TestItems\TestFailedbehaviour.cs" />
+    <Compile Include="TestItems\TestStateEnum.cs" />
     <Compile Include="TestItems\WaitPatternImage.cs" />
     <Compile Include="TestSet.cs" />
     <Compile Include="UIHelpers.cs" />
+    <Compile Include="VariablesEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="VariablesEditor.Designer.cs">
+      <DependentUpon>VariablesEditor.cs</DependentUpon>
+    </Compile>
     <Compile Include="XmlParseAttribute.cs" />
     <EmbeddedResource Include="AboutBox1.resx">
       <DependentUpon>AboutBox1.cs</DependentUpon>
@@ -204,6 +214,9 @@
     <EmbeddedResource Include="TestItems\Editors\WaitPatternEditor.resx">
       <DependentUpon>WaitPatternEditor.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="VariablesEditor.resx">
+      <DependentUpon>VariablesEditor.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -228,7 +241,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AutoDialog">
-      <Version>1.0.0.4</Version>
+      <Version>1.0.0.7</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

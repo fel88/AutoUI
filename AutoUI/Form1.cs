@@ -1,4 +1,5 @@
-﻿using AutoUI.TestItems;
+﻿using AutoDialog.Extensions;
+using AutoUI.TestItems;
 using AutoUI.TestItems.Editors;
 using System;
 using System.ComponentModel;
@@ -98,7 +99,7 @@ namespace AutoUI
         {
             if (listView1.SelectedItems.Count == 0) return;
             currentItem = listView1.SelectedItems[0].Tag as AutoTestItem;
-            propertyGrid1.SelectedObject = currentItem;
+            
             //pictureBox1.Image = null;
             if (currentItem.GetType().GetCustomAttribute(typeof(TestItemEditorAttribute)) != null)
             {
@@ -331,7 +332,7 @@ namespace AutoUI
         {
             if (listView1.SelectedItems.Count == 0) return;
             currentItem = listView1.SelectedItems[0].Tag as AutoTestItem;
-            propertyGrid1.SelectedObject = currentItem;
+            
             if (currentItem is SearchByPatternImage b)
             {
                 PatternSelector s = new PatternSelector();
@@ -402,45 +403,7 @@ namespace AutoUI
             UpdateTestItemsList();
         }
 
-        private void listView2_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void listView2_MouseDoubleClick(object sender, MouseEventArgs e)
-        {
-            if (listView2.SelectedItems.Count == 0) return;
-            if (listView2.SelectedIndices[0] == 1)
-            {
-                if (currentCodeSection != test.Finalizer && Helpers.Question("switch to finalizer?", ParentForm.Text))
-                {
-                    currentCodeSection = test.Finalizer;
-                    listView2.Items[1].BackColor = Color.LightGreen;
-                    listView2.Items[0].BackColor = Color.White;
-                    UpdateTestItemsList();
-                }
-            }
-            else if (listView2.SelectedIndices[0] == 0)
-            {
-                if (currentCodeSection != test.Main && Helpers.Question("switch to main?", ParentForm.Text))
-                {
-                    currentCodeSection = test.Main;
-                    listView2.Items[0].BackColor = Color.LightGreen;
-                    listView2.Items[1].BackColor = Color.White;
-                    UpdateTestItemsList();
-                }
-            }
-            else if (listView2.SelectedIndices[0] == 2)
-            {
-                if (currentCodeSection != test.Emitter && Helpers.Question("switch to emitter?", ParentForm.Text))
-                {
-                    currentCodeSection = test.Emitter;
-                    listView2.Items[0].BackColor = Color.LightGreen;
-                    listView2.Items[1].BackColor = Color.White;
-                    UpdateTestItemsList();
-                }
-            }
-        }
+    
 
         private void topToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -505,54 +468,42 @@ namespace AutoUI
             if (listView1.SelectedItems.Count != 1)
                 return;
 
-            var d = AutoDialog.DialogHelpers.StartDialog();
+            
             var ati = listView1.SelectedItems[0].Tag as AutoTestItem;
-
-            foreach (var pitem in ati.GetType().GetProperties())
-            {
-                if (pitem.SetMethod == null)
-                    continue;
-
-                if (pitem.PropertyType == typeof(bool))
-                {
-                    d.AddBoolField(pitem.Name, pitem.Name, (bool)pitem.GetValue(ati));
-                }
-                if (pitem.PropertyType == typeof(string))
-                {
-                    d.AddStringField(pitem.Name, pitem.Name, (string)pitem.GetValue(ati));
-                }
-                if (pitem.PropertyType == typeof(int))
-                {
-                    d.AddNumericField(pitem.Name, pitem.Name, (int)pitem.GetValue(ati),decimalPlaces:0);
-                }
-
-            }
-
-            if (!d.ShowDialog())
-                return;
-
-            foreach (var pitem in ati.GetType().GetProperties())
-            {
-                if (pitem.SetMethod == null)
-                    continue;
-
-                if (pitem.PropertyType == typeof(bool))
-                {
-                    pitem.SetValue(ati, d.GetBoolField(pitem.Name));
-                }
-                if (pitem.PropertyType == typeof(string))
-                {
-                    pitem.SetValue(ati, d.GetStringField(pitem.Name));
-                }
-                if (pitem.PropertyType == typeof(int))
-                {
-                    pitem.SetValue(ati, d.GetIntegerNumericField(pitem.Name));
-                }
-            }
-
+            ati.EditWithAutoDialog();            
 
             UpdateTestItemsList();
 
+        }
+
+        private void mainToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (currentCodeSection != test.Main && Helpers.Question("switch to main?", ParentForm.Text))
+            {
+                currentCodeSection = test.Main;
+                sectionToolStripStatusLabel.Text = "main";
+                UpdateTestItemsList();
+            }
+        }
+
+        private void finalizerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (currentCodeSection != test.Finalizer && Helpers.Question("switch to finalizer?", ParentForm.Text))
+            {
+                currentCodeSection = test.Finalizer;
+                sectionToolStripStatusLabel.Text = "finalizer";                
+                UpdateTestItemsList();
+            }
+        }
+
+        private void emitterToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (currentCodeSection != test.Emitter && Helpers.Question("switch to emitter?", ParentForm.Text))
+            {
+                currentCodeSection = test.Emitter;
+                sectionToolStripStatusLabel.Text = "emitter";
+                UpdateTestItemsList();
+            }
         }
     }
 }

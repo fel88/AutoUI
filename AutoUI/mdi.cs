@@ -116,5 +116,20 @@ namespace AutoUI
             f.MdiParent = this;
             f.Show();
         }
+
+        private void newToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            set = new TestSet();
+            
+            foreach (var item in MdiChildren)
+            {
+                item.Close();
+            }
+
+            EnvironmentEditor f = new EnvironmentEditor();
+            f.Init(set);
+            f.MdiParent = this;
+            f.Show();
+        }
     }    
 }

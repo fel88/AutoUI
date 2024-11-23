@@ -1,4 +1,5 @@
-﻿using AutoUI.TestItems;
+﻿using AutoDialog;
+using AutoUI.TestItems;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -43,7 +44,8 @@ namespace AutoUI
 
         private void editSelected()
         {
-            if (listView1.SelectedItems.Count == 0) return;
+            if (listView1.SelectedItems.Count == 0)
+                return;
 
             var test = listView1.SelectedItems[0].Tag as AutoTest;
             Form1 f = new Form1();
@@ -140,28 +142,19 @@ namespace AutoUI
 
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (listView1.SelectedItems.Count == 0)
-            {
-
-                listView3.Items.Clear();
+            if (listView1.SelectedItems.Count == 0) 
                 return;
 
-            }
             var test = listView1.SelectedItems[0].Tag as AutoTest;
-            propertyGrid1.SelectedObject = listView1.SelectedItems[0].Tag;
+
             if (test.lastContext != null && test.lastContext.WrongState != null)
             {
-                label1.Text = "wrong state: " + test.lastContext.WrongState.Id + "  " + test.lastContext.WrongState.GetType().Name;
+                toolStripStatusLabel1.Text = $"wrong state: {test.lastContext.WrongState.Id}  {test.lastContext.WrongState.GetType().Name}";
             }
             if (test.lastContext != null)
                 updateSubTestList(test.lastContext);
 
-            listView3.Items.Clear();
-            foreach (var item in test.Data)
-            {
-                listView3.Items.Add(new ListViewItem(new string[] { item.Key, item.Value.ToString() }) { Tag = item });
-            }
-            listView3.Tag = test;
+           
         }
 
         private void updateSubTestList(AutoTestRunContext lastContext)
@@ -191,23 +184,12 @@ namespace AutoUI
         }
 
         private void listView2_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (listView2.SelectedItems.Count == 0)
-            {
-                listView3.Items.Clear();
-                return;
-            }
+        {        
             var et = listView2.SelectedItems[0].Tag as EmittedSubTest;
             if (et.lastContext != null && et.lastContext.WrongState != null)
             {
-                label1.Text = "wrong state: " + et.lastContext.WrongState.Id + "  " + et.lastContext.WrongState.GetType().Name;
-            }
-            listView3.Items.Clear();
-            foreach (var item in et.Data)
-            {
-                listView3.Items.Add(new ListViewItem(new string[] { item.Key, item.Value.ToString() }) { Tag = item });
-            }
-            listView3.Tag = et;
+                toolStripStatusLabel1.Text = $"wrong state: {et.lastContext.WrongState.Id}  {et.lastContext.WrongState.GetType().Name}";
+            }           
         }
 
         private void exportReportToolStripMenuItem_Click(object sender, EventArgs e)
@@ -238,79 +220,66 @@ namespace AutoUI
 
         private void addKeyvaleToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var test = listView3.Tag as AutoTest;
-            KeyValueDialog kvd = new KeyValueDialog();
-            if (kvd.ShowDialog() == DialogResult.OK)
-            {
-                test.Data.Add(kvd.Key, kvd.Value);
-            }
-            //update lv3
-            updateKeyValueList();
+            
         }
-        void updateKeyValueList()
-        {
-            if (listView3.Tag is AutoTest test)
-            {
-                listView3.Items.Clear();
-                foreach (var item in test.Data)
-                {
-                    listView3.Items.Add(new ListViewItem(new string[] { item.Key, item.Value.ToString() }) { Tag = item });
-                }
-            }
-        }
+        
 
         private void contextMenuStrip3_Opening(object sender, CancelEventArgs e)
         {
-            if (!(listView3.Tag is AutoTest))
-                e.Cancel = true;
+           
         }
 
         private void deleteToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            if (listView3.SelectedItems.Count == 0) return;
-            var p = (KeyValuePair<string, object>)listView3.SelectedItems[0].Tag;
-            var test = listView3.Tag as AutoTest;
-            test.Data.Remove(p.Key);
-            updateKeyValueList();
+            
         }
 
         private void listView3_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            if (listView3.SelectedItems.Count > 0)
-            {
-                var tag = listView3.SelectedItems[0].Tag;
-                if (tag is KeyValuePair<string, object> s1)
-                {
-                    if (s1.Value is Bitmap b)
-                    {
-                        b.Save("temp1.png");
-                        Process.Start("temp1.png");
-                    }
-                }
-            }
-
-
-            if (listView3.Tag is AutoTest test)
-            {
-                var pair = (KeyValuePair<string, object>)listView3.SelectedItems[0].Tag;
-                KeyValueDialog kvd = new KeyValueDialog();
-                kvd.Init(pair);
-                if (kvd.ShowDialog() == DialogResult.OK)
-                {
-                    test.Data[pair.Key] = kvd.Value;
-                    updateKeyValueList();
-                }
-            }
-            if (listView3.Tag is EmittedSubTest esub)
-            {
-                if (listView3.SelectedItems.Count == 0) return;
-                var tag = listView3.SelectedItems[0].Tag;
-            }
+            
         }
 
         private void listView3_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void paramsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (listView1.SelectedItems.Count == 0)
+                return;
+
+            var test = listView1.SelectedItems[0].Tag as AutoTest;
+            var d = DialogHelpers.StartDialog();
+
+            d.AddStringField("name", "Name", test.Name);
+            d.AddBoolField("emitter", "Use emitter", test.UseEmitter);
+            d.AddEnumField("faction", "Failed action", test.FailedAction);
+
+            if (!d.ShowDialog())
+                return;
+
+            test.Name = d.GetStringField("name");
+            test.UseEmitter = d.GetBoolField("emitter");
+            test.FailedAction = d.GetEnumField<TestFailedbehaviour>("faction");
+
+            UpdateTestsList();
+        }
+
+        private void toolStripButton2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void variablesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (listView1.SelectedItems.Count == 0)
+                return;
+
+            var test = listView1.SelectedItems[0].Tag as AutoTest;
+            VariablesEditor ve = new VariablesEditor();
+            ve.Init(test);
+            ve.ShowDialog();
         }
     }
 }

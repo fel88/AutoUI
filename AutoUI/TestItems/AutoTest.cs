@@ -108,18 +108,4 @@ namespace AutoUI.TestItems
                 Id = int.Parse(titem.Attribute("id").Value);
         }
     }
-
-    public enum TestStateEnum
-    {
-        NotStarted, Failed, Success, Emitter
-    }
-
-    public enum TestFailedbehaviour
-    {
-        Terminate, Ignore
-    }
-    public class CodeSection
-    {
-        public List<AutoTestItem> Items = new List<AutoTestItem>();
-    }
 }
