@@ -13,7 +13,7 @@ namespace AutoUI.TestItems
 
         public Dictionary<string, object> Data = new Dictionary<string, object>();
         public TestFailedbehaviour FailedAction { get; set; }
-        
+
         public AutoTest(TestSet parent)
         {
             Parent = parent;
@@ -34,7 +34,7 @@ namespace AutoUI.TestItems
         {
             CodeSection main = Main;
             if (UseEmitter)
-        {
+            {
                 main = Emitter;
                 State = TestStateEnum.Emitter;
             }
@@ -68,7 +68,7 @@ namespace AutoUI.TestItems
                 {
                     if (FailedAction == TestFailedbehaviour.Terminate)
                     {
-                    ctx.Finished = true;
+                        ctx.Finished = true;
                     }
                     ctx.WrongState = main.Items[ctx.CodePointer];
                     State = TestStateEnum.Failed;
@@ -96,8 +96,6 @@ namespace AutoUI.TestItems
             }
             return ctx;
         }
-
-
 
         public TestStateEnum State;
 

@@ -58,12 +58,6 @@
     </Compile>
     <Compile Include="ConnectedComponent.cs" />
     <Compile Include="DrawingContext.cs" />
-    <Compile Include="EnvironmentEditor.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="EnvironmentEditor.Designer.cs">
-      <DependentUpon>EnvironmentEditor.cs</DependentUpon>
-    </Compile>
     <Compile Include="FontMatcher.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -170,9 +164,6 @@
     <Compile Include="XmlParseAttribute.cs" />
     <EmbeddedResource Include="AboutBox1.resx">
       <DependentUpon>AboutBox1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="EnvironmentEditor.resx">
-      <DependentUpon>EnvironmentEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FontMatcher.resx">
       <DependentUpon>FontMatcher.cs</DependentUpon>

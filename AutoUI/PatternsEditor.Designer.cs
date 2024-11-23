@@ -35,31 +35,31 @@ namespace AutoUI
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.contextMenuStrip2 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.addItemToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.fromFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.fromClipboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.deleteToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.listView1 = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.updateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.generatePaaternToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fromFontToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fromScreenshotToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.addItemToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.fromFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.fromClipboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ditToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.deleteToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.addPatternToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newFromClipboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.ditToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pictureBox1 = new AutoUI.PictureBoxWithInterpolationMode();
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.tableLayoutPanel1.SuspendLayout();
             this.contextMenuStrip2.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.statusStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -117,39 +117,6 @@ namespace AutoUI
             this.contextMenuStrip2.Name = "contextMenuStrip2";
             this.contextMenuStrip2.Size = new System.Drawing.Size(122, 70);
             // 
-            // addItemToolStripMenuItem
-            // 
-            this.addItemToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fromFileToolStripMenuItem,
-            this.fromClipboardToolStripMenuItem});
-            this.addItemToolStripMenuItem.Image = global::AutoUI.Properties.Resources.plus;
-            this.addItemToolStripMenuItem.Name = "addItemToolStripMenuItem";
-            this.addItemToolStripMenuItem.Size = new System.Drawing.Size(121, 22);
-            this.addItemToolStripMenuItem.Text = "add item";
-            this.addItemToolStripMenuItem.Click += new System.EventHandler(this.addItemToolStripMenuItem_Click);
-            // 
-            // fromFileToolStripMenuItem
-            // 
-            this.fromFileToolStripMenuItem.Name = "fromFileToolStripMenuItem";
-            this.fromFileToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
-            this.fromFileToolStripMenuItem.Text = "from file";
-            this.fromFileToolStripMenuItem.Click += new System.EventHandler(this.fromFileToolStripMenuItem_Click);
-            // 
-            // fromClipboardToolStripMenuItem
-            // 
-            this.fromClipboardToolStripMenuItem.Name = "fromClipboardToolStripMenuItem";
-            this.fromClipboardToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
-            this.fromClipboardToolStripMenuItem.Text = "from clipboard";
-            this.fromClipboardToolStripMenuItem.Click += new System.EventHandler(this.fromClipboardToolStripMenuItem_Click);
-            // 
-            // deleteToolStripMenuItem1
-            // 
-            this.deleteToolStripMenuItem1.Image = global::AutoUI.Properties.Resources.cross;
-            this.deleteToolStripMenuItem1.Name = "deleteToolStripMenuItem1";
-            this.deleteToolStripMenuItem1.Size = new System.Drawing.Size(121, 22);
-            this.deleteToolStripMenuItem1.Text = "delete";
-            this.deleteToolStripMenuItem1.Click += new System.EventHandler(this.deleteToolStripMenuItem1_Click);
-            // 
             // listView1
             // 
             this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
@@ -185,6 +152,11 @@ namespace AutoUI
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(179, 142);
             // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(175, 6);
+            // 
             // updateToolStripMenuItem
             // 
             this.updateToolStripMenuItem.Name = "updateToolStripMenuItem";
@@ -216,10 +188,62 @@ namespace AutoUI
             this.fromScreenshotToolStripMenuItem.Text = "from screenshot";
             this.fromScreenshotToolStripMenuItem.Click += new System.EventHandler(this.fromScreenshotToolStripMenuItem_Click);
             // 
-            // toolStripSeparator1
+            // statusStrip1
             // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(175, 6);
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripStatusLabel1});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 428);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(800, 22);
+            this.statusStrip1.TabIndex = 2;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // toolStripStatusLabel1
+            // 
+            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(13, 17);
+            this.toolStripStatusLabel1.Text = "..";
+            // 
+            // addItemToolStripMenuItem
+            // 
+            this.addItemToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fromFileToolStripMenuItem,
+            this.fromClipboardToolStripMenuItem});
+            this.addItemToolStripMenuItem.Image = global::AutoUI.Properties.Resources.plus;
+            this.addItemToolStripMenuItem.Name = "addItemToolStripMenuItem";
+            this.addItemToolStripMenuItem.Size = new System.Drawing.Size(121, 22);
+            this.addItemToolStripMenuItem.Text = "add item";
+            this.addItemToolStripMenuItem.Click += new System.EventHandler(this.addItemToolStripMenuItem_Click);
+            // 
+            // fromFileToolStripMenuItem
+            // 
+            this.fromFileToolStripMenuItem.Name = "fromFileToolStripMenuItem";
+            this.fromFileToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
+            this.fromFileToolStripMenuItem.Text = "from file";
+            this.fromFileToolStripMenuItem.Click += new System.EventHandler(this.fromFileToolStripMenuItem_Click);
+            // 
+            // fromClipboardToolStripMenuItem
+            // 
+            this.fromClipboardToolStripMenuItem.Name = "fromClipboardToolStripMenuItem";
+            this.fromClipboardToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
+            this.fromClipboardToolStripMenuItem.Text = "from clipboard";
+            this.fromClipboardToolStripMenuItem.Click += new System.EventHandler(this.fromClipboardToolStripMenuItem_Click);
+            // 
+            // ditToolStripMenuItem
+            // 
+            this.ditToolStripMenuItem.Image = global::AutoUI.Properties.Resources.pencil;
+            this.ditToolStripMenuItem.Name = "ditToolStripMenuItem";
+            this.ditToolStripMenuItem.Size = new System.Drawing.Size(121, 22);
+            this.ditToolStripMenuItem.Text = "edit";
+            this.ditToolStripMenuItem.Click += new System.EventHandler(this.ditToolStripMenuItem_Click);
+            // 
+            // deleteToolStripMenuItem1
+            // 
+            this.deleteToolStripMenuItem1.Image = global::AutoUI.Properties.Resources.cross;
+            this.deleteToolStripMenuItem1.Name = "deleteToolStripMenuItem1";
+            this.deleteToolStripMenuItem1.Size = new System.Drawing.Size(121, 22);
+            this.deleteToolStripMenuItem1.Text = "delete";
+            this.deleteToolStripMenuItem1.Click += new System.EventHandler(this.deleteToolStripMenuItem1_Click);
             // 
             // addPatternToolStripMenuItem
             // 
@@ -253,14 +277,6 @@ namespace AutoUI
             this.newFromClipboardToolStripMenuItem.Text = "new from clipboard";
             this.newFromClipboardToolStripMenuItem.Click += new System.EventHandler(this.newFromClipboardToolStripMenuItem_Click);
             // 
-            // ditToolStripMenuItem
-            // 
-            this.ditToolStripMenuItem.Image = global::AutoUI.Properties.Resources.pencil;
-            this.ditToolStripMenuItem.Name = "ditToolStripMenuItem";
-            this.ditToolStripMenuItem.Size = new System.Drawing.Size(121, 22);
-            this.ditToolStripMenuItem.Text = "edit";
-            this.ditToolStripMenuItem.Click += new System.EventHandler(this.ditToolStripMenuItem_Click);
-            // 
             // pictureBox1
             // 
             this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -275,22 +291,6 @@ namespace AutoUI
             this.pictureBox1.TabStop = false;
             this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
             // 
-            // statusStrip1
-            // 
-            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripStatusLabel1});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 428);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(800, 22);
-            this.statusStrip1.TabIndex = 2;
-            this.statusStrip1.Text = "statusStrip1";
-            // 
-            // toolStripStatusLabel1
-            // 
-            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(13, 17);
-            this.toolStripStatusLabel1.Text = "..";
-            // 
             // PatternsEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -299,13 +299,14 @@ namespace AutoUI
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.statusStrip1);
             this.Name = "PatternsEditor";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Patterns editor";
             this.tableLayoutPanel1.ResumeLayout(false);
             this.contextMenuStrip2.ResumeLayout(false);
             this.contextMenuStrip1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
