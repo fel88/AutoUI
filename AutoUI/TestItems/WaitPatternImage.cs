@@ -34,6 +34,9 @@ namespace AutoUI.TestItems
         {
             Stopwatch start = Stopwatch.StartNew();
             Point? ret = null;
+            if (Patterns.Count == 0)
+                return TestItemProcessResultEnum.Success;
+
             while (true)
             {
                 if (start.Elapsed.TotalMilliseconds > Timeout)

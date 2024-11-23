@@ -77,6 +77,7 @@
       <DependentUpon>mdi.cs</DependentUpon>
     </Compile>
     <Compile Include="MessageFilter.cs" />
+    <Compile Include="PatternFindInfo.cs" />
     <Compile Include="PatternMatchingPool.cs" />
     <Compile Include="PatternsEditor.cs">
       <SubType>Form</SubType>
@@ -223,6 +224,19 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="flask.ico" />
+    <None Include="Resources\plus-button.png" />
+    <None Include="Resources\flask--plus.png" />
+    <None Include="Resources\new.png" />
+    <None Include="Resources\gear.png" />
+    <None Include="Resources\key.png" />
+    <None Include="Resources\arrow-circle.png" />
+    <None Include="Resources\spectrum.png" />
+    <None Include="Resources\picture-medium.png" />
+    <None Include="Resources\arrow-stop-090.png" />
+    <None Include="Resources\eraser.png" />
+    <None Include="Resources\control-double.png" />
+    <None Include="Resources\arrow-270.png" />
+    <None Include="Resources\arrow-090.png" />
     <None Include="Resources\plus-white.png" />
     <None Include="Resources\plus.png" />
     <None Include="Resources\cross.png" />

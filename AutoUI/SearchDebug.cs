@@ -21,8 +21,14 @@ namespace AutoUI
         private void PictureBox1_Paint(object sender, PaintEventArgs e)
         {
             e.Graphics.Clear(Color.White);
+
             if (bmp != null)
+            {
+                var k = pictureBox1.Width / (float)bmp.Width;
+                e.Graphics.ResetTransform();
+                e.Graphics.ScaleTransform(k, k);
                 e.Graphics.DrawImage(bmp, 0, 0);
+            }
             foreach (var item in infos)
             {
                 e.Graphics.DrawRectangle(Pens.Red, item.Rect);
@@ -37,6 +43,16 @@ namespace AutoUI
 
         private void button1_Click(object sender, EventArgs e)
         {
+            if (bmp == null)
+            {
+                Helpers.Error("bmp is null");
+                return;
+            }
+            if (pattern == null)
+            {
+                Helpers.Error("pattern is null");
+                return;
+            }
             infos.Clear();
             var sw = Stopwatch.StartNew();
             foreach (var item in pattern.Items)
@@ -104,14 +120,12 @@ namespace AutoUI
         private void setFromClipboardToolStripMenuItem_Click(object sender, EventArgs e)
         {
             bmp = Clipboard.GetImage() as Bitmap;
+
         }
 
         private void pictureBox1_Click(object sender, EventArgs e)
         {
-            Bitmap bmp = new Bitmap(pictureBox1.Width, pictureBox1.Height);
-            pictureBox1.DrawToBitmap(bmp, pictureBox1.ClientRectangle);
-            bmp.Save("temp1.png");
-            Process.Start("temp1.png");
+
         }
 
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
@@ -126,10 +140,35 @@ namespace AutoUI
             pictureBox2.Image = bb;
             pictureBox3.Image = t.Pattern.Bitmap;
         }
-    }
-    public class PatternFindInfo
-    {
-        public PatternMatchingImageItem Pattern;
-        public Rectangle Rect;
+
+        private void grabScreenToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Rectangle bounds = Screen.GetBounds(Point.Empty);
+            Bitmap bitmap = new Bitmap(bounds.Width, bounds.Height);
+
+            using (Graphics g = Graphics.FromImage(bitmap))
+            {
+                g.CopyFromScreen(0, 0, 0, 0, Screen.PrimaryScreen.Bounds.Size);
+            }
+            bmp = bitmap;
+
+
+        }
+
+        private void showToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Bitmap bmp1 = new Bitmap(bmp.Width, bmp.Height);
+            using (var gr = Graphics.FromImage(bmp1))
+            {
+                gr.DrawImageUnscaled(bmp, 0, 0);
+                //pictureBox1.DrawToBitmap(bmp, bmp1.GetBounds();
+                foreach (var item in infos)
+                {
+                    gr.DrawRectangle(Pens.Red, item.Rect);
+                }
+                bmp1.Save("temp1.png");
+                Process.Start("temp1.png");
+            }
+        }
     }
 }

@@ -55,6 +55,7 @@ namespace AutoUI
             this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newFromClipboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pictureBox1 = new AutoUI.PictureBoxWithInterpolationMode();
+            this.grabScreenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tableLayoutPanel1.SuspendLayout();
             this.contextMenuStrip2.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
@@ -148,19 +149,20 @@ namespace AutoUI
             this.toolStripSeparator1,
             this.updateToolStripMenuItem,
             this.newFromClipboardToolStripMenuItem,
-            this.generatePaaternToolStripMenuItem});
+            this.generatePaaternToolStripMenuItem,
+            this.grabScreenToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(179, 142);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(181, 186);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(175, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
             // 
             // updateToolStripMenuItem
             // 
             this.updateToolStripMenuItem.Name = "updateToolStripMenuItem";
-            this.updateToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            this.updateToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.updateToolStripMenuItem.Text = "update list";
             this.updateToolStripMenuItem.Click += new System.EventHandler(this.updateToolStripMenuItem_Click);
             // 
@@ -170,7 +172,7 @@ namespace AutoUI
             this.fromFontToolStripMenuItem,
             this.fromScreenshotToolStripMenuItem});
             this.generatePaaternToolStripMenuItem.Name = "generatePaaternToolStripMenuItem";
-            this.generatePaaternToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            this.generatePaaternToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.generatePaaternToolStripMenuItem.Text = "generate pattern";
             this.generatePaaternToolStripMenuItem.Click += new System.EventHandler(this.generatePaaternToolStripMenuItem_Click);
             // 
@@ -249,7 +251,7 @@ namespace AutoUI
             // 
             this.addPatternToolStripMenuItem.Image = global::AutoUI.Properties.Resources.plus;
             this.addPatternToolStripMenuItem.Name = "addPatternToolStripMenuItem";
-            this.addPatternToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            this.addPatternToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.addPatternToolStripMenuItem.Text = "add pattern";
             this.addPatternToolStripMenuItem.Click += new System.EventHandler(this.addPatternToolStripMenuItem_Click);
             // 
@@ -257,7 +259,7 @@ namespace AutoUI
             // 
             this.editToolStripMenuItem.Image = global::AutoUI.Properties.Resources.pencil;
             this.editToolStripMenuItem.Name = "editToolStripMenuItem";
-            this.editToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            this.editToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.editToolStripMenuItem.Text = "edit";
             this.editToolStripMenuItem.Click += new System.EventHandler(this.editToolStripMenuItem_Click);
             // 
@@ -265,7 +267,7 @@ namespace AutoUI
             // 
             this.deleteToolStripMenuItem.Image = global::AutoUI.Properties.Resources.cross;
             this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
-            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.deleteToolStripMenuItem.Text = "delete";
             this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
             // 
@@ -273,7 +275,7 @@ namespace AutoUI
             // 
             this.newFromClipboardToolStripMenuItem.Image = global::AutoUI.Properties.Resources.plus_white;
             this.newFromClipboardToolStripMenuItem.Name = "newFromClipboardToolStripMenuItem";
-            this.newFromClipboardToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            this.newFromClipboardToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.newFromClipboardToolStripMenuItem.Text = "new from clipboard";
             this.newFromClipboardToolStripMenuItem.Click += new System.EventHandler(this.newFromClipboardToolStripMenuItem_Click);
             // 
@@ -290,6 +292,13 @@ namespace AutoUI
             this.pictureBox1.TabIndex = 2;
             this.pictureBox1.TabStop = false;
             this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
+            // 
+            // grabScreenToolStripMenuItem
+            // 
+            this.grabScreenToolStripMenuItem.Name = "grabScreenToolStripMenuItem";
+            this.grabScreenToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.grabScreenToolStripMenuItem.Text = "grab screen";
+            this.grabScreenToolStripMenuItem.Click += new System.EventHandler(this.grabScreenToolStripMenuItem_Click);
             // 
             // PatternsEditor
             // 
@@ -339,5 +348,6 @@ namespace AutoUI
         private System.Windows.Forms.ToolStripMenuItem ditToolStripMenuItem;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
+        private System.Windows.Forms.ToolStripMenuItem grabScreenToolStripMenuItem;
     }
 }

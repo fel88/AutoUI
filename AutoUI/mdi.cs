@@ -174,24 +174,29 @@ namespace AutoUI
                     if (item.UseEmitter)
                         item.State = TestStateEnum.Emitter;
 
-                    var lvi = getLvi(item);
-                    if (item.State == TestStateEnum.Failed)
+                    listView1.Invoke((Action)(() =>
                     {
-                        lvi.BackColor = Color.Red;
-                        lvi.ForeColor = Color.White;
-                    }
-                    if (item.State == TestStateEnum.Success)
-                    {
-                        lvi.BackColor = Color.LightGreen;
-                        lvi.ForeColor = Color.Black;
-                    }
-                    if (item.State == TestStateEnum.Emitter)
-                    {
-                        lvi.BackColor = Color.Violet;
-                        lvi.ForeColor = Color.White;
-                    }
-                    lvi.SubItems[1].Text = item.State.ToString();
-                    lvi.SubItems[2].Text = DateTime.Now.ToLongTimeString();
+                        var lvi = getLvi(item);
+                        if (item.State == TestStateEnum.Failed)
+                        {
+                            lvi.BackColor = Color.Red;
+                            lvi.ForeColor = Color.White;
+                        }
+                        if (item.State == TestStateEnum.Success)
+                        {
+                            lvi.BackColor = Color.LightGreen;
+                            lvi.ForeColor = Color.Black;
+                        }
+                        if (item.State == TestStateEnum.Emitter)
+                        {
+                            lvi.BackColor = Color.Violet;
+                            lvi.ForeColor = Color.White;
+                        }
+                        lvi.SubItems[1].Text = item.State.ToString();
+                        lvi.SubItems[2].Text = DateTime.Now.ToLongTimeString();
+
+                    }));
+                   
                 }
             });
             th.IsBackground = true;

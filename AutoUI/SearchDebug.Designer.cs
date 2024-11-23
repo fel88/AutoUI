@@ -33,6 +33,7 @@ namespace AutoUI
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.setFromClipboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.grabScreenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
@@ -45,6 +46,7 @@ namespace AutoUI
             this.pictureBox3 = new AutoUI.PictureBoxWithInterpolationMode();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.showToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -69,16 +71,25 @@ namespace AutoUI
             // contextMenuStrip1
             // 
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.setFromClipboardToolStripMenuItem});
+            this.setFromClipboardToolStripMenuItem,
+            this.grabScreenToolStripMenuItem,
+            this.showToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(172, 26);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(181, 92);
             // 
             // setFromClipboardToolStripMenuItem
             // 
             this.setFromClipboardToolStripMenuItem.Name = "setFromClipboardToolStripMenuItem";
-            this.setFromClipboardToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
+            this.setFromClipboardToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.setFromClipboardToolStripMenuItem.Text = "set from clipboard";
             this.setFromClipboardToolStripMenuItem.Click += new System.EventHandler(this.setFromClipboardToolStripMenuItem_Click);
+            // 
+            // grabScreenToolStripMenuItem
+            // 
+            this.grabScreenToolStripMenuItem.Name = "grabScreenToolStripMenuItem";
+            this.grabScreenToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.grabScreenToolStripMenuItem.Text = "grab screen";
+            this.grabScreenToolStripMenuItem.Click += new System.EventHandler(this.grabScreenToolStripMenuItem_Click);
             // 
             // button1
             // 
@@ -188,6 +199,13 @@ namespace AutoUI
             this.panel1.Size = new System.Drawing.Size(294, 395);
             this.panel1.TabIndex = 1;
             // 
+            // showToolStripMenuItem
+            // 
+            this.showToolStripMenuItem.Name = "showToolStripMenuItem";
+            this.showToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.showToolStripMenuItem.Text = "show";
+            this.showToolStripMenuItem.Click += new System.EventHandler(this.showToolStripMenuItem_Click);
+            // 
             // SearchDebug
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -196,6 +214,7 @@ namespace AutoUI
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.statusStrip1);
             this.Name = "SearchDebug";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "SearchDebug";
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.contextMenuStrip1.ResumeLayout(false);
@@ -227,5 +246,7 @@ namespace AutoUI
         private PictureBoxWithInterpolationMode pictureBox3;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.ToolStripMenuItem grabScreenToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem showToolStripMenuItem;
     }
 }

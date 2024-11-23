@@ -27,5 +27,10 @@ namespace AutoUI.TestItems
             th.Start();
             th.Join();
         }
+
+        internal static void Error(string v)
+        {
+            MessageBox.Show(v, "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
     }
 }

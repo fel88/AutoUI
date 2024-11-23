@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -146,10 +147,15 @@ namespace AutoUI
 
         private void newFromClipboardToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (!(Clipboard.GetImage() is Bitmap bmp))
+            {
+                return;
+            }
+
             PatternMatchingImage pp = new PatternMatchingImage();
             Pool.Patterns.Add(pp);
 
-            pp.Items.Add(new PatternMatchingImageItem() { Bitmap = Clipboard.GetImage() as Bitmap });
+            pp.Items.Add(new PatternMatchingImageItem() { Bitmap = bmp });
             updatePatternsList();
         }
 
@@ -349,6 +355,24 @@ namespace AutoUI
             tag2.Mode = (PatternMatchingMode)Enum.Parse(typeof(PatternMatchingMode), d.GetOptionsField("mode"));
 
             updateSecondList(tag);
+        }
+
+        private void grabScreenToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Rectangle bounds = Screen.GetBounds(Point.Empty);
+            Bitmap bitmap = new Bitmap(bounds.Width, bounds.Height);
+
+            using (Graphics g = Graphics.FromImage(bitmap))
+            {
+                g.CopyFromScreen(0, 0, 0, 0, Screen.PrimaryScreen.Bounds.Size);
+            }
+
+            PatternMatchingImage pp = new PatternMatchingImage();
+            Pool.Patterns.Add(pp);
+
+            pp.Items.Add(new PatternMatchingImageItem() { Bitmap = bitmap });
+            updatePatternsList();
+
         }
     }
 }
