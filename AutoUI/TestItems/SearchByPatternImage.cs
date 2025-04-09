@@ -6,6 +6,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Threading;
 using System.Windows.Forms;
 using System.Xml.Linq;
 
@@ -18,6 +19,9 @@ namespace AutoUI.TestItems
         public PatternMatchingImage Pattern;
 
         public bool ClickOnSucceseed { get; set; }
+        public bool DelayEnabled { get; set; }
+
+        public int Delay { get; set; }
 
         public string PatternName { get => Pattern == null ? null : Pattern.Name; }
 
@@ -26,12 +30,21 @@ namespace AutoUI.TestItems
             if (item.Attribute("clickOnSucceseed") != null)
                 ClickOnSucceseed = bool.Parse(item.Attribute("clickOnSucceseed").Value);
 
+            if (item.Attribute("delay") != null)
+                Delay = int.Parse(item.Attribute("delay").Value);
+
+            if (item.Attribute("delayEnabled") != null)
+                DelayEnabled = bool.Parse(item.Attribute("delayEnabled").Value);
+
             if (item.Attribute("preCheck") != null)
                 PreCheckCurrentPosition = bool.Parse(item.Attribute("preCheck").Value);
 
-            var pId = int.Parse(item.Attribute("patternId").Value);
-            var p = parent.Parent.Pool.Patterns.First(z => z.Id == pId);
-            Pattern = p;
+            if (!string.IsNullOrEmpty(item.Attribute("patternId").Value))
+            {
+                var pId = int.Parse(item.Attribute("patternId").Value);
+                var p = parent.Parent.Pool.Patterns.First(z => z.Id == pId);
+                Pattern = p;
+            }
             base.ParseXml(parent, item);
         }
 
@@ -107,6 +120,10 @@ namespace AutoUI.TestItems
                 var cc = new ClickAutoTestItem();
                 cc.Process(ctx);
             }
+
+            if (DelayEnabled)
+                Thread.Sleep(Delay);
+
             return TestItemProcessResultEnum.Success;
         }
 
@@ -288,7 +305,11 @@ namespace AutoUI.TestItems
             MemoryStream ms = new MemoryStream();
             //Pattern.Save(ms, ImageFormat.Png);
             //var b64 = Convert.ToBase64String(ms.ToArray());
-            return $"<searchPattern patternId=\"{Pattern.Id}\" preCheck=\"{PreCheckCurrentPosition}\" clickOnSucceseed=\"{ClickOnSucceseed}\" ></searchPattern>";
+            return $"<searchPattern patternId=\"{(Pattern == null ? string.Empty: Pattern.Id.ToString())}\" preCheck=\"{PreCheckCurrentPosition}\"" +
+                $" clickOnSucceseed=\"{ClickOnSucceseed}\"" +
+                $" delayEnabled=\"{DelayEnabled}\"" +
+                $" delay=\"{Delay}\"" +
+                $" ></searchPattern>";
         }
 
         public bool Assert { get; set; }

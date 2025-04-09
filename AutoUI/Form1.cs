@@ -54,8 +54,11 @@ namespace AutoUI
         internal void Init(AutoTest test)
         {
             this.test = test;
-            currentCodeSection = test.Main ?? test.Sections.First();
-            UpdateTestItemsList();
+            currentCodeSection = test.Main;
+            if (currentCodeSection != null)
+            {
+                UpdateTestItemsList();
+            }
             UpdateSectionsList();
         }
 
