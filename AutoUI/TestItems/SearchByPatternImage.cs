@@ -126,10 +126,22 @@ namespace AutoUI.TestItems
         [DllImport("user32.dll")]
         public static extern bool SetCursorPos(int X, int Y);
 
-
-        public static bool IsPixelsEqual(Color px, Color px2)
+        public static bool IsPixelsEqual(PatternMatchingImageItem pattern, Color px, Color px2)
         {
-            return px.R == px2.R && px.G == px2.G && px.B == px2.B;
+            switch (pattern.PixelsMode)
+            {
+                case PixelsMatchingMode.Precise:
+                    return px.R == px2.R && px.G == px2.G && px.B == px2.B;
+
+                case PixelsMatchingMode.Distance:
+                    return Math.Abs(px.R - px2.R) <= pattern.PixelsMatchDistancePerChannel &&
+                        Math.Abs(px.G - px2.G) <= pattern.PixelsMatchDistancePerChannel &&
+                        Math.Abs(px.B - px2.B) <= pattern.PixelsMatchDistancePerChannel;
+
+                default:
+                    break;
+            }
+            throw new ArgumentException();
         }
 
         public static Color ToGrayscale(Color clr)
@@ -210,10 +222,16 @@ namespace AutoUI.TestItems
                         var px = d.GetPixel(i + rx, j + ry);
                         px = ConvertPixel(_pattern, px);
 
-                        if (!IsPixelsEqual(px, clrs[t])) { good = false; break; }
+                        if (!IsPixelsEqual(_pattern, px, clrs[t]))
+                        {
+                            good = false;
+                            break;
+                        }
                     }
 
-                    if (!good) continue;
+                    if (!good)
+                        continue;
+
                     //check pattern match
 
                     for (int i1 = 0; i1 < pattern.Width; i1++)
@@ -223,9 +241,14 @@ namespace AutoUI.TestItems
                             var px = ConvertPixel(_pattern, d.GetPixel(i + i1, j + j1));
                             var px2 = ConvertPixel(_pattern, d2.GetPixel(i1, j1));
 
-                            if (!IsPixelsEqual(px, px2)) { good = false; break; }
+                            if (!IsPixelsEqual(_pattern, px, px2))
+                            {
+                                good = false;
+                                break;
+                            }
                         }
-                        if (!good) break;
+                        if (!good)
+                            break;
                     }
 
                     if (good)

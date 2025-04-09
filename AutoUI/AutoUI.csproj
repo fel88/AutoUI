@@ -148,6 +148,7 @@
     <Compile Include="TestItems\PatternMatchingImage.cs" />
     <Compile Include="TestItems\PatternMatchingImageItem.cs" />
     <Compile Include="TestItems\PatternMatchingMode.cs" />
+    <Compile Include="TestItems\PixelsMatchingMode.cs" />
     <Compile Include="TestItems\ProcessRunTestItem.cs" />
     <Compile Include="TestItems\ProcessTerminateTestItem.cs" />
     <Compile Include="TestItems\ScreenshotTestItem.cs" />

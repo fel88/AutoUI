@@ -23,14 +23,9 @@ namespace AutoUI.TestItems
         internal void ToXml(StringBuilder sb)
         {
             sb.AppendLine($"<pattern type=\"image\" id=\"{Id}\" name=\"{Name}\">");
-            foreach (var item in Items)
-            {
-                sb.AppendLine($"<item name=\"{item.Name}\" mode=\"{item.Mode}\">");
-                MemoryStream ms = new MemoryStream();
-                item.Bitmap.Save(ms, ImageFormat.Png);
-                var bb = Convert.ToBase64String(ms.ToArray());
-                sb.AppendLine(bb); sb.AppendLine("</item>");
-            }
+            foreach (var item in Items)            
+                item.ToXml(sb);                
+            
             sb.AppendLine("</pattern>");
         }
 
@@ -44,11 +39,10 @@ namespace AutoUI.TestItems
                 var data = Convert.FromBase64String(item.Value);
                 MemoryStream ms = new MemoryStream(data);
                 var bmp = Bitmap.FromStream(ms) as Bitmap;
-                Items.Add(new PatternMatchingImageItem() { Bitmap = bmp });
-                if (item.Attribute("mode") != null)
-                    Items.Last().Mode = (PatternMatchingMode)(Enum.Parse(typeof(PatternMatchingMode), item.Attribute("mode").Value, true));
-                if (item.Attribute("name") != null)
-                    Items.Last().Name = item.Attribute("mode").Value;
+                var restoreItem = new PatternMatchingImageItem() { Bitmap = bmp };
+                restoreItem.ParseXml(item);
+                Items.Add(restoreItem);
+                
             }
         }
     }

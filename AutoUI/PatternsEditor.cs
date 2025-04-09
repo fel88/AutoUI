@@ -57,7 +57,13 @@ namespace AutoUI
             listView2.Items.Clear();
             foreach (var t in tag.Items)
             {
-                listView2.Items.Add(new ListViewItem(new string[] { t.Name, t.Mode.ToString() }) { Tag = t });
+                listView2.Items.Add(new ListViewItem(new string[] {
+                    t.Name,
+                    t.Mode.ToString(),
+                    t.PixelsMode.ToString(),
+                    t.PixelsMatchDistancePerChannel.ToString()
+                })
+                { Tag = t });
             }
         }
 
@@ -346,12 +352,16 @@ namespace AutoUI
             var d = AutoDialog.DialogHelpers.StartDialog();
             d.AddStringField("name", "Name", tag2.Name);
             d.AddOptionsField("mode", "Mode", Enum.GetNames(typeof(PatternMatchingMode)), tag2.Mode.ToString());
+            d.AddOptionsField("pmode", "Pixels mode", Enum.GetNames(typeof(PixelsMatchingMode)), tag2.PixelsMode.ToString());
+            d.AddNumericField("pdist", "Pixels dist", tag2.PixelsMatchDistancePerChannel);
 
             if (!d.ShowDialog())
                 return;
 
             tag2.Name = d.GetStringField("name");
             tag2.Mode = (PatternMatchingMode)Enum.Parse(typeof(PatternMatchingMode), d.GetOptionsField("mode"));
+            tag2.PixelsMode = (PixelsMatchingMode)Enum.Parse(typeof(PixelsMatchingMode), d.GetOptionsField("pmode"));
+            tag2.PixelsMatchDistancePerChannel = d.GetNumericField("pdist");
 
             updateSecondList(tag);
         }
