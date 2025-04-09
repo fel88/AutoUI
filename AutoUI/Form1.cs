@@ -505,5 +505,11 @@ namespace AutoUI
                 UpdateTestItemsList();
             }
         }
+
+        private void wheelToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            addOrInsertItem(new MouseWheelAutoTestItem());
+        }
     }
+    
 }

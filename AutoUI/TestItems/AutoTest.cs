@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Xml.Linq;
 
@@ -104,6 +105,14 @@ namespace AutoUI.TestItems
             Name = titem.Attribute("name").Value;
             if (titem.Attribute("id") != null)
                 Id = int.Parse(titem.Attribute("id").Value);
+        }
+
+        internal AutoTest Clone()
+        {
+            var clone = new AutoTest();
+            clone.Name = Name;
+            clone.Main = Main.Clone();
+            return clone;
         }
     }
 }

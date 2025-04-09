@@ -42,13 +42,13 @@ namespace AutoUI
         public static TestSet set = new TestSet();
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
-            
+
         }
 
         private void toolStripButton2_Click(object sender, EventArgs e)
         {
             PatternsEditor f = new PatternsEditor();
-            f.Init(set.Pool);            
+            f.Init(set.Pool);
             f.Show();
         }
 
@@ -65,7 +65,7 @@ namespace AutoUI
 
             SaveFileDialog sfd = new SaveFileDialog();
             sfd.Filter = "Auto UI (axml files)|*.axml";
-            if (sfd.ShowDialog() != DialogResult.OK) 
+            if (sfd.ShowDialog() != DialogResult.OK)
                 return;
 
             File.WriteAllText(sfd.FileName, sb.ToString());
@@ -76,7 +76,7 @@ namespace AutoUI
             OpenFileDialog ofd = new OpenFileDialog();
             ofd.Filter = "Auto UI (axml files)|*.axml";
 
-            if (ofd.ShowDialog() != DialogResult.OK) 
+            if (ofd.ShowDialog() != DialogResult.OK)
                 return;
 
             set = new TestSet();
@@ -86,8 +86,8 @@ namespace AutoUI
                 set.Pool.ParseXml(set, root.Element("pool"));
 
             set.ParseXml(root);
-            
-            Init(set);            
+
+            Init(set);
         }
 
         private void toolStripButton3_Click(object sender, EventArgs e)
@@ -104,29 +104,29 @@ namespace AutoUI
         private void fontMatcherToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FontMatcher f = new FontMatcher();
-            
+
             f.Show();
         }
 
         private void searchDebugToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SearchDebug f = new SearchDebug();
-            
+
             f.Show();
         }
 
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
             set = new TestSet();
-            
+
             foreach (var item in MdiChildren)
             {
                 item.Close();
             }
 
-            
+
             Init(set);
-            
+
         }
         public void Init(TestSet _set)
         {
@@ -196,7 +196,7 @@ namespace AutoUI
                         lvi.SubItems[2].Text = DateTime.Now.ToLongTimeString();
 
                     }));
-                   
+
                 }
             });
             th.IsBackground = true;
@@ -346,5 +346,17 @@ namespace AutoUI
             }
         }
 
+        private void cloneToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (listView1.SelectedItems.Count == 0)
+                return;
+
+            var test = listView1.SelectedItems[0].Tag as AutoTest;
+            var clone = test.Clone();
+            clone.Name += "_clone";
+            set.Tests.Add(clone);
+
+            UpdateTestsList();
+        }
     }
 }

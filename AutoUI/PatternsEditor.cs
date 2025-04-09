@@ -1,13 +1,9 @@
 ﻿using AutoUI.TestItems;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace AutoUI
@@ -21,6 +17,7 @@ namespace AutoUI
             // functional loose pattern matching
             pictureBox1.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
         }
+
         PatternMatchingPool Pool;
         public void Init(PatternMatchingPool pool)
         {
@@ -66,7 +63,9 @@ namespace AutoUI
 
         private void listView2_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (listView2.SelectedItems.Count == 0) return;
+            if (listView2.SelectedItems.Count == 0)
+                return;
+
             var tag = listView2.SelectedItems[0].Tag as PatternMatchingImageItem;
 
             pictureBox1.Image = tag.Bitmap;
@@ -372,7 +371,20 @@ namespace AutoUI
 
             pp.Items.Add(new PatternMatchingImageItem() { Bitmap = bitmap });
             updatePatternsList();
+        }
 
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (listView2.SelectedItems.Count == 0)
+                return;
+
+            var tag = listView2.SelectedItems[0].Tag as PatternMatchingImageItem;
+
+            SaveFileDialog sfd = new SaveFileDialog();
+            if (sfd.ShowDialog() != DialogResult.OK)
+                return;
+
+            tag.Bitmap.Save(sfd.FileName, ImageFormat.Png);
         }
     }
 }
