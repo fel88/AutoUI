@@ -15,7 +15,7 @@ namespace AutoUI.TestItems
         public List<PatternMatchingImage> Patterns = new List<PatternMatchingImage>();
 
 
-        public override void ParseXml(TestSet parent, XElement item)
+        public override void ParseXml(AutoTest parent, XElement item)
         {
             var pIds = item.Attribute("patternIds").Value.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToArray();
             if (item.Attribute("moveCursor") != null)
@@ -23,7 +23,7 @@ namespace AutoUI.TestItems
             if (item.Attribute("timeout") != null)
                 Timeout = int.Parse(item.Attribute("timeout").Value);
 
-            var pns = pIds.Select(zz => parent.Pool.Patterns.First(z => z.Id == zz)).ToList();
+            var pns = pIds.Select(zz => parent.Parent.Pool.Patterns.First(z => z.Id == zz)).ToList();
             Patterns = pns;
             base.ParseXml(parent, item);
         }

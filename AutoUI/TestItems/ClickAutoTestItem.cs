@@ -41,7 +41,7 @@ namespace AutoUI.TestItems
                 
         }
 
-        public override void ParseXml(TestSet set, XElement item)
+        public override void ParseXml(AutoTest set, XElement item)
         {
             if (item.Attribute("double") != null)
             {

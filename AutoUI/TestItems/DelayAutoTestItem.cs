@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.CodeDom;
+using System.Threading;
 using System.Xml.Linq;
 
 namespace AutoUI.TestItems
@@ -13,7 +14,7 @@ namespace AutoUI.TestItems
             return TestItemProcessResultEnum.Success;
         }
 
-        public override void ParseXml(TestSet set, XElement item)
+        public override void ParseXml(AutoTest set, XElement item)
         {
             Delay = int.Parse(item.Attribute("delay").Value);
             base.ParseXml(set, item);

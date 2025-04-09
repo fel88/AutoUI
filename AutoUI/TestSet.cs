@@ -28,24 +28,10 @@ namespace AutoUI
                     sb.AppendLine($"<item key=\"{item.Key}\" value=\"{item.Value}\"/>");
                 }
                 sb.AppendLine("</vars>");
-                sb.AppendLine("<section name=\"main\">");
-                foreach (var item in test.Main.Items)
-                {
-                    sb.AppendLine(item.ToXml());
-                }
-                sb.AppendLine("</section>");
-                sb.AppendLine("<section name=\"finalizer\">");
-                foreach (var item in test.Finalizer.Items)
-                {
-                    sb.AppendLine(item.ToXml());
-                }
-                sb.AppendLine("</section>");
-                sb.AppendLine("<section name=\"emitter\">");
-                foreach (var item in test.Emitter.Items)
-                {
-                    sb.AppendLine(item.ToXml());
-                }
-                sb.AppendLine("</section>");
+
+                foreach (var item in test.Sections)                        
+                    item.ToXml(sb);                
+               
                 sb.AppendLine("</test>");
             }
 
@@ -72,35 +58,12 @@ namespace AutoUI
 
                 Tests.Add(test);
                 //get all types
-                Type[] types = Assembly.GetExecutingAssembly().GetTypes().Where(z => z.GetCustomAttribute(typeof(XmlParseAttribute)) != null).ToArray();
                 foreach (var section in titem.Elements("section"))
                 {
-                    var sname = section.Attribute("name").Value;
-                    foreach (var item in section.Elements())
-                    {
-
-                        var fr = types.FirstOrDefault(z => (z.GetCustomAttribute(typeof(XmlParseAttribute)) as XmlParseAttribute).XmlKey == item.Name);
-                        if (fr != null)
-                        {
-                            var tp = Activator.CreateInstance(fr) as AutoTestItem;
-                            tp.ParseXml(this, item);
-                            tp.ParentTest = test;
-                            if (sname == "main")
-                            {
-                                test.Main.Items.Add(tp);
-                            }
-                            if (sname == "finalizer")
-                            {
-                                test.Finalizer.Items.Add(tp);
-                            }
-                            if (sname == "emitter")
-                            {
-                                test.Emitter.Items.Add(tp);
-                            }
-                        }
-                    }
+                    CodeSection _section = new CodeSection();
+                    _section.ParseXml(test, section);                    
+                    test.Sections.Add(_section);                   
                 }
-
             }
         }
     }

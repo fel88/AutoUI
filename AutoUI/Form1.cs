@@ -2,19 +2,12 @@
 using AutoUI.TestItems;
 using AutoUI.TestItems.Editors;
 using System;
-using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
 using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Xml.Linq;
 
 namespace AutoUI
 {
@@ -23,10 +16,8 @@ namespace AutoUI
         public Form1()
         {
             InitializeComponent();
-            ctx.Init(pictureBox2);
         }
 
-        public DrawingContext ctx = new DrawingContext();
         private void Form1_Load(object sender, EventArgs e)
         {
             mf = new MessageFilter();
@@ -63,8 +54,9 @@ namespace AutoUI
         internal void Init(AutoTest test)
         {
             this.test = test;
-            currentCodeSection = test.Main;
+            currentCodeSection = test.Main ?? test.Sections.First();
             UpdateTestItemsList();
+            UpdateSectionsList();
         }
 
         public Bitmap GetScreenshot()
@@ -88,6 +80,7 @@ namespace AutoUI
                 listView1.Items.Add(new ListViewItem(new string[] { t.GetType().Name }) { Tag = t });
             }
         }
+
         private void searchPatternImageToolStripMenuItem_Click(object sender, EventArgs e)
         {
             currentCodeSection.Items.Add(new SearchByPatternImage());
@@ -99,7 +92,7 @@ namespace AutoUI
         {
             if (listView1.SelectedItems.Count == 0) return;
             currentItem = listView1.SelectedItems[0].Tag as AutoTestItem;
-            
+
             //pictureBox1.Image = null;
             if (currentItem.GetType().GetCustomAttribute(typeof(TestItemEditorAttribute)) != null)
             {
@@ -313,26 +306,16 @@ namespace AutoUI
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            ctx.gr.SmoothingMode = SmoothingMode.AntiAlias;
 
-            var pos = ctx.GetPos();
-            ctx.gr.Clear(Color.White);
-            ctx.gr.DrawString("x: " + Math.Round(pos.X, 2) + "   y: " + Math.Round(pos.Y, 2), SystemFonts.DefaultFont, Brushes.Red, 5, 5);
-            //lastCenter = ctx.Transform(new PointF(pictureBox1.Width / 2, pictureBox1.Height / 2));
-            ctx.gr.SmoothingMode = SmoothingMode.AntiAlias;
-            /*foreach (var item in AllItems.Where(z => z.Parents.Count == 0))
-            {
-                item.Draw(ctx);
-            }*/
-
-            pictureBox2.Image = ctx.bmp;
         }
 
         private void setPatternToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (listView1.SelectedItems.Count == 0) return;
+            if (listView1.SelectedItems.Count == 0)
+                return;
+
             currentItem = listView1.SelectedItems[0].Tag as AutoTestItem;
-            
+
             if (currentItem is SearchByPatternImage b)
             {
                 PatternSelector s = new PatternSelector();
@@ -389,7 +372,9 @@ namespace AutoUI
 
         private void runToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            if (listView1.SelectedItems.Count == 0) return;
+            if (listView1.SelectedItems.Count == 0)
+                return;
+
             currentItem = listView1.SelectedItems[0].Tag as AutoTestItem;
             var sw = Stopwatch.StartNew();
             currentItem.Process(new AutoTestRunContext() { Test = test });
@@ -403,7 +388,7 @@ namespace AutoUI
             UpdateTestItemsList();
         }
 
-    
+
 
         private void topToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -468,9 +453,9 @@ namespace AutoUI
             if (listView1.SelectedItems.Count != 1)
                 return;
 
-            
+
             var ati = listView1.SelectedItems[0].Tag as AutoTestItem;
-            ati.EditWithAutoDialog();            
+            ati.EditWithAutoDialog();
 
             UpdateTestItemsList();
 
@@ -491,7 +476,7 @@ namespace AutoUI
             if (currentCodeSection != test.Finalizer && Helpers.Question("switch to finalizer?", ParentForm.Text))
             {
                 currentCodeSection = test.Finalizer;
-                sectionToolStripStatusLabel.Text = "finalizer";                
+                sectionToolStripStatusLabel.Text = "finalizer";
                 UpdateTestItemsList();
             }
         }
@@ -510,6 +495,75 @@ namespace AutoUI
         {
             addOrInsertItem(new MouseWheelAutoTestItem());
         }
+
+
+        private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+
+        private void listView2_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            if (listView2.SelectedItems.Count == 0)
+                return;
+
+            var cs = listView2.SelectedItems[0].Tag as CodeSection;
+            if (currentCodeSection != cs && Helpers.Question($"switch to {cs.Name}?", Text))
+            {
+                currentCodeSection = cs;
+                sectionToolStripStatusLabel.Text = cs.Name;
+                UpdateTestItemsList();
+            }
+        }
+
+        public void UpdateSectionsList()
+        {
+            listView2.Items.Clear();
+            foreach (var item in test.Sections)
+            {
+                listView2.Items.Add(new ListViewItem(new string[] { item.Name, item.Role.ToString() }) { Tag = item });
+            }
+        }
+
+        private void addToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            var d = AutoDialog.DialogHelpers.StartDialog();
+            d.AddStringField("name", "Name");
+            d.AddEnumField<CodeSectionRole>("role", "Role", CodeSectionRole.FsmState);
+
+            if (!d.ShowDialog())
+                return;
+
+            test.Sections.Add(new CodeSection() { Name = d.GetStringField("name"), Role = d.GetEnumField<CodeSectionRole>("role") });
+            UpdateSectionsList();
+
+        }
+
+        private void deleteToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void edirToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (listView2.SelectedItems.Count == 0)
+                return;
+
+            var cs = listView2.SelectedItems[0].Tag as CodeSection;
+
+            var d = AutoDialog.DialogHelpers.StartDialog();
+            d.AddStringField("name", "Name", cs.Name);
+            d.AddEnumField<CodeSectionRole>("role", "Role", cs.Role);
+
+            if (!d.ShowDialog())
+                return;
+
+            cs.Name = d.GetStringField("name");
+            cs.Role = d.GetEnumField<CodeSectionRole>("role");
+            UpdateSectionsList();
+
+        }
     }
-    
+
 }

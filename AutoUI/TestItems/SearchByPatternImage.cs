@@ -21,7 +21,7 @@ namespace AutoUI.TestItems
 
         public string PatternName { get => Pattern == null ? null : Pattern.Name; }
 
-        public override void ParseXml(TestSet parent, XElement item)
+        public override void ParseXml(AutoTest parent, XElement item)
         {
             if (item.Attribute("clickOnSucceseed") != null)
                 ClickOnSucceseed = bool.Parse(item.Attribute("clickOnSucceseed").Value);
@@ -30,7 +30,7 @@ namespace AutoUI.TestItems
                 PreCheckCurrentPosition = bool.Parse(item.Attribute("preCheck").Value);
 
             var pId = int.Parse(item.Attribute("patternId").Value);
-            var p = parent.Pool.Patterns.First(z => z.Id == pId);
+            var p = parent.Parent.Pool.Patterns.First(z => z.Id == pId);
             Pattern = p;
             base.ParseXml(parent, item);
         }

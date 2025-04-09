@@ -11,7 +11,7 @@ namespace AutoUI.TestItems
         {
             return TestItemProcessResultEnum.Success;
         }
-        public override void ParseXml(TestSet set, XElement item)
+        public override void ParseXml(AutoTest set, XElement item)
         {
             if (item.Attribute("label") != null)            
                 Label = item.Attribute("label").Value;

@@ -26,7 +26,7 @@ namespace AutoUI.TestItems
             return TestItemProcessResultEnum.Success;
         }
 
-        public override void ParseXml(TestSet set, XElement item)
+        public override void ParseXml(AutoTest set, XElement item)
         {
             IsRelative = bool.Parse(item.Attribute("isRelative").Value);
             X = int.Parse(item.Attribute("x").Value);

@@ -63,7 +63,7 @@ namespace AutoUI.TestItems
 
             return TestItemProcessResultEnum.Success;
         }
-        public override void ParseXml(TestSet parent, XElement item)
+        public override void ParseXml(AutoTest parent, XElement item)
         {
             ProgramText = item.Value;            
             

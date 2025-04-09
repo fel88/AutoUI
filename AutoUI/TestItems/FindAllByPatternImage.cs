@@ -67,13 +67,13 @@ namespace AutoUI.TestItems
             return TestItemProcessResultEnum.Success;
 
         }
-        public override void ParseXml(TestSet set, XElement item)
+        public override void ParseXml(AutoTest set, XElement item)
         {
             if (item.Attribute("storeVarName") != null)
                 StoreVarName = item.Attribute("storeVarName").Value;
 
             var pId = int.Parse(item.Attribute("patternId").Value);
-            var p = set.Pool.Patterns.First(z => z.Id == pId);
+            var p = set.Parent.Pool.Patterns.First(z => z.Id == pId);
             Pattern = p;
 
             base.ParseXml(set, item);

@@ -39,7 +39,7 @@ namespace AutoUI.TestItems
 
         }
 
-        public override void ParseXml(TestSet set, XElement item)
+        public override void ParseXml(AutoTest set, XElement item)
         {
             Label = (item.Attribute("label").Value);            
 
