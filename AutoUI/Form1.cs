@@ -466,9 +466,12 @@ namespace AutoUI
             if (listView1.SelectedItems.Count == 0)
                 return;
 
-            currentItem = listView1.SelectedItems[0].Tag as AutoTestItem;
             var sw = Stopwatch.StartNew();
-            currentItem.Process(new AutoTestRunContext() { Test = test });
+            for (int i = 0; i < listView1.SelectedItems.Count; i++)
+            {
+                currentItem = listView1.SelectedItems[i].Tag as AutoTestItem;              
+                currentItem.Process(new AutoTestRunContext() { Test = test });
+            }
             sw.Stop();
             toolStripStatusLabel1.Text = sw.ElapsedMilliseconds + "ms";
         }
