@@ -379,6 +379,15 @@ namespace AutoUI
             PatternMatchingImage pp = new PatternMatchingImage();
             Pool.Patterns.Add(pp);
 
+            CropImage crop = new CropImage();
+            crop.Init(bitmap);
+            if (crop.ShowDialog() == DialogResult.OK)
+            {
+                var temp = bitmap;
+                bitmap = bitmap.Clone(crop.CropArea, PixelFormat.Format32bppArgb);
+                temp.Dispose();
+            }
+
             pp.Items.Add(new PatternMatchingImageItem() { Bitmap = bitmap });
             updatePatternsList();
         }

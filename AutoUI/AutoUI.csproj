@@ -57,6 +57,12 @@
       <DependentUpon>AboutBox1.cs</DependentUpon>
     </Compile>
     <Compile Include="ConnectedComponent.cs" />
+    <Compile Include="CropImage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CropImage.Designer.cs">
+      <DependentUpon>CropImage.cs</DependentUpon>
+    </Compile>
     <Compile Include="DrawingContext.cs" />
     <Compile Include="FontMatcher.cs">
       <SubType>Form</SubType>
@@ -169,6 +175,9 @@
     <Compile Include="XmlParseAttribute.cs" />
     <EmbeddedResource Include="AboutBox1.resx">
       <DependentUpon>AboutBox1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CropImage.resx">
+      <DependentUpon>CropImage.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FontMatcher.resx">
       <DependentUpon>FontMatcher.cs</DependentUpon>
