@@ -85,7 +85,8 @@ namespace AutoUI
 
         private void fromFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (listView1.SelectedItems.Count == 0) return;
+            if (listView1.SelectedItems.Count == 0) 
+                return;
 
             OpenFileDialog ofd = new OpenFileDialog();
             if (ofd.ShowDialog() != DialogResult.OK)
@@ -404,6 +405,37 @@ namespace AutoUI
                 return;
 
             tag.Bitmap.Save(sfd.FileName, ImageFormat.Png);
+        }
+
+        private void grabScreenToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            if (listView1.SelectedItems.Count == 0)
+                return;            
+
+            var tag = listView1.SelectedItems[0].Tag as PatternMatchingImage;
+            
+
+            Rectangle bounds = Screen.GetBounds(Point.Empty);
+            Bitmap bitmap = new Bitmap(bounds.Width, bounds.Height);
+
+            using (Graphics g = Graphics.FromImage(bitmap))
+            {
+                g.CopyFromScreen(0, 0, 0, 0, Screen.PrimaryScreen.Bounds.Size);
+            }            
+
+            CropImage crop = new CropImage();
+            crop.Init(bitmap);
+            if (crop.ShowDialog() == DialogResult.OK)
+            {
+                var temp = bitmap;
+                bitmap = bitmap.Clone(crop.CropArea, PixelFormat.Format32bppArgb);
+                temp.Dispose();
+            }
+
+            tag.Items.Add(new PatternMatchingImageItem() { Bitmap = bitmap });
+            
+            updateSecondList(tag);
+
         }
     }
 }
