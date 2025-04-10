@@ -18,9 +18,9 @@ namespace AutoUI
             InitializeComponent();
             listView1.DragDrop += ListView1_DragDrop;
             listView1.ItemDrag += ListView1_ItemDrag;
-            listView1.DragEnter += ListView1_DragEnter; 
-            listView1.DragOver += myListView_DragOver; 
-            listView1.DragLeave += myListView_DragLeave; 
+            listView1.DragEnter += ListView1_DragEnter;
+            listView1.DragOver += myListView_DragOver;
+            listView1.DragLeave += myListView_DragLeave;
             listView1.AllowDrop = true;
             listView1.InsertionMark.Color = Color.Green;
         }
@@ -99,11 +99,28 @@ namespace AutoUI
             // Insert a copy of the dragged item at the target index.
             // A copy must be inserted before the original item is removed
             // to preserve item index values. 
+            var ati = draggedItem.Tag as AutoTestItem;
+            currentCodeSection.Items.Insert(targetIndex, ati);
+            for (int i = 0; i < currentCodeSection.Items.Count; i++)
+            {
+                if (i == targetIndex)
+                    continue;
+                if (currentCodeSection.Items[i] == ati)
+                {
+                    currentCodeSection.Items.RemoveAt(i);
+                    break;
+                }
+
+
+            }
             listView1.Items.Insert(
                 targetIndex, (ListViewItem)draggedItem.Clone());
 
             // Remove the original copy of the dragged item.
+
             listView1.Items.Remove(draggedItem);
+
+
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -469,8 +486,15 @@ namespace AutoUI
             var sw = Stopwatch.StartNew();
             for (int i = 0; i < listView1.SelectedItems.Count; i++)
             {
-                currentItem = listView1.SelectedItems[i].Tag as AutoTestItem;              
-                currentItem.Process(new AutoTestRunContext() { Test = test });
+                listView1.SelectedItems[i].BackColor = Color.White;
+
+                currentItem = listView1.SelectedItems[i].Tag as AutoTestItem;
+                var result = currentItem.Process(new AutoTestRunContext() { Test = test });
+                if (result == TestItemProcessResultEnum.Failed)
+                {
+                    listView1.SelectedItems[i].BackColor = Color.Red;
+                    break;
+                }
             }
             sw.Stop();
             toolStripStatusLabel1.Text = sw.ElapsedMilliseconds + "ms";
