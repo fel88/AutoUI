@@ -16,6 +16,94 @@ namespace AutoUI
         public Form1()
         {
             InitializeComponent();
+            listView1.DragDrop += ListView1_DragDrop;
+            listView1.ItemDrag += ListView1_ItemDrag;
+            listView1.DragEnter += ListView1_DragEnter; 
+            listView1.DragOver += myListView_DragOver; 
+            listView1.DragLeave += myListView_DragLeave; 
+            listView1.AllowDrop = true;
+            listView1.InsertionMark.Color = Color.Green;
+        }
+
+
+        // Moves the insertion mark as the item is dragged.
+        private void myListView_DragOver(object sender, DragEventArgs e)
+        {
+            // Retrieve the client coordinates of the mouse pointer.
+            Point targetPoint =
+                listView1.PointToClient(new Point(e.X, e.Y));
+
+            // Retrieve the index of the item closest to the mouse pointer.
+            int targetIndex = listView1.InsertionMark.NearestIndex(targetPoint);
+
+            // Confirm that the mouse pointer is not over the dragged item.
+            if (targetIndex > -1)
+            {
+                // Determine whether the mouse pointer is to the left or
+                // the right of the midpoint of the closest item and set
+                // the InsertionMark.AppearsAfterItem property accordingly.
+                Rectangle itemBounds = listView1.GetItemRect(targetIndex);
+                if (targetPoint.X > itemBounds.Left + (itemBounds.Width / 2))
+                {
+                    listView1.InsertionMark.AppearsAfterItem = true;
+                }
+                else
+                {
+                    listView1.InsertionMark.AppearsAfterItem = false;
+                }
+            }
+
+            // Set the location of the insertion mark. If the mouse is
+            // over the dragged item, the targetIndex value is -1 and
+            // the insertion mark disappears.
+            listView1.InsertionMark.Index = targetIndex;
+        }
+        // Removes the insertion mark when the mouse leaves the control.
+        private void myListView_DragLeave(object sender, EventArgs e)
+        {
+            listView1.InsertionMark.Index = -1;
+        }
+        private void ListView1_DragEnter(object sender, DragEventArgs e)
+        {
+            e.Effect = e.AllowedEffect;
+        }
+
+        private void ListView1_ItemDrag(object sender, ItemDragEventArgs e)
+        {
+            listView1.DoDragDrop(e.Item, DragDropEffects.Move);
+        }
+
+        private void ListView1_DragDrop(object sender, DragEventArgs e)
+        {
+
+            // Retrieve the index of the insertion mark;
+            int targetIndex = listView1.InsertionMark.Index;
+
+            // If the insertion mark is not visible, exit the method.
+            if (targetIndex == -1)
+            {
+                return;
+            }
+
+            // If the insertion mark is to the right of the item with
+            // the corresponding index, increment the target index.
+            if (listView1.InsertionMark.AppearsAfterItem)
+            {
+                targetIndex++;
+            }
+
+            // Retrieve the dragged item.
+            ListViewItem draggedItem =
+                (ListViewItem)e.Data.GetData(typeof(ListViewItem));
+
+            // Insert a copy of the dragged item at the target index.
+            // A copy must be inserted before the original item is removed
+            // to preserve item index values. 
+            listView1.Items.Insert(
+                targetIndex, (ListViewItem)draggedItem.Clone());
+
+            // Remove the original copy of the dragged item.
+            listView1.Items.Remove(draggedItem);
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -565,6 +653,16 @@ namespace AutoUI
             cs.Name = d.GetStringField("name");
             cs.Role = d.GetEnumField<CodeSectionRole>("role");
             UpdateSectionsList();
+
+        }
+
+        private void addToolStripMenuItem_DropDownOpening(object sender, EventArgs e)
+        {
+        }
+
+        private void contextMenuStrip1_Opening(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            addToolStripMenuItem.Enabled = currentCodeSection != null;
 
         }
     }

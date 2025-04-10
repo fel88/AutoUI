@@ -41,14 +41,20 @@ namespace AutoUI.TestItems
 
         public override void ParseXml(AutoTest set, XElement item)
         {
-            Label = (item.Attribute("label").Value);            
+            Label = (item.Attribute("label").Value);
+
+            if (item.Attribute("useCounter") != null)
+                UseCounter = bool.Parse(item.Attribute("useCounter").Value);
+
+            if (item.Attribute("iterations") != null)
+                CounterInitValue = int.Parse(item.Attribute("iterations").Value);
 
             base.ParseXml(set, item);
         }
 
         internal override string ToXml()
         {
-            return $"<goto label=\"{Label}\"/>";
+            return $"<goto label=\"{Label}\" useCounter=\"{UseCounter}\" iterations=\"{CounterInitValue}\"/>";
         }
     }
 }

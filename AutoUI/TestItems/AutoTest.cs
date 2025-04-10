@@ -10,7 +10,7 @@ namespace AutoUI.TestItems
     {
         public AutoTest()
         {
-         
+
         }
 
         public Dictionary<string, object> Data = new Dictionary<string, object>();
@@ -49,32 +49,32 @@ namespace AutoUI.TestItems
 
             if (ctx != null && ctx.IsSubTest)
                 CurrentCodeSection = Main;
-            
-            foreach (var item in CurrentCodeSection.Items)            
-                item.Init();
-            
 
-            if (ctx == null)            
+            foreach (var item in CurrentCodeSection.Items)
+                item.Init();
+
+
+            if (ctx == null)
                 ctx = new AutoTestRunContext() { Test = this };
-            
+
             if (!ctx.IsSubTest)
             {
                 //ctx.Test = this;
                 lastContext = ctx;
             }
 
-            foreach (var item in Data)            
+            foreach (var item in Data)
                 ctx.Vars.Add(item.Key, item.Value);
-            
+
             while (ctx.CodePointer < CurrentCodeSection.Items.Count && !ctx.Finished)
             {
                 ctx.ForceCodePointer = false;
                 var result = CurrentCodeSection.Items[ctx.CodePointer].Process(ctx);
                 if (result == TestItemProcessResultEnum.Failed)
                 {
-                    if (FailedAction == TestFailedbehaviour.Terminate)                    
+                    if (FailedAction == TestFailedbehaviour.Terminate)
                         ctx.Finished = true;
-                    
+
                     ctx.WrongState = CurrentCodeSection.Items[ctx.CodePointer];
                     State = TestStateEnum.Failed;
                 }
@@ -89,17 +89,17 @@ namespace AutoUI.TestItems
                     ctx.CodePointer++;
             }
 
-            if (ctx.WrongState == null)            
+            if (ctx.WrongState == null)
                 State = TestStateEnum.Success;
-            
 
-            if (CurrentCodeSection != Emitter)
-                foreach (var item in Finalizer.Items)                
-                    item.Process(ctx);                
 
-            if (CurrentCodeSection == Emitter)            
+            if (CurrentCodeSection != Emitter && Finalizer != null)
+                foreach (var item in Finalizer.Items)
+                    item.Process(ctx);
+
+            if (CurrentCodeSection == Emitter)
                 State = TestStateEnum.Emitter;
-            
+
             return ctx;
         }
 
