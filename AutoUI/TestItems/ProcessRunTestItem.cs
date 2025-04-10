@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.IO;
 using System.Text;
 using System.Xml.Linq;
 
@@ -9,19 +10,18 @@ namespace AutoUI.TestItems
     {
         public override TestItemProcessResultEnum Process(AutoTestRunContext ctx)
         {
-            Process p = null;
-            if (RunFromVar)
-            {
-                p = System.Diagnostics.Process.Start((string)ctx.Vars[Var]);
-            }
-            else
-            {
-                p = System.Diagnostics.Process.Start(ExePath);
-            }
-            if (StorePIDToRegister)
-            {
+            Process p = new System.Diagnostics.Process();
+            p.StartInfo.FileName = RunFromVar ? (string)ctx.Vars[Var] : ExePath;
+
+            if (!File.Exists(p.StartInfo.FileName))
+                return TestItemProcessResultEnum.Failed;
+
+            p.StartInfo.WorkingDirectory = new FileInfo(p.StartInfo.FileName).Directory.FullName;
+            p.Start();
+
+            if (StorePIDToRegister)            
                 ctx.Vars.Add(RegisterKey, p.Id);
-            }
+            
             return TestItemProcessResultEnum.Success;
         }
 
