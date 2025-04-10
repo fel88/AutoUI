@@ -31,11 +31,11 @@ namespace AutoUI.TestItems
             if (item.Attribute("mode") != null)
                 Mode = (PatternMatchingMode)(Enum.Parse(typeof(PatternMatchingMode), item.Attribute("mode").Value, true));
 
-            if (item.Attribute("pixelMode") != null)
-                PixelsMode = (PixelsMatchingMode)(Enum.Parse(typeof(PixelsMatchingMode), item.Attribute("pixelMode").Value, true));
+            if (item.Attribute("pixelsMode") != null)
+                PixelsMode = (PixelsMatchingMode)(Enum.Parse(typeof(PixelsMatchingMode), item.Attribute("pixelsMode").Value, true));
 
             if (item.Attribute("name") != null)
-                Name = item.Attribute("mode").Value;
+                Name = item.Attribute("name").Value;
 
             if (item.Attribute("pixelDist") != null)
                 PixelsMatchDistancePerChannel = double.Parse(item.Attribute("pixelDist").Value);
