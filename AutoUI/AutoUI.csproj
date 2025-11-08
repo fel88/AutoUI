@@ -1,267 +1,55 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{4365F5B9-69AA-46EE-8F38-E50040581094}</ProjectGuid>
+    <TargetFramework>net8.0-windows7.0</TargetFramework>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>AutoUI</RootNamespace>
-    <AssemblyName>AutoUI</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <Deterministic>true</Deterministic>
-    <TargetFrameworkProfile />
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
+    <ApplicationIcon>flask.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>x64</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup>
-    <ApplicationIcon>flask.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Deployment" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
+    <PackageReference Include="AutoDialog" Version="1.0.0.7" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AboutBox1.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AboutBox1.Designer.cs">
-      <DependentUpon>AboutBox1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ConnectedComponent.cs" />
-    <Compile Include="CropImage.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="CropImage.Designer.cs">
-      <DependentUpon>CropImage.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DrawingContext.cs" />
-    <Compile Include="FontMatcher.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FontMatcher.Designer.cs">
-      <DependentUpon>FontMatcher.cs</DependentUpon>
-    </Compile>
-    <Compile Include="KeyValueDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="KeyValueDialog.Designer.cs">
-      <DependentUpon>KeyValueDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="mdi.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="mdi.Designer.cs">
-      <DependentUpon>mdi.cs</DependentUpon>
-    </Compile>
-    <Compile Include="MessageFilter.cs" />
-    <Compile Include="PatternFindInfo.cs" />
-    <Compile Include="PatternMatchingPool.cs" />
-    <Compile Include="PatternsEditor.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="PatternsEditor.Designer.cs">
-      <DependentUpon>PatternsEditor.cs</DependentUpon>
-    </Compile>
-    <Compile Include="PatternSelector.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="PatternSelector.Designer.cs">
-      <DependentUpon>PatternSelector.cs</DependentUpon>
-    </Compile>
-    <Compile Include="PictureBoxWithInterpolationMode.cs">
+    <Compile Update="PictureBoxWithInterpolationMode.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="SearchDebug.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="SearchDebug.Designer.cs">
-      <DependentUpon>SearchDebug.cs</DependentUpon>
-    </Compile>
-    <Compile Include="TestItemEditorAttribute.cs" />
-    <Compile Include="TestItems\AutoTest.cs" />
-    <Compile Include="TestItems\AutoTestItem.cs" />
-    <Compile Include="TestItems\AutoTestRunContext.cs" />
-    <Compile Include="TestItems\ClickAutoTestItem.cs" />
-    <Compile Include="TestItems\CodeSection.cs" />
-    <Compile Include="TestItems\CodeSectionRole.cs" />
-    <Compile Include="TestItems\CompilingTestItem.cs" />
-    <Compile Include="TestItems\CursorPositionTestItem.cs" />
-    <Compile Include="TestItems\DelayAutoTestItem.cs" />
-    <Compile Include="DirectBitmap.cs" />
-    <Compile Include="Form1.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="TestItems\Editors\CompilerTestItem.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="TestItems\Editors\CompilerTestItem.Designer.cs">
-      <DependentUpon>CompilerTestItem.cs</DependentUpon>
-    </Compile>
-    <Compile Include="TestItems\Editors\ITestItemEditor.cs" />
-    <Compile Include="TestItems\Editors\SearchByPatternEditor.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="TestItems\Editors\SearchByPatternEditor.Designer.cs">
-      <DependentUpon>SearchByPatternEditor.cs</DependentUpon>
-    </Compile>
-    <Compile Include="TestItems\Editors\WaitPatternEditor.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="TestItems\Editors\WaitPatternEditor.Designer.cs">
-      <DependentUpon>WaitPatternEditor.cs</DependentUpon>
-    </Compile>
-    <Compile Include="TestItems\EmittedSubTest.cs" />
-    <Compile Include="TestItems\FindAllByPatternImage.cs" />
-    <Compile Include="TestItems\GotoAutoTestItem.cs" />
-    <Compile Include="TestItems\Helpers.cs" />
-    <Compile Include="TestItems\Iterator.cs" />
-    <Compile Include="TestItems\JumpFsmStateItem.cs" />
-    <Compile Include="TestItems\LabelAutoTestItem.cs" />
-    <Compile Include="TestItems\MouseUpDownTestItem.cs" />
-    <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TestItems\MouseWheelAutoTestItem.cs" />
-    <Compile Include="TestItems\PatternMatchingImage.cs" />
-    <Compile Include="TestItems\PatternMatchingImageItem.cs" />
-    <Compile Include="TestItems\PatternMatchingMode.cs" />
-    <Compile Include="TestItems\PixelsMatchingMode.cs" />
-    <Compile Include="TestItems\ProcessRunTestItem.cs" />
-    <Compile Include="TestItems\ProcessTerminateTestItem.cs" />
-    <Compile Include="TestItems\ScreenshotTestItem.cs" />
-    <Compile Include="TestItems\SearchByPatternImage.cs" />
-    <Compile Include="TestItems\TestFailedbehaviour.cs" />
-    <Compile Include="TestItems\TestStateEnum.cs" />
-    <Compile Include="TestItems\WaitPatternImage.cs" />
-    <Compile Include="TestSet.cs" />
-    <Compile Include="UIHelpers.cs" />
-    <Compile Include="VariablesEditor.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="VariablesEditor.Designer.cs">
-      <DependentUpon>VariablesEditor.cs</DependentUpon>
-    </Compile>
-    <Compile Include="XmlParseAttribute.cs" />
-    <EmbeddedResource Include="AboutBox1.resx">
-      <DependentUpon>AboutBox1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="CropImage.resx">
-      <DependentUpon>CropImage.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FontMatcher.resx">
-      <DependentUpon>FontMatcher.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="KeyValueDialog.resx">
-      <DependentUpon>KeyValueDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="mdi.resx">
-      <DependentUpon>mdi.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="PatternsEditor.resx">
-      <DependentUpon>PatternsEditor.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="PatternSelector.resx">
-      <DependentUpon>PatternSelector.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="SearchDebug.resx">
-      <DependentUpon>SearchDebug.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TestItems\Editors\CompilerTestItem.resx">
-      <DependentUpon>CompilerTestItem.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TestItems\Editors\SearchByPatternEditor.resx">
-      <DependentUpon>SearchByPatternEditor.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TestItems\Editors\WaitPatternEditor.resx">
-      <DependentUpon>WaitPatternEditor.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="VariablesEditor.resx">
-      <DependentUpon>VariablesEditor.cs</DependentUpon>
-    </EmbeddedResource>
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-    <Compile Include="Properties\Settings.Designer.cs">
+    <Compile Update="Properties\Settings.Designer.cs">
+      <Generator></Generator>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
+    <Compile Update="TestItems\Editors\CompilerTestItem.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="TestItems\Editors\SearchByPatternEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="TestItems\Editors\WaitPatternEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="flask.ico" />
-    <None Include="Resources\disks-black.png" />
-    <None Include="Resources\plus-button.png" />
-    <None Include="Resources\flask--plus.png" />
-    <None Include="Resources\new.png" />
-    <None Include="Resources\gear.png" />
-    <None Include="Resources\key.png" />
-    <None Include="Resources\arrow-circle.png" />
-    <None Include="Resources\spectrum.png" />
-    <None Include="Resources\picture-medium.png" />
-    <None Include="Resources\arrow-stop-090.png" />
-    <None Include="Resources\eraser.png" />
-    <None Include="Resources\control-double.png" />
-    <None Include="Resources\arrow-270.png" />
-    <None Include="Resources\arrow-090.png" />
-    <None Include="Resources\plus-white.png" />
-    <None Include="Resources\plus.png" />
-    <None Include="Resources\cross.png" />
-    <None Include="Resources\pencil.png" />
-    <None Include="Resources\folder-open.png" />
-    <None Include="Resources\disk.png" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="AutoDialog">
-      <Version>1.0.0.7</Version>
-    </PackageReference>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <None Update="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
 </Project>
