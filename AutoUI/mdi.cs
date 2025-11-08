@@ -1,13 +1,15 @@
 ﻿using AutoDialog;
-using AutoUI.TestItems;
+using AutoUI.Common;
 using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Net.Sockets;
 using System.Reflection;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Linq;
 
@@ -23,7 +25,7 @@ namespace AutoUI
   * - complex pattern (set of images which mean same pattern)
   * - loose pattern matching -> pre-binarize, percentrage equality allowed
   * - complex shapes searching and counting. rectangles for example
-  * - debug TCP protocol. send code to execute on unicut side
+  * - debug TCP protocol. send code to execute on main programm side
   * - parametrized test with different input parameters (different files for example)
   * - keyboard input 
   * - text recognize from screen probably..
@@ -57,8 +59,8 @@ namespace AutoUI
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("<?xml version=\"1.0\"?>");
             sb.AppendLine("<root>");
-            set.AppendXml(sb);
-
+            var el1 = set.ToXml();
+            sb.AppendLine(el1.ToString());
 
             sb.AppendLine("</root>");
             sb.ToString();
@@ -68,7 +70,8 @@ namespace AutoUI
             if (sfd.ShowDialog() != DialogResult.OK)
                 return;
 
-            File.WriteAllText(sfd.FileName, sb.ToString());
+            var doc = XDocument.Parse(sb.ToString());
+            doc.Save(sfd.FileName);
         }
 
         private void loadToolStripMenuItem_Click(object sender, EventArgs e)
@@ -79,13 +82,8 @@ namespace AutoUI
             if (ofd.ShowDialog() != DialogResult.OK)
                 return;
 
-            set = new TestSet();
             var doc = XDocument.Load(ofd.FileName);
-            var root = doc.Descendants("root").First();
-            if (root.Element("pool") != null)
-                set.Pool.ParseXml(set, root.Element("pool"));
-
-            set.ParseXml(root);
+            set = new TestSet(doc.Root.Element("set"));
 
             Init(set);
         }
@@ -157,7 +155,7 @@ namespace AutoUI
         }
         private void toolStripButton4_Click(object sender, EventArgs e)
         {
-            Thread th = new Thread(() =>
+            Thread th = new(() =>
             {
                 foreach (var item in Set.Tests)
                 {
@@ -198,8 +196,10 @@ namespace AutoUI
                     }));
 
                 }
-            });
-            th.IsBackground = true;
+            })
+            {
+                IsBackground = true
+            };
             th.Start();
 
 
@@ -259,7 +259,7 @@ namespace AutoUI
 
             test.Name = d.GetStringField("name");
             test.UseEmitter = d.GetBoolField("emitter");
-            test.FailedAction = d.GetEnumField<TestFailedbehaviour>("faction");
+            test.FailedAction = d.GetEnumField<TestFailedBehaviour>("faction");
 
             UpdateTestsList();
         }
@@ -357,6 +357,39 @@ namespace AutoUI
             set.Tests.Add(clone);
 
             UpdateTestsList();
+        }
+
+        private async void toolStripButton1_Click_1(object sender, EventArgs e)
+        {
+            var d = AutoDialog.DialogHelpers.StartDialog();
+            d.AddStringField("ip", "IP", "127.0.0.1");
+            d.AddIntegerNumericField("port", "Port", 8888, 100000, 10);
+
+            if (!d.ShowDialog())
+                return;
+
+            var ip = d.GetStringField("ip");
+            var port = d.GetIntegerNumericField("port");
+            var s1 = $"TEST_SET={Convert.ToBase64String(Encoding.Default.GetBytes(set.ToXml().ToString()))}";
+
+            TcpClient client = new TcpClient();
+            await client.ConnectAsync(ip, port);
+            var stream = client.GetStream();
+            var wr = new StreamWriter(stream);
+            var rdr = new StreamReader(stream);
+
+            await wr.WriteLineAsync(s1);
+            await wr.FlushAsync();
+            var res = await rdr.ReadLineAsync();
+            for (int i = 0; i < set.Tests.Count; i++)
+            {
+                await wr.WriteLineAsync($"TEST={i}");
+                await wr.FlushAsync();
+                await Task.Delay(2000);
+                //polling here
+                res = await rdr.ReadLineAsync();
+
+            }
         }
     }
 }

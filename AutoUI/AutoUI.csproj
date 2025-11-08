@@ -27,18 +27,21 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Update="TestItems\Editors\CompilerTestItem.cs">
+    <Compile Update="Editors\CompilerTestItem.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Update="TestItems\Editors\SearchByPatternEditor.cs">
+    <Compile Update="Editors\SearchByPatternEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Update="TestItems\Editors\WaitPatternEditor.cs">
+    <Compile Update="Editors\WaitPatternEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="flask.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AutoUI.Common\AutoUI.Common.csproj" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Update="Properties\Resources.resx">

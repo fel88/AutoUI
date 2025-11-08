@@ -1,6 +1,8 @@
 ﻿using AutoDialog.Extensions;
+using AutoUI.Common;
+using AutoUI.Common.TestItems;
+using AutoUI.Editors;
 using AutoUI.TestItems;
-using AutoUI.TestItems.Editors;
 using System;
 using System.Diagnostics;
 using System.Drawing;
@@ -198,14 +200,19 @@ namespace AutoUI
         AutoTestItem currentItem = null;
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (listView1.SelectedItems.Count == 0) return;
+            if (listView1.SelectedItems.Count == 0)
+                return;
+
             currentItem = listView1.SelectedItems[0].Tag as AutoTestItem;
+            var editorType = FindEditorType(currentItem);
 
             //pictureBox1.Image = null;
-            if (currentItem.GetType().GetCustomAttribute(typeof(TestItemEditorAttribute)) != null)
+            //if (currentItem.GetType().GetCustomAttribute(typeof(TestItemEditorAttribute)) != null)
+            if (editorType != null)
             {
-                var t = currentItem.GetType().GetCustomAttribute(typeof(TestItemEditorAttribute)) as TestItemEditorAttribute;
-                var tie = Activator.CreateInstance(t.Editor) as ITestItemEditor;
+                //   var t = currentItem.GetType().GetCustomAttribute(typeof(TestItemEditorAttribute)) as TestItemEditorAttribute;
+                //var tie = Activator.CreateInstance(t.Editor) as ITestItemEditor;
+                var tie = Activator.CreateInstance(editorType) as ITestItemEditor;
                 tie.Init(currentItem);
 
                 var del = tableLayoutPanel1.Controls.OfType<ITestItemEditor>().FirstOrDefault();
@@ -216,6 +223,18 @@ namespace AutoUI
                 tableLayoutPanel1.Controls.Add(tie as Control, 0, 0);
                 (tie as Control).Dock = DockStyle.Fill;
             }
+        }
+
+        private Type FindEditorType(AutoTestItem currentItem)
+        {
+            var types = Assembly.GetExecutingAssembly().GetTypes().Where(z => z.GetCustomAttribute(typeof(TestItemEditorAttribute)) != null).ToArray();
+            foreach (var item in types)
+            {
+                var p = item.GetCustomAttribute<TestItemEditorAttribute>();
+                if (p.Target == currentItem.GetType())
+                    return item;
+            }
+            return null;
         }
 
         void deleteSelected()
