@@ -11,9 +11,8 @@ namespace AutoUI.Common
             Id = Helpers.GetNewId();
         }
         public int Id { get; private set; }
-        public virtual void Init() { }
         public abstract TestItemProcessResultEnum Process(AutoTestRunContext ctx);
-        public virtual void ParseXml(AutoTest parent, XElement item) {        }
+        public virtual void ParseXml(IAutoTest parent, XElement item) { }
         public abstract string ToXml();
 
         public virtual AutoTestItem Clone()
@@ -22,12 +21,7 @@ namespace AutoUI.Common
         }
 
         public AutoTestItem Parent;
-        public AutoTest ParentTest;//?
+        public IAutoTest ParentTest;//?
         public List<AutoTestItem> Childs = new List<AutoTestItem>();
-    }
-
-    public enum TestItemProcessResultEnum
-    {
-        Success, Failed
     }
 }

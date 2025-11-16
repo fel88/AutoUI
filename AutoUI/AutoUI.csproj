@@ -13,6 +13,9 @@
     <PackageReference Include="AutoDialog" Version="1.0.0.7" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="SimpleTestEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="PictureBoxWithInterpolationMode.cs">
       <SubType>Component</SubType>
     </Compile>

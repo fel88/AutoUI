@@ -11,16 +11,16 @@ namespace AutoUI.TestItems
         public CodeSection Target { get; set; }
         public override TestItemProcessResultEnum Process(AutoTestRunContext ctx)
         {
-            ctx.Test.CurrentCodeSection = Target;
+            ((SpawnableAutoTest)ctx.Test).CurrentCodeSection = Target;
             ctx.CodePointer = 0;
             
             return TestItemProcessResultEnum.Success;
         }
 
-        public override void ParseXml(AutoTest set, XElement item)
+        public override void ParseXml(IAutoTest set, XElement item)
         {
             var tname = item.Attribute("targetName").Value;
-            Target = set.Sections.First(z => z.Name == tname);            
+            Target = ((SpawnableAutoTest)set).Sections.First(z => z.Name == tname);            
             base.ParseXml(set, item);
         }
 

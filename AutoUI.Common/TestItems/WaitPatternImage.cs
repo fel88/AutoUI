@@ -14,7 +14,7 @@ namespace AutoUI.TestItems
         public List<PatternMatchingImage> Patterns = new List<PatternMatchingImage>();
 
 
-        public override void ParseXml(AutoTest parent, XElement item)
+        public override void ParseXml(IAutoTest parent, XElement item)
         {
             var pIds = item.Attribute("patternIds").Value.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToArray();
             if (item.Attribute("moveCursor") != null)

@@ -7,32 +7,51 @@ namespace AutoUI.TestItems
     [XmlParse(XmlKey = "goto")]
     public class GotoAutoTestItem : AutoTestItem
     {
-        public override void Init()
-        {
-            Counter = CounterInitValue;
-            base.Init();
-        }
+
         public int CounterInitValue { get; set; } = 0;
-        public int Counter = 0;
+
         public bool UseCounter { get; set; }
         public string Label { get; set; }
 
-        public override TestItemProcessResultEnum Process(AutoTestRunContext ctx)
+        public class GotoTestStepContext
         {
-            bool skip = false;
-
-            if (UseCounter)
+            public GotoTestStepContext(int CounterInitValue)
             {
+                Counter = CounterInitValue;
+            }
+
+            public int Counter = 0;
+
+            internal bool Step()
+            {
+                bool skip = false;
+
                 Counter--;
                 if (Counter <= 0)
                 {
                     skip = true;
                 }
+                return skip;
             }
+        }
+
+        public override TestItemProcessResultEnum Process(AutoTestRunContext ctx)
+        {
+            GotoTestStepContext stepCtx = null;
+            if (!ctx.TagRegisters.ContainsKey(this))
+            {
+                ctx.TagRegisters.Add(this, new GotoTestStepContext(CounterInitValue));
+            }
+            stepCtx = ctx.TagRegisters[this] as GotoTestStepContext;
+
+            bool skip = false;
+            if (UseCounter)            
+                skip = stepCtx.Step();
+
             if (!skip)
             {
-                var fr = ctx.Test.Main.Items.OfType<LabelAutoTestItem>().First(z => z.Label == Label);
-                ctx.CodePointer = ctx.Test.Main.Items.IndexOf(fr);
+                var fr = ctx.Test.CurrentCodeSection.Items.OfType<LabelAutoTestItem>().First(z => z.Label == Label);
+                ctx.CodePointer = ctx.Test.CurrentCodeSection.Items.IndexOf(fr);
                 ctx.ForceCodePointer = true;
             }
 
@@ -40,7 +59,7 @@ namespace AutoUI.TestItems
 
         }
 
-        public override void ParseXml(AutoTest set, XElement item)
+        public override void ParseXml(IAutoTest set, XElement item)
         {
             Label = (item.Attribute("label").Value);
 

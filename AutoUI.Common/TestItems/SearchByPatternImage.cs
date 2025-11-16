@@ -25,7 +25,7 @@ namespace AutoUI.TestItems
 
         public string PatternName { get => Pattern == null ? null : Pattern.Name; }
 
-        public override void ParseXml(AutoTest parent, XElement item)
+        public override void ParseXml(IAutoTest parent, XElement item)
         {
             if (item.Attribute("clickOnSucceseed") != null)
                 ClickOnSucceseed = bool.Parse(item.Attribute("clickOnSucceseed").Value);

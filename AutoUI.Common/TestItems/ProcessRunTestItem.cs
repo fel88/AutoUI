@@ -26,7 +26,7 @@ namespace AutoUI.Common.TestItems
             return TestItemProcessResultEnum.Success;
         }
 
-        public override void ParseXml(AutoTest set, XElement item)
+        public override void ParseXml(IAutoTest set, XElement item)
         {
             ExePath = item.Element("exePath").Value;
             if (item.Attribute("registerKey") != null)

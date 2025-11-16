@@ -156,7 +156,7 @@ namespace AutoUI.TestItems
 
         public string RegisterKey { get; set; }        
 
-        public override void ParseXml(AutoTest set, XElement item)
+        public override void ParseXml(IAutoTest set, XElement item)
         {
             RegisterKey = item.Attribute("key").Value;
             ProcessOnly = bool.Parse(item.Attribute("processOnly").Value);

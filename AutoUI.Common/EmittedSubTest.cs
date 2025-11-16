@@ -5,7 +5,7 @@ namespace AutoUI.Common
 {
     public class EmittedSubTest
     {
-        public AutoTest SourceTest;
+        public IAutoTest SourceTest;
         public Dictionary<string, object> Data = new Dictionary<string, object>();
         public TestStateEnum State;
         public DateTime FinishTime;

@@ -57,7 +57,7 @@ namespace AutoUI
 
         }
 
-        public void Init(AutoTest test)
+        public void Init(IAutoTest test)
         {
             listView3.Items.Clear();
             foreach (var item in test.Data)

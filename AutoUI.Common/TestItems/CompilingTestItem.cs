@@ -63,12 +63,14 @@ namespace AutoUI.Common.TestItems
 
             return TestItemProcessResultEnum.Success;
         }
-        public override void ParseXml(AutoTest parent, XElement item)
+
+        public override void ParseXml(IAutoTest parent, XElement item)
         {
             ProgramText = item.Value;            
             
             base.ParseXml(parent, item);
         }
+
         public CompilerResults compile()
         {
             CSharpCodeProvider codeProvider = new CSharpCodeProvider();

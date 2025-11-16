@@ -1,20 +1,43 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Xml.Linq;
 
 namespace AutoUI.Common
 {
-    public class AutoTest
+
+    public class AutoTest : AbstractAutoTest, IAutoTest
     {
         public AutoTest()
         {
 
         }
+        public AutoTest(TestSet parent, XElement titem) : this()
+        {
+            Parent = parent;
+            Id = int.Parse(titem.Attribute("id").Value);
 
-        public Dictionary<string, object> Data = new Dictionary<string, object>();
-        public TestFailedBehaviour FailedAction { get; set; }
+            if (titem.Element("vars") != null)
+            {
+                foreach (var kitem in titem.Element("vars").Elements("item"))
+                {
+                    Data.Add(kitem.Attribute("key").Value, kitem.Attribute("value").Value);
+                }
+            }
+
+            Name = titem.Attribute("name").Value;
+            if (titem.Attribute("id") != null)
+                Id = int.Parse(titem.Attribute("id").Value);
+
+            //get all types
+            foreach (var section in titem.Elements("section"))
+            {
+                Code = new CodeSection(this, section);                
+            }
+        }
+        
 
         public AutoTest(TestSet parent) : this()
         {
@@ -22,36 +45,20 @@ namespace AutoUI.Common
             Id = Helpers.GetNewId();
         }
 
-        public readonly TestSet Parent;
+        public TestSet Parent { get; }
         public int Id { get; private set; }
         public string Name { get; set; }
         public int Delay = 0;
 
-        public bool UseEmitter { get; set; } = false;
 
-        public List<CodeSection> Sections = new List<CodeSection>();//fsm sections
+        public CodeSection Code = new CodeSection();
 
-        public CodeSection Finalizer => Sections.FirstOrDefault(z => z.Role == CodeSectionRole.Finalizer);
-        public CodeSection Main => Sections.FirstOrDefault(z => z.Role == CodeSectionRole.Main);
-        public CodeSection Emitter => Sections.FirstOrDefault(z => z.Role == CodeSectionRole.Emitter);
 
         public AutoTestRunContext lastContext;
 
-        public CodeSection CurrentCodeSection = null;
+
         public AutoTestRunContext Run(AutoTestRunContext ctx = null)
         {
-            CurrentCodeSection = Main;
-            if (UseEmitter)
-            {
-                CurrentCodeSection = Emitter;
-                State = TestStateEnum.Emitter;
-            }
-
-            if (ctx != null && ctx.IsSubTest)
-                CurrentCodeSection = Main;
-
-            foreach (var item in CurrentCodeSection.Items)
-                item.Init();
 
 
             if (ctx == null)
@@ -66,16 +73,16 @@ namespace AutoUI.Common
             foreach (var item in Data)
                 ctx.Vars.Add(item.Key, item.Value);
 
-            while (ctx.CodePointer < CurrentCodeSection.Items.Count && !ctx.Finished)
+            while (ctx.CodePointer < Code.Items.Count && !ctx.Finished)
             {
                 ctx.ForceCodePointer = false;
-                var result = CurrentCodeSection.Items[ctx.CodePointer].Process(ctx);
+                var result = Code.Items[ctx.CodePointer].Process(ctx);
                 if (result == TestItemProcessResultEnum.Failed)
                 {
                     if (FailedAction == TestFailedBehaviour.Terminate)
                         ctx.Finished = true;
 
-                    ctx.WrongState = CurrentCodeSection.Items[ctx.CodePointer];
+                    ctx.WrongState = Code.Items[ctx.CodePointer];
                     State = TestStateEnum.Failed;
                 }
 
@@ -93,36 +100,43 @@ namespace AutoUI.Common
                 State = TestStateEnum.Success;
 
 
-            if (CurrentCodeSection != Emitter && Finalizer != null)
-                foreach (var item in Finalizer.Items)
-                    item.Process(ctx);
-
-            if (CurrentCodeSection == Emitter)
-                State = TestStateEnum.Emitter;
-
             return ctx;
         }
-
-        public TestStateEnum State;
-
-        internal void ParseXml(XElement titem)
-        {
-            Name = titem.Attribute("name").Value;
-            if (titem.Attribute("id") != null)
-                Id = int.Parse(titem.Attribute("id").Value);
-        }
-
-        public AutoTest Clone()
+                
+        public CodeSection CurrentCodeSection { get => Code; }
+          
+        public IAutoTest Clone()
         {
             var clone = new AutoTest();
             clone.Name = Name;
-            clone.Sections.Clear();
-            foreach (var item in Sections)
-            {
-                clone.Sections.Add(item.Clone());
-            }
+            clone.Code = Code.Clone();
 
             return clone;
+        }
+
+        public XElement ToXml()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine($"<test id=\"{Id}\" name=\"{Name}\">");
+
+            sb.AppendLine("<vars>");
+            foreach (var item in Data)
+            {
+                sb.AppendLine($"<item key=\"{item.Key}\" value=\"{item.Value}\"/>");
+            }
+            sb.AppendLine("</vars>");
+
+
+            sb.Append(Code.ToXml());
+
+            sb.AppendLine("</test>");
+
+            return XElement.Parse(sb.ToString());
+        }
+
+        public void Reset()
+        {
+            
         }
     }
 }

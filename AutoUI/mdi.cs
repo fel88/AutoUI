@@ -159,6 +159,8 @@ namespace AutoUI
             {
                 foreach (var item in Set.Tests)
                 {
+                    item.Reset();
+
                     var res = item.Run();
                     int cc = 0;
                     foreach (var sub in res.SubTests)
@@ -169,8 +171,6 @@ namespace AutoUI
                         cc++;
                     }
                     toolStripStatusLabel3.Visible = false;
-                    if (item.UseEmitter)
-                        item.State = TestStateEnum.Emitter;
 
                     listView1.Invoke((Action)(() =>
                     {
@@ -207,8 +207,7 @@ namespace AutoUI
 
         private void addTestToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Set.Tests.Add(new AutoTest(Set) { Name = "new test1" });
-            UpdateTestsList();
+
         }
 
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
@@ -221,17 +220,29 @@ namespace AutoUI
                 UpdateTestsList();
             }
         }
+
         private void editSelected()
         {
             if (listView1.SelectedItems.Count == 0)
                 return;
 
-            var test = listView1.SelectedItems[0].Tag as AutoTest;
-            Form1 f = new Form1();
-            f.MdiParent = MdiParent;
-            f.Init(test);
-            f.Show();
+            var test = listView1.SelectedItems[0].Tag as IAutoTest;
+            if (test is SpawnableAutoTest sa)
+            {
+                Form1 f = new Form1();
+                f.MdiParent = MdiParent;
+                f.Init(sa);
+                f.Show();
+            }
+            if (test is AutoTest at)
+            {
+                SimpleTestEditor f = new SimpleTestEditor();
+                f.MdiParent = MdiParent;
+                f.Init(at);
+                f.Show();
+            }
         }
+
         private void editToolStripMenuItem_Click(object sender, EventArgs e)
         {
             editSelected();
@@ -247,20 +258,22 @@ namespace AutoUI
             if (listView1.SelectedItems.Count == 0)
                 return;
 
-            var test = listView1.SelectedItems[0].Tag as AutoTest;
-            var d = DialogHelpers.StartDialog();
+            var test = listView1.SelectedItems[0].Tag as IAutoTest;
+            if (test is SpawnableAutoTest sat)
+            {
+                var d = DialogHelpers.StartDialog();
 
-            d.AddStringField("name", "Name", test.Name);
-            d.AddBoolField("emitter", "Use emitter", test.UseEmitter);
-            d.AddEnumField("faction", "Failed action", test.FailedAction);
+                d.AddStringField("name", "Name", test.Name);
+                d.AddBoolField("emitter", "Use emitter", sat.UseEmitter);
+                d.AddEnumField("faction", "Failed action", sat.FailedAction);
 
-            if (!d.ShowDialog())
-                return;
+                if (!d.ShowDialog())
+                    return;
 
-            test.Name = d.GetStringField("name");
-            test.UseEmitter = d.GetBoolField("emitter");
-            test.FailedAction = d.GetEnumField<TestFailedBehaviour>("faction");
-
+                test.Name = d.GetStringField("name");
+                sat.UseEmitter = d.GetBoolField("emitter");
+                sat.FailedAction = d.GetEnumField<TestFailedBehaviour>("faction");
+            }
             UpdateTestsList();
         }
 
@@ -269,7 +282,7 @@ namespace AutoUI
             if (listView1.SelectedItems.Count == 0)
                 return;
 
-            var test = listView1.SelectedItems[0].Tag as AutoTest;
+            var test = listView1.SelectedItems[0].Tag as IAutoTest;
             VariablesEditor ve = new VariablesEditor();
             ve.Init(test);
             ve.ShowDialog();
@@ -315,14 +328,27 @@ namespace AutoUI
             if (listView1.SelectedItems.Count == 0)
                 return;
 
-            var test = listView1.SelectedItems[0].Tag as AutoTest;
+            var test = listView1.SelectedItems[0].Tag as IAutoTest;
 
-            if (test.lastContext != null && test.lastContext.WrongState != null)
+            if (test is SpawnableAutoTest s)
             {
-                toolStripStatusLabel1.Text = $"wrong state: {test.lastContext.WrongState.Id}  {test.lastContext.WrongState.GetType().Name}";
+                if (s.lastContext != null && s.lastContext.WrongState != null)
+                {
+                    toolStripStatusLabel1.Text = $"wrong state: {s.lastContext.WrongState.Id}  {s.lastContext.WrongState.GetType().Name}";
+                }
+                if (s.lastContext != null)
+                    updateSubTestList(s.lastContext);
             }
-            if (test.lastContext != null)
-                updateSubTestList(test.lastContext);
+            else
+            if (test is AutoTest ss)
+            {
+                if (ss.lastContext != null && ss.lastContext.WrongState != null)
+                {
+                    toolStripStatusLabel1.Text = $"wrong state: {ss.lastContext.WrongState.Id}  {ss.lastContext.WrongState.GetType().Name}";
+                }
+                if (ss.lastContext != null)
+                    updateSubTestList(ss.lastContext);
+            }
 
         }
         private void updateSubTestList(AutoTestRunContext lastContext)
@@ -351,7 +377,7 @@ namespace AutoUI
             if (listView1.SelectedItems.Count == 0)
                 return;
 
-            var test = listView1.SelectedItems[0].Tag as AutoTest;
+            var test = listView1.SelectedItems[0].Tag as IAutoTest;
             var clone = test.Clone();
             clone.Name += "_clone";
             set.Tests.Add(clone);
@@ -390,6 +416,18 @@ namespace AutoUI
                 res = await rdr.ReadLineAsync();
 
             }
+        }
+
+        private void somplToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Set.Tests.Add(new AutoTest(Set) { Name = "new test1" });
+            UpdateTestsList();
+        }
+
+        private void spawnableToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Set.Tests.Add(new SpawnableAutoTest(Set) { Name = "new spawnable test1" });
+            UpdateTestsList();
         }
     }
 }

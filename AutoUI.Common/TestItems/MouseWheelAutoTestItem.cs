@@ -32,7 +32,7 @@ namespace AutoUI.TestItems
             return TestItemProcessResultEnum.Success;
         }
 
-        public override void ParseXml(AutoTest parent, XElement item)
+        public override void ParseXml(IAutoTest parent, XElement item)
         {
             if (item.Attribute("delta") != null)
                 Delta = int.Parse(item.Attribute("delta").Value);

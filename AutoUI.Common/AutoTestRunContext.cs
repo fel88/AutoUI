@@ -5,7 +5,7 @@ namespace AutoUI.Common
 {
     public class AutoTestRunContext
     {
-        public AutoTest Test;
+        public IAutoTest Test;
         public int CodePointer;
         public bool ForceCodePointer;
         public AutoTestItem WrongState;
@@ -14,6 +14,11 @@ namespace AutoUI.Common
         public EmittedSubTest SubTest;
 
         public Point? LastSearchPosition;
+        public Dictionary<string, string> StringRegisters = new Dictionary<string, string>();
+        public Dictionary<string, object> Registers = new Dictionary<string, object>();
+        public Dictionary<object, object> TagRegisters = new Dictionary<object, object>();
+        public Dictionary<string, int> IntRegisters = new Dictionary<string, int>();
+
         public Dictionary<string, object> Vars = new Dictionary<string, object>();
         public List<EmittedSubTest> SubTests = new List<EmittedSubTest>();
         public void EmitSubTest(KeyValuePair<string, object>[] vars)

@@ -41,6 +41,8 @@
             fontMatcherToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             searchDebugToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripButton4 = new System.Windows.Forms.ToolStripButton();
+            toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             listView2 = new System.Windows.Forms.ListView();
             columnHeader4 = new System.Windows.Forms.ColumnHeader();
@@ -54,6 +56,8 @@
             columnHeader3 = new System.Windows.Forms.ColumnHeader();
             contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(components);
             addTestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            somplToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            spawnableToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             updateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -64,8 +68,6 @@
             toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
             toolStripStatusLabel3 = new System.Windows.Forms.ToolStripStatusLabel();
-            toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             toolStrip1.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
             contextMenuStrip2.SuspendLayout();
@@ -96,7 +98,7 @@
             // 
             newToolStripMenuItem.Image = Properties.Resources.plus1;
             newToolStripMenuItem.Name = "newToolStripMenuItem";
-            newToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            newToolStripMenuItem.Size = new System.Drawing.Size(97, 22);
             newToolStripMenuItem.Text = "new";
             newToolStripMenuItem.Click += newToolStripMenuItem_Click;
             // 
@@ -104,7 +106,7 @@
             // 
             saveToolStripMenuItem.Image = Properties.Resources.disk;
             saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            saveToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            saveToolStripMenuItem.Size = new System.Drawing.Size(97, 22);
             saveToolStripMenuItem.Text = "save";
             saveToolStripMenuItem.Click += saveToolStripMenuItem_Click;
             // 
@@ -112,7 +114,7 @@
             // 
             loadToolStripMenuItem.Image = Properties.Resources.folder_open;
             loadToolStripMenuItem.Name = "loadToolStripMenuItem";
-            loadToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            loadToolStripMenuItem.Size = new System.Drawing.Size(97, 22);
             loadToolStripMenuItem.Text = "load";
             loadToolStripMenuItem.Click += loadToolStripMenuItem_Click;
             // 
@@ -169,6 +171,20 @@
             toolStripButton4.Size = new System.Drawing.Size(60, 22);
             toolStripButton4.Text = "run all";
             toolStripButton4.Click += toolStripButton4_Click;
+            // 
+            // toolStripSeparator1
+            // 
+            toolStripSeparator1.Name = "toolStripSeparator1";
+            toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
+            // 
+            // toolStripButton1
+            // 
+            toolStripButton1.Image = Properties.Resources.remote_control;
+            toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+            toolStripButton1.Name = "toolStripButton1";
+            toolStripButton1.Size = new System.Drawing.Size(95, 22);
+            toolStripButton1.Text = "run remotely";
+            toolStripButton1.Click += toolStripButton1_Click_1;
             // 
             // tableLayoutPanel1
             // 
@@ -254,7 +270,7 @@
             // columnHeader1
             // 
             columnHeader1.Text = "Name";
-            columnHeader1.Width = 120;
+            columnHeader1.Width = 320;
             // 
             // columnHeader2
             // 
@@ -274,11 +290,26 @@
             // 
             // addTestToolStripMenuItem
             // 
+            addTestToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { somplToolStripMenuItem, spawnableToolStripMenuItem });
             addTestToolStripMenuItem.Image = Properties.Resources.plus;
             addTestToolStripMenuItem.Name = "addTestToolStripMenuItem";
             addTestToolStripMenuItem.Size = new System.Drawing.Size(120, 22);
             addTestToolStripMenuItem.Text = "add test";
             addTestToolStripMenuItem.Click += addTestToolStripMenuItem_Click;
+            // 
+            // somplToolStripMenuItem
+            // 
+            somplToolStripMenuItem.Name = "somplToolStripMenuItem";
+            somplToolStripMenuItem.Size = new System.Drawing.Size(130, 22);
+            somplToolStripMenuItem.Text = "simple";
+            somplToolStripMenuItem.Click += somplToolStripMenuItem_Click;
+            // 
+            // spawnableToolStripMenuItem
+            // 
+            spawnableToolStripMenuItem.Name = "spawnableToolStripMenuItem";
+            spawnableToolStripMenuItem.Size = new System.Drawing.Size(130, 22);
+            spawnableToolStripMenuItem.Text = "spawnable";
+            spawnableToolStripMenuItem.Click += spawnableToolStripMenuItem_Click;
             // 
             // deleteToolStripMenuItem
             // 
@@ -356,20 +387,6 @@
             toolStripStatusLabel3.Size = new System.Drawing.Size(30, 17);
             toolStripStatusLabel3.Text = ".. / ..";
             // 
-            // toolStripSeparator1
-            // 
-            toolStripSeparator1.Name = "toolStripSeparator1";
-            toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
-            // 
-            // toolStripButton1
-            // 
-            toolStripButton1.Image = Properties.Resources.remote_control;
-            toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
-            toolStripButton1.Name = "toolStripButton1";
-            toolStripButton1.Size = new System.Drawing.Size(95, 22);
-            toolStripButton1.Text = "run remotely";
-            toolStripButton1.Click += toolStripButton1_Click_1;
-            // 
             // mdi
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -433,5 +450,7 @@
         private System.Windows.Forms.ToolStripMenuItem cloneToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripButton toolStripButton1;
+        private System.Windows.Forms.ToolStripMenuItem somplToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem spawnableToolStripMenuItem;
     }
 }

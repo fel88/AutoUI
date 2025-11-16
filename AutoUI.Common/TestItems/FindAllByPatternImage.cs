@@ -68,7 +68,7 @@ namespace AutoUI.TestItems
             return TestItemProcessResultEnum.Success;
 
         }
-        public override void ParseXml(AutoTest set, XElement item)
+        public override void ParseXml(IAutoTest set, XElement item)
         {
             if (item.Attribute("storeVarName") != null)
                 StoreVarName = item.Attribute("storeVarName").Value;

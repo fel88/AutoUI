@@ -10,22 +10,7 @@ namespace AutoUI.Common
     public class CodeSection
     {
         public CodeSection() { }
-        public string Name { get; set; }
-        public List<AutoTestItem> Items = new List<AutoTestItem>();
-        public CodeSectionRole Role { get; set; }
-        internal CodeSection Clone()
-        {
-            CodeSection ret = new CodeSection();
-            ret.Name = Name;
-            ret.Role = Role;
-            foreach (var item in Items)
-            {
-                ret.Items.Add(item.Clone());
-            }
-            return ret;
-        }
-
-        public CodeSection(AutoTest test, XElement section)
+        public CodeSection(IAutoTest test, XElement section)
         {
             Name = section.Attribute("name").Value;
             if (section.Attribute("role") != null)
@@ -45,6 +30,22 @@ namespace AutoUI.Common
                 Items.Add(tp);
             }
         }
+        public string Name { get; set; }
+        public List<AutoTestItem> Items = new List<AutoTestItem>();
+        public CodeSectionRole Role { get; set; }
+        internal CodeSection Clone()
+        {
+            CodeSection ret = new CodeSection();
+            ret.Name = Name;
+            ret.Role = Role;
+            foreach (var item in Items)
+            {
+                ret.Items.Add(item.Clone());
+            }
+            return ret;
+        }
+
+        
 
         public XElement ToXml()
         {

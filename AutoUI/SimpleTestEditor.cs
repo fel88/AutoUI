@@ -13,9 +13,9 @@ using System.Windows.Forms;
 
 namespace AutoUI
 {
-    public partial class Form1 : Form
+    public partial class SimpleTestEditor : Form
     {
-        public Form1()
+        public SimpleTestEditor()
         {
             InitializeComponent();
             listView1.DragDrop += ListView1_DragDrop;
@@ -132,7 +132,7 @@ namespace AutoUI
         }
         MessageFilter mf = null;
 
-        SpawnableAutoTest test;
+        AutoTest test;
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
             var ee = new KeyEventArgs(keyData);
@@ -158,15 +158,15 @@ namespace AutoUI
             return base.ProcessCmdKey(ref msg, keyData);
         }
 
-        internal void Init(SpawnableAutoTest test)
+        internal void Init(AutoTest test)
         {
             this.test = test;
-            currentCodeSection = test.Main;
+            currentCodeSection = test.CurrentCodeSection;
             if (currentCodeSection != null)
             {
                 UpdateTestItemsList();
             }
-            UpdateSectionsList();
+            
         }
 
         public Bitmap GetScreenshot()
@@ -597,108 +597,15 @@ namespace AutoUI
             UpdateTestItemsList();
 
         }
-
-        private void mainToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (currentCodeSection != test.Main && Helpers.Question("switch to main?", ParentForm.Text))
-            {
-                currentCodeSection = test.Main;
-                sectionToolStripStatusLabel.Text = "main";
-                UpdateTestItemsList();
-            }
-        }
-
-        private void finalizerToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (currentCodeSection != test.Finalizer && Helpers.Question("switch to finalizer?", ParentForm.Text))
-            {
-                currentCodeSection = test.Finalizer;
-                sectionToolStripStatusLabel.Text = "finalizer";
-                UpdateTestItemsList();
-            }
-        }
-
-        private void emitterToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (currentCodeSection != test.Emitter && Helpers.Question("switch to emitter?", ParentForm.Text))
-            {
-                currentCodeSection = test.Emitter;
-                sectionToolStripStatusLabel.Text = "emitter";
-                UpdateTestItemsList();
-            }
-        }
-
+  
+        
         private void wheelToolStripMenuItem_Click(object sender, EventArgs e)
         {
             addOrInsertItem(new MouseWheelAutoTestItem());
         }
 
-
         private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
         {
-
-        }
-
-
-        private void listView2_MouseDoubleClick(object sender, MouseEventArgs e)
-        {
-            if (listView2.SelectedItems.Count == 0)
-                return;
-
-            var cs = listView2.SelectedItems[0].Tag as CodeSection;
-            if (currentCodeSection != cs && Helpers.Question($"switch to {cs.Name}?", Text))
-            {
-                currentCodeSection = cs;
-                sectionToolStripStatusLabel.Text = cs.Name;
-                UpdateTestItemsList();
-            }
-        }
-
-        public void UpdateSectionsList()
-        {
-            listView2.Items.Clear();
-            foreach (var item in test.Sections)
-            {
-                listView2.Items.Add(new ListViewItem(new string[] { item.Name, item.Role.ToString() }) { Tag = item });
-            }
-        }
-
-        private void addToolStripMenuItem1_Click(object sender, EventArgs e)
-        {
-            var d = AutoDialog.DialogHelpers.StartDialog();
-            d.AddStringField("name", "Name");
-            d.AddEnumField<CodeSectionRole>("role", "Role", CodeSectionRole.FsmState);
-
-            if (!d.ShowDialog())
-                return;
-
-            test.Sections.Add(new CodeSection() { Name = d.GetStringField("name"), Role = d.GetEnumField<CodeSectionRole>("role") });
-            UpdateSectionsList();
-
-        }
-
-        private void deleteToolStripMenuItem1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void edirToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (listView2.SelectedItems.Count == 0)
-                return;
-
-            var cs = listView2.SelectedItems[0].Tag as CodeSection;
-
-            var d = AutoDialog.DialogHelpers.StartDialog();
-            d.AddStringField("name", "Name", cs.Name);
-            d.AddEnumField<CodeSectionRole>("role", "Role", cs.Role);
-
-            if (!d.ShowDialog())
-                return;
-
-            cs.Name = d.GetStringField("name");
-            cs.Role = d.GetEnumField<CodeSectionRole>("role");
-            UpdateSectionsList();
 
         }
 

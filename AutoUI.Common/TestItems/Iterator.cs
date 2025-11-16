@@ -16,8 +16,8 @@ namespace AutoUI.TestItems
             {
                 var fr = collection.First();
 
-                var fr1 = ctx.Test.Main.Items.OfType<LabelAutoTestItem>().First(z => z.Label == Label);
-                ctx.CodePointer = ctx.Test.Main.Items.IndexOf(fr1);
+                var fr1 = ctx.Test.CurrentCodeSection.Items.OfType<LabelAutoTestItem>().First(z => z.Label == Label);
+                ctx.CodePointer = ctx.Test.CurrentCodeSection.Items.IndexOf(fr1);
                 ctx.ForceCodePointer = true;
 
                 collection.RemoveAt(0);
@@ -26,7 +26,7 @@ namespace AutoUI.TestItems
             return TestItemProcessResultEnum.Success;
         }
 
-        public override void ParseXml(AutoTest set, XElement item)
+        public override void ParseXml(IAutoTest set, XElement item)
         {
             if (item.Attribute("itemStoreVarName") != null)
                 ItemStoreVarName = item.Attribute("itemStoreVarName").Value;
