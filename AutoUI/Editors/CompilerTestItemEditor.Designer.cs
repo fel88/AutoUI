@@ -29,62 +29,68 @@ namespace AutoUI.TestItems.Editors
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CompilerTestItemEditor));
-            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
-            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
-            this.toolStrip1.SuspendLayout();
-            this.SuspendLayout();
-            // 
-            // richTextBox1
-            // 
-            this.richTextBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.richTextBox1.Location = new System.Drawing.Point(0, 25);
-            this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(625, 345);
-            this.richTextBox1.TabIndex = 0;
-            this.richTextBox1.Text = "";
-            this.richTextBox1.TextChanged += new System.EventHandler(this.richTextBox1_TextChanged);
+            toolStrip1 = new System.Windows.Forms.ToolStrip();
+            toolStripButton1 = new System.Windows.Forms.ToolStripButton();
+            panel1 = new System.Windows.Forms.Panel();
+            toolStripButton2 = new System.Windows.Forms.ToolStripButton();
+            toolStrip1.SuspendLayout();
+            SuspendLayout();
             // 
             // toolStrip1
             // 
-            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripButton1});
-            this.toolStrip1.Location = new System.Drawing.Point(0, 0);
-            this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(625, 25);
-            this.toolStrip1.TabIndex = 1;
-            this.toolStrip1.Text = "toolStrip1";
+            toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripButton1, toolStripButton2 });
+            toolStrip1.Location = new System.Drawing.Point(0, 0);
+            toolStrip1.Name = "toolStrip1";
+            toolStrip1.Size = new System.Drawing.Size(729, 25);
+            toolStrip1.TabIndex = 1;
+            toolStrip1.Text = "toolStrip1";
             // 
             // toolStripButton1
             // 
-            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
-            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(54, 22);
-            this.toolStripButton1.Text = "compile";
-            this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
+            toolStripButton1.Image = Properties.Resources.compile;
+            toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+            toolStripButton1.Name = "toolStripButton1";
+            toolStripButton1.Size = new System.Drawing.Size(70, 22);
+            toolStripButton1.Text = "compile";
+            toolStripButton1.Click += toolStripButton1_Click;
             // 
-            // CompilerTestItem
+            // panel1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.richTextBox1);
-            this.Controls.Add(this.toolStrip1);
-            this.Name = "CompilerTestItem";
-            this.Size = new System.Drawing.Size(625, 370);
-            this.toolStrip1.ResumeLayout(false);
-            this.toolStrip1.PerformLayout();
-            this.ResumeLayout(false);
-            this.PerformLayout();
+            panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            panel1.Location = new System.Drawing.Point(0, 25);
+            panel1.Name = "panel1";
+            panel1.Size = new System.Drawing.Size(729, 402);
+            panel1.TabIndex = 2;
+            // 
+            // toolStripButton2
+            // 
+            toolStripButton2.Image = Properties.Resources.edit_vertical_alignment;
+            toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
+            toolStripButton2.Name = "toolStripButton2";
+            toolStripButton2.Size = new System.Drawing.Size(63, 22);
+            toolStripButton2.Text = "format";
+            toolStripButton2.Click += toolStripButton2_Click;
+            // 
+            // CompilerTestItemEditor
+            // 
+            AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            Controls.Add(panel1);
+            Controls.Add(toolStrip1);
+            Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            Name = "CompilerTestItemEditor";
+            Size = new System.Drawing.Size(729, 427);
+            toolStrip1.ResumeLayout(false);
+            toolStrip1.PerformLayout();
+            ResumeLayout(false);
+            PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.RichTextBox richTextBox1;
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.ToolStripButton toolStripButton1;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.ToolStripButton toolStripButton2;
     }
 }

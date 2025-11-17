@@ -113,6 +113,16 @@ namespace AutoUI.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap compile {
+            get {
+                object obj = ResourceManager.GetObject("compile", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap control_double {
             get {
                 object obj = ResourceManager.GetObject("control-double", resourceCulture);
@@ -156,6 +166,26 @@ namespace AutoUI.Properties {
         public static System.Drawing.Bitmap edit_language {
             get {
                 object obj = ResourceManager.GetObject("edit-language", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap edit_vertical_alignment {
+            get {
+                object obj = ResourceManager.GetObject("edit-vertical-alignment", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap edit_writing_mode {
+            get {
+                object obj = ResourceManager.GetObject("edit-writing-mode", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

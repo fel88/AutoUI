@@ -1,17 +1,22 @@
-﻿using AutoUI.Common;
+﻿using AutoUI.CodeEditor;
+using AutoUI.Common;
 using AutoUI.Common.TestItems;
 using AutoUI.Editors;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.Integration;
 
 namespace AutoUI.TestItems.Editors
 {
@@ -22,6 +27,12 @@ namespace AutoUI.TestItems.Editors
         {
             InitializeComponent();
             errorPanel.Height = 100;
+            ElementHost host = new ElementHost();
+            host.Child = codeEditor = new CodeEditor.CodeEditor();
+            codeEditor.TextEditor.TextChanged += TextEditor_TextChanged;
+            host.Dock = DockStyle.Fill;
+            panel1.Controls.Add(host);
+
 
             lv = new ListView();
             lv.GridLines = true;
@@ -32,17 +43,24 @@ namespace AutoUI.TestItems.Editors
             lv.Columns.Add("c", 100);
             errorPanel.Controls.Add(lv, 0, 0);
             lv.Dock = DockStyle.Fill;
-            richTextBox1.Controls.Add(errorPanel);
+            panel1.Controls.Add(errorPanel);
             errorPanel.Dock = DockStyle.Bottom;
             errorPanel.Visible = false;
         }
+
+        private void TextEditor_TextChanged(object sender, EventArgs e)
+        {
+            TestItem.ProgramText = codeEditor.Text;
+        }
+
         ListView lv;
+        CodeEditor.CodeEditor codeEditor;
         TableLayoutPanel errorPanel = new TableLayoutPanel();
         public CompilingTestItem TestItem;
         public void Init(AutoTestItem item)
         {
             TestItem = item as CompilingTestItem;
-            richTextBox1.Text = TestItem.ProgramText;
+            codeEditor.Text = TestItem.ProgramText;
         }
 
         private void toolStripButton1_Click(object sender, EventArgs e)
@@ -50,11 +68,11 @@ namespace AutoUI.TestItems.Editors
             var results = TestItem.compile();
 
             errorPanel.Visible = false;
-            
+
             lv.Items.Clear();
             foreach (var item in results.Errors)
             {
-                errorPanel.Visible = true;           
+                errorPanel.Visible = true;
                 lv.Items.Add(new ListViewItem([$"{item.Line}", $"{item.Line}: {item.Text}"]) { Tag = item, BackColor = Color.Pink, ForeColor = Color.White });
             }
             try
@@ -69,11 +87,11 @@ namespace AutoUI.TestItems.Editors
                     //dynamic v = inst;
                     //var mf = t.GetMethods().FirstOrDefault(z => z.Name.Contains("sum"));
                     var mf2 = t.GetMethods().FirstOrDefault(z => z.Name.Contains("run"));
-                 /*   if (mf != null)
-                    {
-                        var res = mf.Invoke(inst, new object[] { 3, 5 });
-                        MessageBox.Show(res + "");
-                    }*/
+                    /*   if (mf != null)
+                       {
+                           var res = mf.Invoke(inst, new object[] { 3, 5 });
+                           MessageBox.Show(res + "");
+                       }*/
                     if (mf2 != null)
                     {
                         var ctx = new AutoTestRunContext();
@@ -91,9 +109,16 @@ namespace AutoUI.TestItems.Editors
             }
         }
 
-        private void richTextBox1_TextChanged(object sender, EventArgs e)
+        public string NormalizeCodeWithRoslyn(string csCode)
         {
-            TestItem.ProgramText = richTextBox1.Text;
+            var tree = CSharpSyntaxTree.ParseText(csCode);
+            var root = tree.GetRoot().NormalizeWhitespace();
+            return root.ToFullString();            
+        }
+
+        private void toolStripButton2_Click(object sender, EventArgs e)
+        {
+            codeEditor.Text = NormalizeCodeWithRoslyn(codeEditor.Text);
         }
     }
 

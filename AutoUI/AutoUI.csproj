@@ -2,7 +2,8 @@
   <PropertyGroup>
     <TargetFramework>net8.0-windows7.0</TargetFramework>
     <OutputType>WinExe</OutputType>
-    <UseWindowsForms>true</UseWindowsForms>
+	  <UseWindowsForms>true</UseWindowsForms>
+	  <UseWPF>true</UseWPF>
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
     <ApplicationIcon>flask.ico</ApplicationIcon>
   </PropertyGroup>
@@ -44,6 +45,7 @@
     <Content Include="flask.ico" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\AutoUI.CodeEditor\AutoUI.CodeEditor.csproj" />
     <ProjectReference Include="..\AutoUI.Common\AutoUI.Common.csproj" />
   </ItemGroup>
   <ItemGroup>
