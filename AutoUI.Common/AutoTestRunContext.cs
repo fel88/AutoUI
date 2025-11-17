@@ -25,10 +25,12 @@ namespace AutoUI.Common
         {
             var et = new EmittedSubTest() { SourceTest = Test };
             SubTests.Add(et);
-            foreach (var item in vars)
-            {
-                et.Data.Add(item.Key, item.Value);
-            }
+
+            if (vars != null)
+                foreach (var item in vars)
+                {
+                    et.Data.Add(item.Key, item.Value);
+                }
         }
     }
 }

@@ -1,20 +1,12 @@
-﻿using AutoUI.CodeEditor;
-using AutoUI.Common;
+﻿using AutoUI.Common;
 using AutoUI.Common.TestItems;
 using AutoUI.Editors;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using System;
-using System.CodeDom.Compiler;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.Integration;
 
@@ -108,17 +100,17 @@ namespace AutoUI.TestItems.Editors
                 MessageBox.Show(ex.Message);
             }
         }
-
-        public string NormalizeCodeWithRoslyn(string csCode)
-        {
-            var tree = CSharpSyntaxTree.ParseText(csCode);
-            var root = tree.GetRoot().NormalizeWhitespace();
-            return root.ToFullString();            
-        }
+               
 
         private void toolStripButton2_Click(object sender, EventArgs e)
         {
-            codeEditor.Text = NormalizeCodeWithRoslyn(codeEditor.Text);
+            codeEditor.Text = codeEditor.Text.NormalizeCodeWithRoslyn();
+        }
+
+        private void toolStripButton3_Click(object sender, EventArgs e)
+        {
+            var offset = codeEditor.TextEditor.CaretOffset;
+            codeEditor.TextEditor.Document.Insert(offset, $"Debugger.Launch();{Environment.NewLine}");
         }
     }
 

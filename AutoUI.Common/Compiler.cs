@@ -1,6 +1,7 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using System.CodeDom.Compiler;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
 
@@ -16,11 +17,13 @@ namespace AutoUI.Common
             assembliesToBind.Add("Microsoft.CSharp.dll");
             assembliesToBind.Add("System.Core.dll");
             assembliesToBind.Add("System.Runtime.dll");
+            assembliesToBind.Add("System.Collections.dll");
             assembliesToBind.Add("System.Windows.Forms.dll");
 
             assembliesToBind.Add(Assembly.GetAssembly(typeof(System.Dynamic.DynamicObject)).FullName);
             assembliesToBind.Add(Assembly.GetAssembly(typeof(System.Attribute)).FullName);
             assembliesToBind.Add(Assembly.GetAssembly(typeof(AutoTestRunContext)).FullName);
+            
             foreach (var item in assembliesToBind)
             {
                 if (File.Exists(item))

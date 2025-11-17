@@ -170,6 +170,7 @@ namespace AutoUI.Server
                         Console.WriteLine($"[TEST #{testIdx}] starting...");
                         try
                         {
+                            item.Reset();
                             var res = item.Run();
                             int cc = 0;
                             foreach (var sub in res.SubTests)
@@ -177,9 +178,7 @@ namespace AutoUI.Server
                                 var res1 = sub.Run();
                                 cc++;
                             }
-
-                            if (item.UseEmitter)
-                                item.State = TestStateEnum.Emitter;
+                                                       
 
                             wrt2.WriteLine($"RESULT={item.State}");
                             wrt2.Flush();

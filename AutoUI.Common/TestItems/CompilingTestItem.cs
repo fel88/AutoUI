@@ -1,9 +1,4 @@
-﻿using AutoUI.Common;
-using Microsoft.CSharp;
-using System;
-using System.CodeDom.Compiler;
-using System.Linq;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Text;
 using System.Xml.Linq;
 
@@ -13,9 +8,16 @@ namespace AutoUI.Common.TestItems
 
     public class CompilingTestItem : AutoTestItem
     {
+        public CompilingTestItem()
+        {
+            
+        }
+
         public string ProgramText= @"
 using AutoUI.Common;
 using System.Windows.Forms;
+using System.Collections.Generic;
+using System.Diagnostics;
 
 class Program{
 

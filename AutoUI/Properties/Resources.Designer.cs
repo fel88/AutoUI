@@ -113,6 +113,16 @@ namespace AutoUI.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap bug__plus {
+            get {
+                object obj = ResourceManager.GetObject("bug--plus", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap compile {
             get {
                 object obj = ResourceManager.GetObject("compile", resourceCulture);

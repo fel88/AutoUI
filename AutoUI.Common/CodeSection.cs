@@ -46,17 +46,17 @@ namespace AutoUI.Common
             return ret;
         }
 
-        
+
 
         public XElement ToXml()
         {
             XElement element = new XElement("section");
-            element.Add(new XAttribute("name", Name));
+            element.Add(new XAttribute("name", Name ?? string.Empty));
             element.Add(new XAttribute("role", Role));
-            
+
             foreach (var item in Items)
             {
-                element.Add(XElement.Parse( item.ToXml()));
+                element.Add(XElement.Parse(item.ToXml()));
             }
             return element;
         }

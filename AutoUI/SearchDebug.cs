@@ -108,7 +108,7 @@ namespace AutoUI
         private void button2_Click(object sender, EventArgs e)
         {
             PatternSelector ps = new PatternSelector();
-            ps.Init(mdi.set.Pool);
+            ps.Init(Tests.set.Pool);
             ps.ShowDialog();
             pattern = ps.Selected;
         }

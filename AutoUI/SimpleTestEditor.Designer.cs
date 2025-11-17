@@ -87,7 +87,6 @@
             listView1.Location = new System.Drawing.Point(481, 3);
             listView1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             listView1.Name = "listView1";
-            tableLayoutPanel1.SetRowSpan(listView1, 2);
             listView1.Size = new System.Drawing.Size(469, 466);
             listView1.TabIndex = 1;
             listView1.UseCompatibleStateImageBehavior = false;
@@ -104,7 +103,7 @@
             // 
             contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { addToolStripMenuItem, editToolStripMenuItem, deleteToolStripMenuItem, clearToolStripMenuItem, toolStripSeparator1, upToolStripMenuItem, topToolStripMenuItem, downToolStripMenuItem, toolStripSeparator2, setPatternToolStripMenuItem, toolStripSeparator3, runToolStripMenuItem1, runFromHereToolStripMenuItem });
             contextMenuStrip1.Name = "contextMenuStrip1";
-            contextMenuStrip1.Size = new System.Drawing.Size(181, 264);
+            contextMenuStrip1.Size = new System.Drawing.Size(148, 242);
             contextMenuStrip1.Opening += contextMenuStrip1_Opening;
             // 
             // addToolStripMenuItem
@@ -112,63 +111,63 @@
             addToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { searchByPatternToolStripMenuItem, clickToolStripMenuItem, delayToolStripMenuItem, mouseUpDownToolStripMenuItem, scriptToolStripMenuItem, screenshotToolStripMenuItem, gotoToolStripMenuItem, labelToolStripMenuItem, processToolStripMenuItem, cursorPositionToolStripMenuItem, waitPatternToolStripMenuItem, findAllToolStripMenuItem, iterateToolStripMenuItem, wheelToolStripMenuItem });
             addToolStripMenuItem.Image = Properties.Resources.plus;
             addToolStripMenuItem.Name = "addToolStripMenuItem";
-            addToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            addToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
             addToolStripMenuItem.Text = "add";
             addToolStripMenuItem.DropDownOpening += addToolStripMenuItem_DropDownOpening;
             // 
             // searchByPatternToolStripMenuItem
             // 
             searchByPatternToolStripMenuItem.Name = "searchByPatternToolStripMenuItem";
-            searchByPatternToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            searchByPatternToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
             searchByPatternToolStripMenuItem.Text = "search by pattern";
             searchByPatternToolStripMenuItem.Click += searchByPatternToolStripMenuItem_Click;
             // 
             // clickToolStripMenuItem
             // 
             clickToolStripMenuItem.Name = "clickToolStripMenuItem";
-            clickToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            clickToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
             clickToolStripMenuItem.Text = "click";
             clickToolStripMenuItem.Click += clickToolStripMenuItem_Click_1;
             // 
             // delayToolStripMenuItem
             // 
             delayToolStripMenuItem.Name = "delayToolStripMenuItem";
-            delayToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            delayToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
             delayToolStripMenuItem.Text = "delay";
             delayToolStripMenuItem.Click += delayToolStripMenuItem_Click_1;
             // 
             // mouseUpDownToolStripMenuItem
             // 
             mouseUpDownToolStripMenuItem.Name = "mouseUpDownToolStripMenuItem";
-            mouseUpDownToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            mouseUpDownToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
             mouseUpDownToolStripMenuItem.Text = "mouseUpDown";
             mouseUpDownToolStripMenuItem.Click += mouseUpDownToolStripMenuItem_Click_1;
             // 
             // scriptToolStripMenuItem
             // 
             scriptToolStripMenuItem.Name = "scriptToolStripMenuItem";
-            scriptToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            scriptToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
             scriptToolStripMenuItem.Text = "script";
             scriptToolStripMenuItem.Click += scriptToolStripMenuItem_Click;
             // 
             // screenshotToolStripMenuItem
             // 
             screenshotToolStripMenuItem.Name = "screenshotToolStripMenuItem";
-            screenshotToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            screenshotToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
             screenshotToolStripMenuItem.Text = "screenshot";
             screenshotToolStripMenuItem.Click += screenshotToolStripMenuItem_Click;
             // 
             // gotoToolStripMenuItem
             // 
             gotoToolStripMenuItem.Name = "gotoToolStripMenuItem";
-            gotoToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            gotoToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
             gotoToolStripMenuItem.Text = "goto";
             gotoToolStripMenuItem.Click += gotoToolStripMenuItem_Click_1;
             // 
             // labelToolStripMenuItem
             // 
             labelToolStripMenuItem.Name = "labelToolStripMenuItem";
-            labelToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            labelToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
             labelToolStripMenuItem.Text = "label";
             labelToolStripMenuItem.Click += labelToolStripMenuItem_Click_1;
             // 
@@ -176,7 +175,7 @@
             // 
             processToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { runToolStripMenuItem, terminateToolStripMenuItem });
             processToolStripMenuItem.Name = "processToolStripMenuItem";
-            processToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            processToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
             processToolStripMenuItem.Text = "process ";
             // 
             // runToolStripMenuItem
@@ -196,7 +195,7 @@
             // cursorPositionToolStripMenuItem
             // 
             cursorPositionToolStripMenuItem.Name = "cursorPositionToolStripMenuItem";
-            cursorPositionToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            cursorPositionToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
             cursorPositionToolStripMenuItem.Text = "cursor position";
             cursorPositionToolStripMenuItem.Click += cursorPositionToolStripMenuItem_Click;
             // 
@@ -204,28 +203,28 @@
             // 
             waitPatternToolStripMenuItem.Image = Properties.Resources.hourglass;
             waitPatternToolStripMenuItem.Name = "waitPatternToolStripMenuItem";
-            waitPatternToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            waitPatternToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
             waitPatternToolStripMenuItem.Text = "wait image pattern";
             waitPatternToolStripMenuItem.Click += waitPatternToolStripMenuItem_Click;
             // 
             // findAllToolStripMenuItem
             // 
             findAllToolStripMenuItem.Name = "findAllToolStripMenuItem";
-            findAllToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            findAllToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
             findAllToolStripMenuItem.Text = "find all";
             findAllToolStripMenuItem.Click += findAllToolStripMenuItem_Click;
             // 
             // iterateToolStripMenuItem
             // 
             iterateToolStripMenuItem.Name = "iterateToolStripMenuItem";
-            iterateToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            iterateToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
             iterateToolStripMenuItem.Text = "iterate";
             iterateToolStripMenuItem.Click += iterateToolStripMenuItem_Click;
             // 
             // wheelToolStripMenuItem
             // 
             wheelToolStripMenuItem.Name = "wheelToolStripMenuItem";
-            wheelToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            wheelToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
             wheelToolStripMenuItem.Text = "wheel";
             wheelToolStripMenuItem.Click += wheelToolStripMenuItem_Click;
             // 
@@ -233,7 +232,7 @@
             // 
             editToolStripMenuItem.Image = Properties.Resources.pencil;
             editToolStripMenuItem.Name = "editToolStripMenuItem";
-            editToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            editToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
             editToolStripMenuItem.Text = "edit";
             editToolStripMenuItem.Click += editToolStripMenuItem_Click;
             // 
@@ -241,7 +240,7 @@
             // 
             deleteToolStripMenuItem.Image = Properties.Resources.cross;
             deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
-            deleteToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            deleteToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
             deleteToolStripMenuItem.Text = "delete";
             deleteToolStripMenuItem.Click += deleteToolStripMenuItem_Click;
             // 
@@ -249,20 +248,20 @@
             // 
             clearToolStripMenuItem.Image = Properties.Resources.eraser;
             clearToolStripMenuItem.Name = "clearToolStripMenuItem";
-            clearToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            clearToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
             clearToolStripMenuItem.Text = "clear";
             clearToolStripMenuItem.Click += clearToolStripMenuItem_Click;
             // 
             // toolStripSeparator1
             // 
             toolStripSeparator1.Name = "toolStripSeparator1";
-            toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
+            toolStripSeparator1.Size = new System.Drawing.Size(144, 6);
             // 
             // upToolStripMenuItem
             // 
             upToolStripMenuItem.Image = Properties.Resources.arrow_090;
             upToolStripMenuItem.Name = "upToolStripMenuItem";
-            upToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            upToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
             upToolStripMenuItem.Text = "up";
             upToolStripMenuItem.Click += upToolStripMenuItem_Click;
             // 
@@ -270,7 +269,7 @@
             // 
             topToolStripMenuItem.Image = Properties.Resources.arrow_stop_090;
             topToolStripMenuItem.Name = "topToolStripMenuItem";
-            topToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            topToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
             topToolStripMenuItem.Text = "top";
             topToolStripMenuItem.Click += topToolStripMenuItem_Click;
             // 
@@ -278,40 +277,40 @@
             // 
             downToolStripMenuItem.Image = Properties.Resources.arrow_270;
             downToolStripMenuItem.Name = "downToolStripMenuItem";
-            downToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            downToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
             downToolStripMenuItem.Text = "down";
             downToolStripMenuItem.Click += downToolStripMenuItem_Click;
             // 
             // toolStripSeparator2
             // 
             toolStripSeparator2.Name = "toolStripSeparator2";
-            toolStripSeparator2.Size = new System.Drawing.Size(177, 6);
+            toolStripSeparator2.Size = new System.Drawing.Size(144, 6);
             // 
             // setPatternToolStripMenuItem
             // 
             setPatternToolStripMenuItem.Image = Properties.Resources.spectrum;
             setPatternToolStripMenuItem.Name = "setPatternToolStripMenuItem";
-            setPatternToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            setPatternToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
             setPatternToolStripMenuItem.Text = "set pattern";
             setPatternToolStripMenuItem.Click += setPatternToolStripMenuItem_Click;
             // 
             // toolStripSeparator3
             // 
             toolStripSeparator3.Name = "toolStripSeparator3";
-            toolStripSeparator3.Size = new System.Drawing.Size(177, 6);
+            toolStripSeparator3.Size = new System.Drawing.Size(144, 6);
             // 
             // runToolStripMenuItem1
             // 
             runToolStripMenuItem1.Image = Properties.Resources.control_double;
             runToolStripMenuItem1.Name = "runToolStripMenuItem1";
-            runToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            runToolStripMenuItem1.Size = new System.Drawing.Size(147, 22);
             runToolStripMenuItem1.Text = "run selected";
             runToolStripMenuItem1.Click += runToolStripMenuItem1_Click;
             // 
             // runFromHereToolStripMenuItem
             // 
             runFromHereToolStripMenuItem.Name = "runFromHereToolStripMenuItem";
-            runFromHereToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            runFromHereToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
             runFromHereToolStripMenuItem.Text = "run from here";
             // 
             // statusStrip1
@@ -380,9 +379,8 @@
             tableLayoutPanel1.Location = new System.Drawing.Point(0, 25);
             tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
-            tableLayoutPanel1.RowCount = 2;
+            tableLayoutPanel1.RowCount = 1;
             tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 231F));
             tableLayoutPanel1.Size = new System.Drawing.Size(954, 472);
             tableLayoutPanel1.TabIndex = 6;
             tableLayoutPanel1.Paint += tableLayoutPanel1_Paint;
