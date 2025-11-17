@@ -16,9 +16,9 @@ using System.Windows.Forms;
 namespace AutoUI.TestItems.Editors
 {
     [TestItemEditor(Target = typeof(CompilingTestItem))]
-    public partial class CompilerTestItem : UserControl, ITestItemEditor
+    public partial class CompilerTestItemEditor : UserControl, ITestItemEditor
     {
-        public CompilerTestItem()
+        public CompilerTestItemEditor()
         {
             InitializeComponent();
             errorPanel.Height = 100;
@@ -52,33 +52,33 @@ namespace AutoUI.TestItems.Editors
             errorPanel.Visible = false;
             
             lv.Items.Clear();
-            foreach (var item in results.Errors.OfType<CompilerError>())
+            foreach (var item in results.Errors)
             {
                 errorPanel.Visible = true;           
-                lv.Items.Add(new ListViewItem(new string[] { item.Line+"", item.ErrorNumber + ": " + item.ErrorText }) { Tag = item, BackColor = Color.Pink, ForeColor = Color.White });
+                lv.Items.Add(new ListViewItem([$"{item.Line}", $"{item.Line}: {item.Text}"]) { Tag = item, BackColor = Color.Pink, ForeColor = Color.White });
             }
             try
             {
-                Assembly asm = results.CompiledAssembly;
+                Assembly asm = results.Assembly;
 
-                Type[] allTypes = results.CompiledAssembly.GetTypes();
+                Type[] allTypes = results.Assembly.GetTypes();
 
                 foreach (Type t in allTypes)
                 {
                     var inst = Activator.CreateInstance(t);
                     //dynamic v = inst;
-                    var mf = t.GetMethods().FirstOrDefault(z => z.Name.Contains("sum"));
+                    //var mf = t.GetMethods().FirstOrDefault(z => z.Name.Contains("sum"));
                     var mf2 = t.GetMethods().FirstOrDefault(z => z.Name.Contains("run"));
-                    if (mf != null)
+                 /*   if (mf != null)
                     {
                         var res = mf.Invoke(inst, new object[] { 3, 5 });
                         MessageBox.Show(res + "");
-                    }
+                    }*/
                     if (mf2 != null)
                     {
                         var ctx = new AutoTestRunContext();
                         mf2.Invoke(inst, new object[] { ctx });
-                        MessageBox.Show(ctx.Vars["temp"] + "");
+                        //MessageBox.Show(ctx.Vars["temp"] + "");
                     }
                     //MessageBox.Show(v.sum(3, 5));
                     //TryLoadCompiledType(res, t.ToString());

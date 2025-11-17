@@ -10,24 +10,39 @@ using System.Xml.Linq;
 namespace AutoUI.Common.TestItems
 {
     [XmlParse(XmlKey = "custom")]
-   
+
     public class CompilingTestItem : AutoTestItem
     {
-        public string ProgramText;
+        public string ProgramText= @"
+using AutoUI.Common;
+using System.Windows.Forms;
+
+class Program{
+
+public void run(AutoTestRunContext ctx){
+
+}
+}";
+
+        public RoslynCompilerResults compile()
+        {
+            return Compiler.compile(ProgramText);
+        }
+
         public override TestItemProcessResultEnum Process(AutoTestRunContext ctx)
         {
             var results = compile();
 
-            
-            foreach (var item in results.Errors.OfType<CompilerError>())
+
+            foreach (var item in results.Errors)
             {
                 return TestItemProcessResultEnum.Failed;
             }
             try
             {
-                Assembly asm = results.CompiledAssembly;
+                Assembly asm = results.Assembly;
 
-                Type[] allTypes = results.CompiledAssembly.GetTypes();
+                Type[] allTypes = asm.GetTypes();
 
                 foreach (Type t in allTypes.Take(1))
                 {
@@ -42,7 +57,7 @@ namespace AutoUI.Common.TestItems
                     }
                     if (mf2 != null)
                     {
-                        
+
                         mf2.Invoke(inst, new object[] { ctx });
                         //MessageBox.Show(ctx.Vars["temp"] + "");
                     }
@@ -66,55 +81,14 @@ namespace AutoUI.Common.TestItems
 
         public override void ParseXml(IAutoTest parent, XElement item)
         {
-            ProgramText = item.Value;            
-            
+            ProgramText = item.Value;
+
             base.ParseXml(parent, item);
         }
 
-        public CompilerResults compile()
-        {
-            CSharpCodeProvider codeProvider = new CSharpCodeProvider();
-            ICodeCompiler icc = codeProvider.CreateCompiler();
-            string Output = "Out.dll";
-            
 
-            System.CodeDom.Compiler.CompilerParameters parameters = new CompilerParameters();
-            //Make sure we generate an EXE, not a DLL
-            parameters.GenerateExecutable = false;
-            parameters.ReferencedAssemblies.Add("AutoUI.exe");
-            parameters.ReferencedAssemblies.Add("System.Diagnostics.Process.dll");
-            parameters.ReferencedAssemblies.Add("System.Windows.Forms.dll");
-            parameters.ReferencedAssemblies.Add("System.dll");
-            
-            //parameters.OutputAssembly = Output;
-            parameters.GenerateInMemory = true;
-            CompilerResults results = icc.CompileAssemblyFromSource(parameters, ProgramText);
-            if (results.Errors.Count > 0)
-            {
-                
-             /*   textBox2.ForeColor = Color.Red;
-                foreach (CompilerError CompErr in results.Errors)
-                {
-                    textBox2.Text = textBox2.Text +
-                                "Line number " + CompErr.Line +
-                                ", Error Number: " + CompErr.ErrorNumber +
-                                ", '" + CompErr.ErrorText + ";" +
-                                Environment.NewLine + Environment.NewLine;
-                }*/
-            }
-            else
-            {
-                /* //Successful Compile
-                 textBox2.ForeColor = Color.Blue;
-                 textBox2.Text = "Success!";
-                 //If we clicked run then launch our EXE
-                 if (ButtonObject.Text == "Run") Process.Start(Output);*/
-            }
-
-            return results;
-        }
         public override string ToXml()
-        {            
+        {
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("<custom>");
             sb.AppendLine($"<![CDATA[{ProgramText}]]>");

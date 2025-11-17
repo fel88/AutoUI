@@ -30,7 +30,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Update="Editors\CompilerTestItem.cs">
+    <Compile Update="Editors\CompilerTestItemEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Update="Editors\SearchByPatternEditor.cs">

@@ -1,7 +1,7 @@
 ﻿
 namespace AutoUI.TestItems.Editors
 {
-    partial class CompilerTestItem
+    partial class CompilerTestItemEditor
     {
         /// <summary> 
         /// Required designer variable.
@@ -29,7 +29,7 @@ namespace AutoUI.TestItems.Editors
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CompilerTestItem));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CompilerTestItemEditor));
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
