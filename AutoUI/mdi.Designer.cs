@@ -36,12 +36,13 @@
             horizontalToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             cascadeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             iconsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            toolStripButton2 = new System.Windows.Forms.ToolStripButton();
             toolStrip1.SuspendLayout();
             SuspendLayout();
             // 
             // toolStrip1
             // 
-            toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripButton1, toolStripDropDownButton1 });
+            toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripButton1, toolStripDropDownButton1, toolStripButton2 });
             toolStrip1.Location = new System.Drawing.Point(0, 0);
             toolStrip1.Name = "toolStrip1";
             toolStrip1.Size = new System.Drawing.Size(1255, 25);
@@ -96,6 +97,17 @@
             iconsToolStripMenuItem.Text = "Icons";
             iconsToolStripMenuItem.Click += iconsToolStripMenuItem_Click;
             // 
+            // toolStripButton2
+            // 
+            toolStripButton2.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            toolStripButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            toolStripButton2.Image = Properties.Resources.question_white;
+            toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
+            toolStripButton2.Name = "toolStripButton2";
+            toolStripButton2.Size = new System.Drawing.Size(23, 22);
+            toolStripButton2.Text = "toolStripButton2";
+            toolStripButton2.Click += toolStripButton2_Click;
+            // 
             // mdi
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -122,5 +134,6 @@
         private System.Windows.Forms.ToolStripMenuItem horizontalToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem cascadeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem iconsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripButton toolStripButton2;
     }
 }

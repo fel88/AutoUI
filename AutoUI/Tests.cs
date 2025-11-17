@@ -50,6 +50,7 @@ namespace AutoUI
         private void toolStripButton2_Click(object sender, EventArgs e)
         {
             PatternsEditor f = new PatternsEditor();
+            f.MdiParent = MdiParent;
             f.Init(set.Pool);
             f.Show();
         }
@@ -84,14 +85,15 @@ namespace AutoUI
 
             var doc = XDocument.Load(ofd.FileName);
             set = new TestSet(doc.Root.Element("set"));
-
+            Text = $"Test set: {ofd.FileName}";
+            lastPathLoaded = ofd.FileName;
             Init(set);
         }
+        string lastPathLoaded;
 
         private void toolStripButton3_Click(object sender, EventArgs e)
         {
-            AboutBox1 b = new AboutBox1();
-            b.ShowDialog();
+
         }
 
         private void toolStripDropDownButton1_Click(object sender, EventArgs e)
@@ -102,14 +104,14 @@ namespace AutoUI
         private void fontMatcherToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FontMatcher f = new FontMatcher();
-
+            f.MdiParent = MdiParent;
             f.Show();
         }
 
         private void searchDebugToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SearchDebug f = new SearchDebug();
-
+            f.MdiParent = MdiParent;
             f.Show();
         }
 
@@ -145,7 +147,8 @@ namespace AutoUI
         {
             TestReport report = new TestReport();
             report.MdiParent = MdiParent;
-            report.Init(set);
+
+            report.Init(set, $"Report testing (test set: {lastPathLoaded})  ");
             report.Show();
         }
 

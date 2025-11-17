@@ -36,7 +36,6 @@
             saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             loadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             toolStripButton2 = new System.Windows.Forms.ToolStripButton();
-            toolStripButton3 = new System.Windows.Forms.ToolStripButton();
             toolStripDropDownButton2 = new System.Windows.Forms.ToolStripDropDownButton();
             fontMatcherToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             searchDebugToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -75,7 +74,7 @@
             // 
             // toolStrip1
             // 
-            toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripDropDownButton1, toolStripButton2, toolStripButton3, toolStripDropDownButton2, toolStripButton4, toolStripSeparator1, toolStripButton1 });
+            toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripDropDownButton1, toolStripButton2, toolStripDropDownButton2, toolStripButton4, toolStripSeparator1, toolStripButton1 });
             toolStrip1.Location = new System.Drawing.Point(0, 0);
             toolStrip1.Name = "toolStrip1";
             toolStrip1.Size = new System.Drawing.Size(1111, 25);
@@ -125,17 +124,6 @@
             toolStripButton2.Text = "patterns";
             toolStripButton2.Click += toolStripButton2_Click;
             // 
-            // toolStripButton3
-            // 
-            toolStripButton3.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            toolStripButton3.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            toolStripButton3.Image = (System.Drawing.Image)resources.GetObject("toolStripButton3.Image");
-            toolStripButton3.ImageTransparentColor = System.Drawing.Color.Magenta;
-            toolStripButton3.Name = "toolStripButton3";
-            toolStripButton3.Size = new System.Drawing.Size(23, 22);
-            toolStripButton3.Text = "toolStripButton3";
-            toolStripButton3.Click += toolStripButton3_Click;
-            // 
             // toolStripDropDownButton2
             // 
             toolStripDropDownButton2.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { fontMatcherToolStripMenuItem, searchDebugToolStripMenuItem });
@@ -149,7 +137,7 @@
             // 
             fontMatcherToolStripMenuItem.Image = Properties.Resources.edit_language;
             fontMatcherToolStripMenuItem.Name = "fontMatcherToolStripMenuItem";
-            fontMatcherToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
+            fontMatcherToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             fontMatcherToolStripMenuItem.Text = "font matcher";
             fontMatcherToolStripMenuItem.Click += fontMatcherToolStripMenuItem_Click;
             // 
@@ -157,7 +145,7 @@
             // 
             searchDebugToolStripMenuItem.Image = Properties.Resources.magnifier_left;
             searchDebugToolStripMenuItem.Name = "searchDebugToolStripMenuItem";
-            searchDebugToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
+            searchDebugToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             searchDebugToolStripMenuItem.Text = "search debug";
             searchDebugToolStripMenuItem.Click += searchDebugToolStripMenuItem_Click;
             // 
@@ -375,7 +363,7 @@
             toolStripStatusLabel3.Size = new System.Drawing.Size(30, 17);
             toolStripStatusLabel3.Text = ".. / ..";
             // 
-            // mdi
+            // Tests
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -385,7 +373,7 @@
             Controls.Add(statusStrip1);
             Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
             Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            Name = "mdi";
+            Name = "Tests";
             StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             Text = "AutoUI";
             toolStrip1.ResumeLayout(false);
@@ -407,7 +395,6 @@
         private System.Windows.Forms.ToolStripMenuItem loadToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
         private System.Windows.Forms.ToolStripButton toolStripButton2;
-        private System.Windows.Forms.ToolStripButton toolStripButton3;
         private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownButton2;
         private System.Windows.Forms.ToolStripMenuItem fontMatcherToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem searchDebugToolStripMenuItem;

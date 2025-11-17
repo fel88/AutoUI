@@ -20,7 +20,7 @@ namespace AutoUI.Common
                     Tests.Add(new SpawnableAutoTest(this, titem));
             }
         }
-
+        
         public string Name { get; set; }
         public string ProcessPath;
         public List<IAutoTest> Tests = new List<IAutoTest>();

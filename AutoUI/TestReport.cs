@@ -25,9 +25,9 @@ namespace AutoUI
             Run();
         }
 
-        public void Init(TestSet set)
+        public void Init(TestSet set, string captionPrefix)
         {
-            Text = $"{DateTime.Now.ToLongDateString()} {DateTime.Now.ToLongTimeString()}";
+            Text = $"{captionPrefix}{DateTime.Now.ToLongDateString()} {DateTime.Now.ToLongTimeString()}";
             Set = set;
         }
 

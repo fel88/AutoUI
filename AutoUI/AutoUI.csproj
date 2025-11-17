@@ -1,63 +1,66 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFramework>net8.0-windows7.0</TargetFramework>
-    <OutputType>WinExe</OutputType>
-	  <UseWindowsForms>true</UseWindowsForms>
-	  <UseWPF>true</UseWPF>
-    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
-    <ApplicationIcon>flask.ico</ApplicationIcon>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>x64</PlatformTarget>
-  </PropertyGroup>
-  <ItemGroup>
-    <PackageReference Include="AutoDialog" Version="1.0.0.7" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Update="SimpleTestEditor.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="PictureBoxWithInterpolationMode.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="Properties\Resources.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\Settings.Designer.cs">
-      <Generator></Generator>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
-    <Compile Update="Editors\CompilerTestItemEditor.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Update="Editors\SearchByPatternEditor.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Update="Editors\WaitPatternEditor.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="flask.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\AutoUI.CodeEditor\AutoUI.CodeEditor.csproj" />
-    <ProjectReference Include="..\AutoUI.Common\AutoUI.Common.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Update="Properties\Resources.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <None Update="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
+	<PropertyGroup>
+		<TargetFramework>net8.0-windows7.0</TargetFramework>
+		<OutputType>WinExe</OutputType>
+		<UseWindowsForms>true</UseWindowsForms>
+		<UseWPF>true</UseWPF>
+		<ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
+		<ApplicationIcon>flask.ico</ApplicationIcon>
+		<Authors>fel88</Authors>
+		<Copyright>2022-2025</Copyright>		
+	</PropertyGroup>
+	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+		<PlatformTarget>x64</PlatformTarget>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="AutoDialog" Version="1.0.0.7" />
+		<PackageReference Include="Dagre.NET" Version="1.0.0.6" />
+	</ItemGroup>
+	<ItemGroup>
+		<Compile Update="SimpleTestEditor.cs">
+			<SubType>Form</SubType>
+		</Compile>
+		<Compile Update="PictureBoxWithInterpolationMode.cs">
+			<SubType>Component</SubType>
+		</Compile>
+		<Compile Update="Properties\Resources.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Resources.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Properties\Settings.Designer.cs">
+			<Generator></Generator>
+			<DesignTimeSharedInput>True</DesignTimeSharedInput>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Settings.settings</DependentUpon>
+		</Compile>
+		<Compile Update="Editors\CompilerTestItemEditor.cs">
+			<SubType>UserControl</SubType>
+		</Compile>
+		<Compile Update="Editors\SearchByPatternEditor.cs">
+			<SubType>UserControl</SubType>
+		</Compile>
+		<Compile Update="Editors\WaitPatternEditor.cs">
+			<SubType>UserControl</SubType>
+		</Compile>
+	</ItemGroup>
+	<ItemGroup>
+		<Content Include="flask.ico" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\AutoUI.CodeEditor\AutoUI.CodeEditor.csproj" />
+		<ProjectReference Include="..\AutoUI.Common\AutoUI.Common.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+		<EmbeddedResource Update="Properties\Resources.resx">
+			<Generator>PublicResXFileCodeGenerator</Generator>
+			<LastGenOutput>Resources.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+	</ItemGroup>
+	<ItemGroup>
+		<None Update="Properties\Settings.settings">
+			<Generator>SettingsSingleFileGenerator</Generator>
+			<LastGenOutput>Settings.Designer.cs</LastGenOutput>
+		</None>
+	</ItemGroup>
 </Project>

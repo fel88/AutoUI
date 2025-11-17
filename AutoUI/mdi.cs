@@ -47,5 +47,11 @@ namespace AutoUI
         {
             LayoutMdi(MdiLayout.ArrangeIcons);
         }
+
+        private void toolStripButton2_Click(object sender, EventArgs e)
+        {
+            AboutBox1 b = new AboutBox1();
+            b.ShowDialog();
+        }
     }
 }
