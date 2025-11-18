@@ -32,6 +32,8 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SimpleTestEditor));
             listView1 = new System.Windows.Forms.ListView();
             columnHeader1 = new System.Windows.Forms.ColumnHeader();
+            columnHeader3 = new System.Windows.Forms.ColumnHeader();
+            columnHeader2 = new System.Windows.Forms.ColumnHeader();
             contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(components);
             addToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             searchByPatternToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -50,6 +52,7 @@
             findAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             iterateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             wheelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            keyboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             clearToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -69,6 +72,10 @@
             toolStrip1 = new System.Windows.Forms.ToolStrip();
             toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             toolStripButton2 = new System.Windows.Forms.ToolStripButton();
+            toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
+            columnsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            columnsToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            columnToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             timer1 = new System.Windows.Forms.Timer(components);
             contextMenuStrip1.SuspendLayout();
@@ -79,12 +86,12 @@
             // 
             // listView1
             // 
-            listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] { columnHeader1 });
+            listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] { columnHeader1, columnHeader3, columnHeader2 });
             listView1.ContextMenuStrip = contextMenuStrip1;
             listView1.Dock = System.Windows.Forms.DockStyle.Fill;
             listView1.FullRowSelect = true;
             listView1.GridLines = true;
-            listView1.Location = new System.Drawing.Point(481, 3);
+            listView1.Location = new System.Drawing.Point(4, 3);
             listView1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             listView1.Name = "listView1";
             listView1.Size = new System.Drawing.Size(469, 466);
@@ -93,11 +100,22 @@
             listView1.View = System.Windows.Forms.View.Details;
             listView1.SelectedIndexChanged += listView1_SelectedIndexChanged;
             listView1.KeyDown += listView1_KeyDown;
+            listView1.MouseDoubleClick += listView1_MouseDoubleClick;
             // 
             // columnHeader1
             // 
-            columnHeader1.Text = "Action";
-            columnHeader1.Width = 260;
+            columnHeader1.Text = "Name";
+            columnHeader1.Width = 200;
+            // 
+            // columnHeader3
+            // 
+            columnHeader3.Text = "Description";
+            columnHeader3.Width = 200;
+            // 
+            // columnHeader2
+            // 
+            columnHeader2.Text = "Type";
+            columnHeader2.Width = 250;
             // 
             // contextMenuStrip1
             // 
@@ -108,7 +126,7 @@
             // 
             // addToolStripMenuItem
             // 
-            addToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { searchByPatternToolStripMenuItem, clickToolStripMenuItem, delayToolStripMenuItem, mouseUpDownToolStripMenuItem, scriptToolStripMenuItem, screenshotToolStripMenuItem, gotoToolStripMenuItem, labelToolStripMenuItem, processToolStripMenuItem, cursorPositionToolStripMenuItem, waitPatternToolStripMenuItem, findAllToolStripMenuItem, iterateToolStripMenuItem, wheelToolStripMenuItem });
+            addToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { searchByPatternToolStripMenuItem, clickToolStripMenuItem, delayToolStripMenuItem, mouseUpDownToolStripMenuItem, scriptToolStripMenuItem, screenshotToolStripMenuItem, gotoToolStripMenuItem, labelToolStripMenuItem, processToolStripMenuItem, cursorPositionToolStripMenuItem, waitPatternToolStripMenuItem, findAllToolStripMenuItem, iterateToolStripMenuItem, wheelToolStripMenuItem, keyboardToolStripMenuItem });
             addToolStripMenuItem.Image = Properties.Resources.plus;
             addToolStripMenuItem.Name = "addToolStripMenuItem";
             addToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
@@ -117,6 +135,7 @@
             // 
             // searchByPatternToolStripMenuItem
             // 
+            searchByPatternToolStripMenuItem.Image = Properties.Resources.eye;
             searchByPatternToolStripMenuItem.Name = "searchByPatternToolStripMenuItem";
             searchByPatternToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
             searchByPatternToolStripMenuItem.Text = "search by pattern";
@@ -124,6 +143,7 @@
             // 
             // clickToolStripMenuItem
             // 
+            clickToolStripMenuItem.Image = Properties.Resources.mouse_select;
             clickToolStripMenuItem.Name = "clickToolStripMenuItem";
             clickToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
             clickToolStripMenuItem.Text = "click";
@@ -131,6 +151,7 @@
             // 
             // delayToolStripMenuItem
             // 
+            delayToolStripMenuItem.Image = Properties.Resources.clock_select;
             delayToolStripMenuItem.Name = "delayToolStripMenuItem";
             delayToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
             delayToolStripMenuItem.Text = "delay";
@@ -138,6 +159,7 @@
             // 
             // mouseUpDownToolStripMenuItem
             // 
+            mouseUpDownToolStripMenuItem.Image = Properties.Resources.mouse;
             mouseUpDownToolStripMenuItem.Name = "mouseUpDownToolStripMenuItem";
             mouseUpDownToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
             mouseUpDownToolStripMenuItem.Text = "mouseUpDown";
@@ -145,6 +167,7 @@
             // 
             // scriptToolStripMenuItem
             // 
+            scriptToolStripMenuItem.Image = Properties.Resources.script_binary;
             scriptToolStripMenuItem.Name = "scriptToolStripMenuItem";
             scriptToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
             scriptToolStripMenuItem.Text = "script";
@@ -152,6 +175,7 @@
             // 
             // screenshotToolStripMenuItem
             // 
+            screenshotToolStripMenuItem.Image = Properties.Resources.image_select;
             screenshotToolStripMenuItem.Name = "screenshotToolStripMenuItem";
             screenshotToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
             screenshotToolStripMenuItem.Text = "screenshot";
@@ -159,6 +183,7 @@
             // 
             // gotoToolStripMenuItem
             // 
+            gotoToolStripMenuItem.Image = Properties.Resources.arrow_branch;
             gotoToolStripMenuItem.Name = "gotoToolStripMenuItem";
             gotoToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
             gotoToolStripMenuItem.Text = "goto";
@@ -166,6 +191,7 @@
             // 
             // labelToolStripMenuItem
             // 
+            labelToolStripMenuItem.Image = Properties.Resources.tag_hash;
             labelToolStripMenuItem.Name = "labelToolStripMenuItem";
             labelToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
             labelToolStripMenuItem.Text = "label";
@@ -174,6 +200,7 @@
             // processToolStripMenuItem
             // 
             processToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { runToolStripMenuItem, terminateToolStripMenuItem });
+            processToolStripMenuItem.Image = Properties.Resources.application_terminal;
             processToolStripMenuItem.Name = "processToolStripMenuItem";
             processToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
             processToolStripMenuItem.Text = "process ";
@@ -194,6 +221,7 @@
             // 
             // cursorPositionToolStripMenuItem
             // 
+            cursorPositionToolStripMenuItem.Image = Properties.Resources.cursor;
             cursorPositionToolStripMenuItem.Name = "cursorPositionToolStripMenuItem";
             cursorPositionToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
             cursorPositionToolStripMenuItem.Text = "cursor position";
@@ -209,6 +237,7 @@
             // 
             // findAllToolStripMenuItem
             // 
+            findAllToolStripMenuItem.Image = Properties.Resources.binocular;
             findAllToolStripMenuItem.Name = "findAllToolStripMenuItem";
             findAllToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
             findAllToolStripMenuItem.Text = "find all";
@@ -216,6 +245,7 @@
             // 
             // iterateToolStripMenuItem
             // 
+            iterateToolStripMenuItem.Image = Properties.Resources.arrow_circle_double_135;
             iterateToolStripMenuItem.Name = "iterateToolStripMenuItem";
             iterateToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
             iterateToolStripMenuItem.Text = "iterate";
@@ -223,10 +253,19 @@
             // 
             // wheelToolStripMenuItem
             // 
+            wheelToolStripMenuItem.Image = Properties.Resources.mouse_select_wheel;
             wheelToolStripMenuItem.Name = "wheelToolStripMenuItem";
             wheelToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
             wheelToolStripMenuItem.Text = "wheel";
             wheelToolStripMenuItem.Click += wheelToolStripMenuItem_Click;
+            // 
+            // keyboardToolStripMenuItem
+            // 
+            keyboardToolStripMenuItem.Image = Properties.Resources.keyboard_full_wireless;
+            keyboardToolStripMenuItem.Name = "keyboardToolStripMenuItem";
+            keyboardToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
+            keyboardToolStripMenuItem.Text = "keyboard";
+            keyboardToolStripMenuItem.Click += keyboardToolStripMenuItem_Click;
             // 
             // editToolStripMenuItem
             // 
@@ -343,7 +382,7 @@
             // 
             // toolStrip1
             // 
-            toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripButton1, toolStripButton2 });
+            toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripButton1, toolStripButton2, toolStripDropDownButton1 });
             toolStrip1.Location = new System.Drawing.Point(0, 0);
             toolStrip1.Name = "toolStrip1";
             toolStrip1.Size = new System.Drawing.Size(954, 25);
@@ -369,12 +408,42 @@
             toolStripButton2.Text = "auto layout";
             toolStripButton2.Click += toolStripButton2_Click;
             // 
+            // toolStripDropDownButton1
+            // 
+            toolStripDropDownButton1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { columnsToolStripMenuItem, columnsToolStripMenuItem1, columnToolStripMenuItem });
+            toolStripDropDownButton1.Image = Properties.Resources.table;
+            toolStripDropDownButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+            toolStripDropDownButton1.Name = "toolStripDropDownButton1";
+            toolStripDropDownButton1.Size = new System.Drawing.Size(98, 22);
+            toolStripDropDownButton1.Text = "table layout";
+            // 
+            // columnsToolStripMenuItem
+            // 
+            columnsToolStripMenuItem.Name = "columnsToolStripMenuItem";
+            columnsToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
+            columnsToolStripMenuItem.Text = "3 columns";
+            columnsToolStripMenuItem.Click += columnsToolStripMenuItem_Click;
+            // 
+            // columnsToolStripMenuItem1
+            // 
+            columnsToolStripMenuItem1.Name = "columnsToolStripMenuItem1";
+            columnsToolStripMenuItem1.Size = new System.Drawing.Size(129, 22);
+            columnsToolStripMenuItem1.Text = "2 columns";
+            columnsToolStripMenuItem1.Click += columnsToolStripMenuItem1_Click;
+            // 
+            // columnToolStripMenuItem
+            // 
+            columnToolStripMenuItem.Name = "columnToolStripMenuItem";
+            columnToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
+            columnToolStripMenuItem.Text = "1 column";
+            columnToolStripMenuItem.Click += columnToolStripMenuItem_Click;
+            // 
             // tableLayoutPanel1
             // 
             tableLayoutPanel1.ColumnCount = 2;
             tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            tableLayoutPanel1.Controls.Add(listView1, 1, 0);
+            tableLayoutPanel1.Controls.Add(listView1, 0, 0);
             tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             tableLayoutPanel1.Location = new System.Drawing.Point(0, 25);
             tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
@@ -456,6 +525,13 @@
         private System.Windows.Forms.ToolStripStatusLabel sectionToolStripStatusLabel;
         private System.Windows.Forms.ToolStripMenuItem wheelToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem runFromHereToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem keyboardToolStripMenuItem;
+        private System.Windows.Forms.ColumnHeader columnHeader2;
+        private System.Windows.Forms.ColumnHeader columnHeader3;
+        private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownButton1;
+        private System.Windows.Forms.ToolStripMenuItem columnsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem columnsToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem columnToolStripMenuItem;
     }
 }
 

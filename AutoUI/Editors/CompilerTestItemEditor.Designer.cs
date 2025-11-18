@@ -34,12 +34,13 @@ namespace AutoUI.TestItems.Editors
             toolStripButton2 = new System.Windows.Forms.ToolStripButton();
             toolStripButton3 = new System.Windows.Forms.ToolStripButton();
             panel1 = new System.Windows.Forms.Panel();
+            toolStripButton4 = new System.Windows.Forms.ToolStripButton();
             toolStrip1.SuspendLayout();
             SuspendLayout();
             // 
             // toolStrip1
             // 
-            toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripButton1, toolStripButton2, toolStripButton3 });
+            toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripButton1, toolStripButton4, toolStripButton2, toolStripButton3 });
             toolStrip1.Location = new System.Drawing.Point(0, 0);
             toolStrip1.Name = "toolStrip1";
             toolStrip1.Size = new System.Drawing.Size(729, 25);
@@ -81,6 +82,15 @@ namespace AutoUI.TestItems.Editors
             panel1.Size = new System.Drawing.Size(729, 402);
             panel1.TabIndex = 2;
             // 
+            // toolStripButton4
+            // 
+            toolStripButton4.Image = Properties.Resources.compile_error;
+            toolStripButton4.ImageTransparentColor = System.Drawing.Color.Magenta;
+            toolStripButton4.Name = "toolStripButton4";
+            toolStripButton4.Size = new System.Drawing.Size(96, 22);
+            toolStripButton4.Text = "compile+run";
+            toolStripButton4.Click += toolStripButton4_Click;
+            // 
             // CompilerTestItemEditor
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -103,5 +113,6 @@ namespace AutoUI.TestItems.Editors
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.ToolStripButton toolStripButton2;
         private System.Windows.Forms.ToolStripButton toolStripButton3;
+        private System.Windows.Forms.ToolStripButton toolStripButton4;
     }
 }

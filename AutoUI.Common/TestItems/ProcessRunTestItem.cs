@@ -14,7 +14,7 @@ namespace AutoUI.Common.TestItems
             Process p = new System.Diagnostics.Process();
             p.StartInfo.FileName = RunFromVar ? (string)ctx.Vars[Var] : ExePath;
 
-            if (!File.Exists(p.StartInfo.FileName))
+            if (CheckFileExist && !File.Exists(p.StartInfo.FileName))
                 return TestItemProcessResultEnum.Failed;
 
             p.StartInfo.WorkingDirectory = new FileInfo(p.StartInfo.FileName).Directory.FullName;
@@ -26,6 +26,11 @@ namespace AutoUI.Common.TestItems
             return TestItemProcessResultEnum.Success;
         }
 
+        public override string ToString()
+        {
+            return $"run process ({RunFromVar} {Var} {ExePath} register key: {RegisterKey})";
+        }
+
         public override void ParseXml(IAutoTest set, XElement item)
         {
             ExePath = item.Element("exePath").Value;
@@ -35,6 +40,10 @@ namespace AutoUI.Common.TestItems
                 StorePIDToRegister = bool.Parse(item.Attribute("storeRegister").Value);
             if (item.Attribute("runFromVar") != null)
                 RunFromVar = bool.Parse(item.Attribute("runFromVar").Value);
+
+            if (item.Attribute("checkFileExist") != null)
+                CheckFileExist = bool.Parse(item.Attribute("checkFileExist").Value);
+
             if (item.Attribute("var") != null)
                 Var = item.Attribute("var").Value;
             base.ParseXml(set, item);
@@ -42,13 +51,17 @@ namespace AutoUI.Common.TestItems
 
         public string ExePath { get; set; }
         public bool RunFromVar { get; set; }
+        public bool CheckFileExist { get; set; } = false;
         public string Var { get; set; }
         public bool StorePIDToRegister { get; set; }
         public string RegisterKey { get; set; }
         public override string ToXml()
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine($"<processRun storeRegister=\"{StorePIDToRegister}\" registerKey=\"{RegisterKey}\" var=\"{Var}\" runFromVar=\"{RunFromVar}\">");
+            sb.AppendLine($"<processRun storeRegister=\"{StorePIDToRegister}\" " +
+                $"registerKey=\"{RegisterKey}\" " +
+                $"checkFileExist=\"{CheckFileExist}\" " +
+                $"var=\"{Var}\" runFromVar=\"{RunFromVar}\">");
             sb.AppendLine("<exePath>");
             sb.AppendLine($"<![CDATA[{ExePath}]]>");
             sb.AppendLine("</exePath>");

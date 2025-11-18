@@ -10,8 +10,13 @@ namespace AutoUI.TestItems
         public override TestItemProcessResultEnum Process(AutoTestRunContext ctx)
         {
             var p = System.Diagnostics.Process.GetProcessById((int)ctx.Vars[RegisterKey]);
-            p.Kill();
+            p.Kill(true);            
             return TestItemProcessResultEnum.Success;
+        }
+
+        public override string ToString()
+        {
+            return $"terminate process (register key: {RegisterKey})";
         }
 
         public override void ParseXml(IAutoTest set, XElement item)
@@ -21,7 +26,8 @@ namespace AutoUI.TestItems
 
             base.ParseXml(set, item);
         }
-
+                
+        
         public string RegisterKey { get; set; }
         public override string ToXml()
         {

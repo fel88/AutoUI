@@ -1,34 +1,34 @@
 ﻿using AutoUI.Common;
-using System.CodeDom;
-using System.Threading;
 using System.Xml.Linq;
 
 namespace AutoUI.TestItems
 {
-    [XmlParse(XmlKey = "delay")]
-    public class DelayAutoTestItem : AutoTestItem
+    [XmlParse(XmlKey = "keyboard")]
+    public class KeyboardTestItem : AutoTestItem
     {
-        public int Delay { get; set; }
+        public string Command { get; set; } = "^{c}";        
         public override TestItemProcessResultEnum Process(AutoTestRunContext ctx)
         {
-            Thread.Sleep(Delay);
+            SendKeys.SendWait(Command);
+            SendKeys.Flush();
             return TestItemProcessResultEnum.Success;
         }
 
         public override string ToString()
         {
-            return $"delay ({Delay} ms)";
+            return $"keyboard ({Command})";
         }
 
         public override void ParseXml(IAutoTest set, XElement item)
         {
-            Delay = int.Parse(item.Attribute("delay").Value);
+            Command = item.Value;
+            
             base.ParseXml(set, item);
         }
 
         public override string ToXml()
         {
-            return $"<delay delay=\"{Delay}\"/>";
+            return $"<keyboard name=\"{Name}\" >{new XCData(Command)}</keyboard>";
         }
     }
 }

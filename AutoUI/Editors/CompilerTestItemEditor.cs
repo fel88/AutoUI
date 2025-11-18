@@ -12,7 +12,7 @@ using System.Windows.Forms.Integration;
 
 namespace AutoUI.TestItems.Editors
 {
-    [TestItemEditor(Target = typeof(CompilingTestItem))]
+    [TestItemEditor(Target = typeof(ScriptTestItem))]
     public partial class CompilerTestItemEditor : UserControl, ITestItemEditor
     {
         public CompilerTestItemEditor()
@@ -48,14 +48,41 @@ namespace AutoUI.TestItems.Editors
         ListView lv;
         CodeEditor.CodeEditor codeEditor;
         TableLayoutPanel errorPanel = new TableLayoutPanel();
-        public CompilingTestItem TestItem;
+        public ScriptTestItem TestItem;
         public void Init(AutoTestItem item)
         {
-            TestItem = item as CompilingTestItem;
+            TestItem = item as ScriptTestItem;
             codeEditor.Text = TestItem.ProgramText;
         }
 
         private void toolStripButton1_Click(object sender, EventArgs e)
+        {
+            var results = TestItem.compile();
+
+            errorPanel.Visible = false;
+
+            lv.Items.Clear();
+            foreach (var item in results.Errors)
+            {
+                errorPanel.Visible = true;
+                lv.Items.Add(new ListViewItem([$"{item.Line}", $"{item.Line}: {item.Text}"]) { Tag = item, BackColor = Color.Pink, ForeColor = Color.White });
+            }
+            
+        }
+
+
+        private void toolStripButton2_Click(object sender, EventArgs e)
+        {
+            codeEditor.Text = codeEditor.Text.NormalizeCodeWithRoslyn();
+        }
+
+        private void toolStripButton3_Click(object sender, EventArgs e)
+        {
+            var offset = codeEditor.TextEditor.CaretOffset;
+            codeEditor.TextEditor.Document.Insert(offset, $"Debugger.Launch();{Environment.NewLine}");
+        }
+
+        private void toolStripButton4_Click(object sender, EventArgs e)
         {
             var results = TestItem.compile();
 
@@ -99,18 +126,6 @@ namespace AutoUI.TestItems.Editors
             {
                 MessageBox.Show(ex.Message);
             }
-        }
-               
-
-        private void toolStripButton2_Click(object sender, EventArgs e)
-        {
-            codeEditor.Text = codeEditor.Text.NormalizeCodeWithRoslyn();
-        }
-
-        private void toolStripButton3_Click(object sender, EventArgs e)
-        {
-            var offset = codeEditor.TextEditor.CaretOffset;
-            codeEditor.TextEditor.Document.Insert(offset, $"Debugger.Launch();{Environment.NewLine}");
         }
     }
 

@@ -1,19 +1,20 @@
-﻿using System.Reflection;
+﻿using Microsoft.Win32;
+using System.Reflection;
 using System.Text;
 using System.Xml.Linq;
 
 namespace AutoUI.Common.TestItems
 {
-    [XmlParse(XmlKey = "custom")]
+    [XmlParse(XmlKey = "script")]
 
-    public class CompilingTestItem : AutoTestItem
+    public class ScriptTestItem : AutoTestItem
     {
-        public CompilingTestItem()
+        public ScriptTestItem()
         {
-            
-        }
 
-        public string ProgramText= @"
+        }
+        public bool FailedOnException { get; set; } = true;
+        public string ProgramText = @"
 using AutoUI.Common;
 using System.Windows.Forms;
 using System.Collections.Generic;
@@ -29,6 +30,11 @@ public void run(AutoTestRunContext ctx){
         public RoslynCompilerResults compile()
         {
             return Compiler.compile(ProgramText);
+        }
+
+        public override string ToString()
+        {
+            return $"script";
         }
 
         public override TestItemProcessResultEnum Process(AutoTestRunContext ctx)
@@ -49,27 +55,30 @@ public void run(AutoTestRunContext ctx){
                 foreach (Type t in allTypes.Take(1))
                 {
                     var inst = Activator.CreateInstance(t);
-                    //dynamic v = inst;
-                    var mf = t.GetMethods().FirstOrDefault(z => z.Name.Contains("sum"));
+                    //dynamic v = inst;                    
                     var mf2 = t.GetMethods().FirstOrDefault(z => z.Name.Contains("run"));
-                    if (mf != null)
-                    {
-                        var res = mf.Invoke(inst, new object[] { 3, 5 });
-                        //MessageBox.Show(res + "");
-                    }
+                    
                     if (mf2 != null)
                     {
-
-                        mf2.Invoke(inst, new object[] { ctx });
-                        //MessageBox.Show(ctx.Vars["temp"] + "");
+                        if (FailedOnException)
+                        {
+                            try
+                            {
+                                mf2.Invoke(inst, new object[] { ctx });
+                            }
+                            catch (Exception ex)
+                            {
+                                return TestItemProcessResultEnum.Failed;
+                            }
+                        }
+                        else
+                            mf2.Invoke(inst, new object[] { ctx });                        
                     }
                     else
                     {
                         return TestItemProcessResultEnum.Failed;//not found entry point
                     }
-                    //MessageBox.Show(v.sum(3, 5));
-                    //TryLoadCompiledType(res, t.ToString());
-                    //Debug.WriteLine(t.ToString());
+                    
                 }
             }
             catch (Exception ex)
@@ -84,6 +93,8 @@ public void run(AutoTestRunContext ctx){
         public override void ParseXml(IAutoTest parent, XElement item)
         {
             ProgramText = item.Value;
+            if (item.Attribute("failedOnException") != null)
+                FailedOnException = bool.Parse(item.Attribute("failedOnException").Value);
 
             base.ParseXml(parent, item);
         }
@@ -92,9 +103,9 @@ public void run(AutoTestRunContext ctx){
         public override string ToXml()
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine("<custom>");
+            sb.AppendLine($"<script name=\"{Name}\" failedOnException=\"{FailedOnException}\">");
             sb.AppendLine($"<![CDATA[{ProgramText}]]>");
-            sb.AppendLine("</custom>");
+            sb.AppendLine("</script>");
             return sb.ToString();
         }
     }

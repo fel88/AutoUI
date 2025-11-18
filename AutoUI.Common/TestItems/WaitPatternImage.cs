@@ -13,14 +13,13 @@ namespace AutoUI.TestItems
     {
         public List<PatternMatchingImage> Patterns = new List<PatternMatchingImage>();
 
-
         public override void ParseXml(IAutoTest parent, XElement item)
         {
             var pIds = item.Attribute("patternIds").Value.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToArray();
             if (item.Attribute("moveCursor") != null)
                 MoveCursorOnSuccessed = bool.Parse(item.Attribute("moveCursor").Value);
             if (item.Attribute("timeout") != null)
-                Timeout = int.Parse(item.Attribute("timeout").Value);
+                Timeout = int.Parse(item.Attribute("timeout").Value);                      
 
             var pns = pIds.Select(zz => parent.Parent.Pool.Patterns.First(z => z.Id == zz)).ToList();
             Patterns = pns;
@@ -69,9 +68,14 @@ namespace AutoUI.TestItems
             }
         }
 
+        public override string ToString()
+        {
+            return $"wait patterns ({string.Join(";", Patterns.Select(z => z.Name).ToArray())})";
+        }
+
         public override string ToXml()
         {
-            return $"<waitPattern patternIds=\"{string.Join(";", Patterns.Select(z => z.Id).ToArray())}\" timeout=\"{Timeout}\"  moveCursor=\"{MoveCursorOnSuccessed}\" ></waitPattern>";
+            return $"<waitPattern name=\"{Name}\" patternIds=\"{string.Join(";", Patterns.Select(z => z.Id).ToArray())}\" timeout=\"{Timeout}\"  moveCursor=\"{MoveCursorOnSuccessed}\" ></waitPattern>";
         }
 
         public bool Assert { get; set; }

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -41,12 +42,21 @@ namespace AutoUI
                     ListViewItem lvi = null;
                     listView1.Invoke((Action)(() =>
                     {
-                        listView1.Items.Add(lvi = new ListViewItem(new string[] { item.Name, item.State.ToString(), "" }) { Tag = item });
+                        listView1.Items.Add(lvi = new ListViewItem(new string[] { item.Name,
+                            item.State.ToString(),
+                            string.Empty,
+                        string.Empty})
+                        { Tag = item });
                     }));
 
+                    var sw = Stopwatch.StartNew();
                     item.Reset();
 
                     var res = item.Run();
+                    sw.Stop();
+
+                    var duration = sw.ElapsedMilliseconds;
+
                     int cc = 0;
                     foreach (var sub in res.SubTests)
                     {
@@ -76,6 +86,7 @@ namespace AutoUI
                         }
                         lvi.SubItems[1].Text = item.State.ToString();
                         lvi.SubItems[2].Text = DateTime.Now.ToLongTimeString();
+                        lvi.SubItems[3].Text = duration.ToString();
 
                     }));
 

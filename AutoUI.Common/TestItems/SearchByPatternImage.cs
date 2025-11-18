@@ -126,6 +126,10 @@ namespace AutoUI.TestItems
 
             return TestItemProcessResultEnum.Success;
         }
+        public override string ToString()
+        {
+            return $"search pattern ({PatternName})";
+        }
 
         public static Bitmap GetScreenshot()
         {

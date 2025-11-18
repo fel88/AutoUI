@@ -25,6 +25,8 @@ namespace AutoUI
             listView1.DragLeave += myListView_DragLeave;
             listView1.AllowDrop = true;
             listView1.InsertionMark.Color = Color.Green;
+            OneColumnLayout();
+
         }
 
 
@@ -166,7 +168,7 @@ namespace AutoUI
             {
                 UpdateTestItemsList();
             }
-            
+
         }
 
         public Bitmap GetScreenshot()
@@ -187,7 +189,7 @@ namespace AutoUI
             listView1.Items.Clear();
             foreach (var t in currentCodeSection.Items)
             {
-                listView1.Items.Add(new ListViewItem(new string[] { t.GetType().Name }) { Tag = t });
+                listView1.Items.Add(new ListViewItem([t.Name, t.ToString(), t.GetType().Name]) { Tag = t });
             }
         }
 
@@ -201,7 +203,14 @@ namespace AutoUI
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (listView1.SelectedItems.Count == 0)
+            {
+                var del = tableLayoutPanel1.Controls.OfType<ITestItemEditor>().FirstOrDefault();
+                if (del != null)
+                {
+                    tableLayoutPanel1.Controls.Remove(del as Control);
+                }
                 return;
+            }
 
             currentItem = listView1.SelectedItems[0].Tag as AutoTestItem;
             var editorType = FindEditorType(currentItem);
@@ -220,7 +229,7 @@ namespace AutoUI
                 {
                     tableLayoutPanel1.Controls.Remove(del as Control);
                 }
-                tableLayoutPanel1.Controls.Add(tie as Control, 0, 0);
+                tableLayoutPanel1.Controls.Add(tie as Control, 1, 0);
                 (tie as Control).Dock = DockStyle.Fill;
             }
         }
@@ -480,7 +489,7 @@ namespace AutoUI
 
         private void scriptToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            currentCodeSection.Items.Add(new CompilingTestItem());
+            currentCodeSection.Items.Add(new ScriptTestItem());
             UpdateTestItemsList();
         }
 
@@ -597,8 +606,8 @@ namespace AutoUI
             UpdateTestItemsList();
 
         }
-  
-        
+
+
         private void wheelToolStripMenuItem_Click(object sender, EventArgs e)
         {
             addOrInsertItem(new MouseWheelAutoTestItem());
@@ -616,6 +625,51 @@ namespace AutoUI
         private void contextMenuStrip1_Opening(object sender, System.ComponentModel.CancelEventArgs e)
         {
             addToolStripMenuItem.Enabled = currentCodeSection != null;
+
+        }
+
+        private void keyboardToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            addOrInsertItem(new KeyboardTestItem());
+
+        }
+
+        private void listView1_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            if (listView1.SelectedItems.Count != 1)
+                return;
+
+
+            var ati = listView1.SelectedItems[0].Tag as AutoTestItem;
+            ati.EditWithAutoDialog();
+
+            UpdateTestItemsList();
+        }
+
+        
+        private void columnsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            listView1.Columns[0].Width = 150;
+            listView1.Columns[1].Width = 250;
+            listView1.Columns[2].Width = 250;
+        }
+
+        private void columnsToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            listView1.Columns[0].Width = 0;
+            listView1.Columns[1].Width = 250;
+            listView1.Columns[2].Width = 250;
+
+        }
+        void OneColumnLayout()
+        {
+            listView1.Columns[0].Width = 0;
+            listView1.Columns[1].Width = 250;
+            listView1.Columns[2].Width = 0;
+        }
+        private void columnToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OneColumnLayout();
 
         }
     }

@@ -2,6 +2,6 @@
 {
     public enum TestItemProcessResultEnum
     {
-        Success, Failed
+        Success, Failed, Exception
     }
 }

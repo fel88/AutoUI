@@ -225,6 +225,19 @@ namespace AutoUI
                 sat.UseEmitter = d.GetBoolField("emitter");
                 sat.FailedAction = d.GetEnumField<TestFailedBehaviour>("faction");
             }
+            if (test is AutoTest ati)
+            {
+                var d = DialogHelpers.StartDialog();
+
+                d.AddStringField("name", "Name", test.Name);                
+                d.AddEnumField("faction", "Failed action", ati.FailedAction);
+
+                if (!d.ShowDialog())
+                    return;
+
+                test.Name = d.GetStringField("name");                
+                ati.FailedAction = d.GetEnumField<TestFailedBehaviour>("faction");
+            }
             UpdateTestsList();
         }
 

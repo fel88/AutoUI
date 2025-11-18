@@ -480,7 +480,7 @@ namespace AutoUI
 
         private void scriptToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            currentCodeSection.Items.Add(new CompilingTestItem());
+            currentCodeSection.Items.Add(new ScriptTestItem());
             UpdateTestItemsList();
         }
 

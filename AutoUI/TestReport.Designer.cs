@@ -36,12 +36,13 @@
             toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
             toolStripStatusLabel3 = new System.Windows.Forms.ToolStripStatusLabel();
+            columnHeader4 = new System.Windows.Forms.ColumnHeader();
             statusStrip1.SuspendLayout();
             SuspendLayout();
             // 
             // listView1
             // 
-            listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] { columnHeader1, columnHeader2, columnHeader3 });
+            listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] { columnHeader1, columnHeader2, columnHeader3, columnHeader4 });
             listView1.Dock = System.Windows.Forms.DockStyle.Fill;
             listView1.FullRowSelect = true;
             listView1.GridLines = true;
@@ -96,6 +97,11 @@
             toolStripStatusLabel3.Size = new System.Drawing.Size(30, 17);
             toolStripStatusLabel3.Text = ".. / ..";
             // 
+            // columnHeader4
+            // 
+            columnHeader4.Text = "Duration (ms)";
+            columnHeader4.Width = 120;
+            // 
             // TestReport
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -122,5 +128,6 @@
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel2;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel3;
+        private System.Windows.Forms.ColumnHeader columnHeader4;
     }
 }

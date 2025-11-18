@@ -5,6 +5,42 @@ namespace AutoUI.Common
 {
     public class AutoTestRunContext
     {
+        // Example for retrieving clipboard text safely in a non-STA thread (e.g., console app):
+        [STAThread] // Mark the Main method with this attribute for console apps
+        public static string GetClipboardTextSafe()
+        {
+            string clipboardText = string.Empty;
+            Exception threadEx = null;
+
+            Thread staThread = new Thread(
+                delegate ()
+                {
+                    try
+                    {
+                        if (Clipboard.ContainsText(TextDataFormat.Text))
+                        {
+                            clipboardText = Clipboard.GetText(TextDataFormat.Text);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        threadEx = ex;
+                    }
+                });
+
+            staThread.SetApartmentState(ApartmentState.STA);
+            staThread.Start();
+            staThread.Join();
+
+            if (threadEx != null)
+            {
+                // Handle or re-throw the exception that occurred in the STA thread
+                throw threadEx;
+            }
+
+            return clipboardText;
+        }
+
         public IAutoTest Test;
         public int CodePointer;
         public bool ForceCodePointer;

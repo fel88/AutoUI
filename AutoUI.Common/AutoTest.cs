@@ -27,17 +27,18 @@ namespace AutoUI.Common
                 }
             }
 
-            Name = titem.Attribute("name").Value;
-            if (titem.Attribute("id") != null)
-                Id = int.Parse(titem.Attribute("id").Value);
+            Name = titem.Attribute("name").Value;            
+
+            if (titem.Attribute("failedAction") != null)
+                FailedAction = Enum.Parse<TestFailedBehaviour>(titem.Attribute("failedAction").Value);
 
             //get all types
             foreach (var section in titem.Elements("section"))
             {
-                Code = new CodeSection(this, section);                
+                Code = new CodeSection(this, section);
             }
         }
-        
+
 
         public AutoTest(TestSet parent) : this()
         {
@@ -59,8 +60,6 @@ namespace AutoUI.Common
 
         public AutoTestRunContext Run(AutoTestRunContext ctx = null)
         {
-
-
             if (ctx == null)
                 ctx = new AutoTestRunContext() { Test = this };
 
@@ -75,9 +74,17 @@ namespace AutoUI.Common
 
             while (ctx.CodePointer < Code.Items.Count && !ctx.Finished)
             {
+                TestItemProcessResultEnum? result = null;
                 ctx.ForceCodePointer = false;
-                var result = Code.Items[ctx.CodePointer].Process(ctx);
-                if (result == TestItemProcessResultEnum.Failed)
+                try
+                {
+                    result = Code.Items[ctx.CodePointer].Process(ctx);
+                }
+                catch (Exception ex)
+                {
+                    result = TestItemProcessResultEnum.Exception;
+                }
+                if (result != TestItemProcessResultEnum.Success)
                 {
                     if (FailedAction == TestFailedBehaviour.Terminate)
                         ctx.Finished = true;
@@ -102,13 +109,14 @@ namespace AutoUI.Common
 
             return ctx;
         }
-                
+
         public CodeSection CurrentCodeSection { get => Code; }
-          
+
         public IAutoTest Clone()
         {
             var clone = new AutoTest();
             clone.Name = Name;
+            clone.FailedAction = FailedAction;
             clone.Code = Code.Clone();
 
             return clone;
@@ -117,7 +125,7 @@ namespace AutoUI.Common
         public XElement ToXml()
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine($"<test id=\"{Id}\" name=\"{Name}\">");
+            sb.AppendLine($"<test id=\"{Id}\" name=\"{Name}\" failedAction=\"{FailedAction}\">");
 
             sb.AppendLine("<vars>");
             foreach (var item in Data)
@@ -136,7 +144,7 @@ namespace AutoUI.Common
 
         public void Reset()
         {
-            
+
         }
     }
 }
