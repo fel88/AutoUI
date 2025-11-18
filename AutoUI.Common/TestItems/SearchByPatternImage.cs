@@ -206,7 +206,11 @@ namespace AutoUI.TestItems
             Random r = new Random();
             List<Point> points = new List<Point>();
             List<Color> clrs = new List<Color>();
-            for (int t = 0; t < 10; t++)
+            var maxErrors = pattern.Width * pattern.Height * (_pattern.PixelsMatchAcceptableErrorLevel / 100.0);
+
+            int previewPixelsQty = (int)(10 + maxErrors);
+
+            for (int t = 0; t < previewPixelsQty; t++)
             {
                 var rx = r.Next(pattern.Width);
                 var ry = r.Next(pattern.Height);
@@ -225,6 +229,7 @@ namespace AutoUI.TestItems
             if (maxHeight != null)
                 hhh = Math.Min(maxHeight.Value, hhh);
 
+            int errors = 0;
             for (int i = startX; i < www; i++)
             {
                 for (int j = startY; j < hhh; j++)
@@ -240,7 +245,11 @@ namespace AutoUI.TestItems
                         px = ConvertPixel(_pattern, px);
 
                         if (!IsPixelsEqual(_pattern, px, clrs[t]))
+                            errors++;
+
+                        if (errors > maxErrors)
                         {
+                            errors = 0;
                             good = false;
                             break;
                         }
@@ -250,7 +259,7 @@ namespace AutoUI.TestItems
                         continue;
 
                     //check pattern match
-
+                    errors = 0;
                     for (int i1 = 0; i1 < pattern.Width; i1++)
                     {
                         for (int j1 = 0; j1 < pattern.Height; j1++)
@@ -260,6 +269,11 @@ namespace AutoUI.TestItems
 
                             if (!IsPixelsEqual(_pattern, px, px2))
                             {
+                                errors++;
+                            }
+                            if (errors > maxErrors)
+                            {
+                                errors = 0;
                                 good = false;
                                 break;
                             }
@@ -305,7 +319,7 @@ namespace AutoUI.TestItems
             MemoryStream ms = new MemoryStream();
             //Pattern.Save(ms, ImageFormat.Png);
             //var b64 = Convert.ToBase64String(ms.ToArray());
-            return $"<searchPattern patternId=\"{(Pattern == null ? string.Empty: Pattern.Id.ToString())}\" preCheck=\"{PreCheckCurrentPosition}\"" +
+            return $"<searchPattern patternId=\"{(Pattern == null ? string.Empty : Pattern.Id.ToString())}\" preCheck=\"{PreCheckCurrentPosition}\"" +
                 $" clickOnSucceseed=\"{ClickOnSucceseed}\"" +
                 $" delayEnabled=\"{DelayEnabled}\"" +
                 $" delay=\"{Delay}\"" +

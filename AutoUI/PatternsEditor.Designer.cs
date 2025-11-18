@@ -29,326 +29,316 @@ namespace AutoUI
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.listView2 = new System.Windows.Forms.ListView();
-            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.contextMenuStrip2 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.addItemToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.fromFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.fromClipboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.ditToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.deleteToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.listView1 = new System.Windows.Forms.ListView();
-            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.addPatternToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.updateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.newFromClipboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.generatePaaternToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.fromFontToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.fromScreenshotToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.grabScreenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.pictureBox1 = new AutoUI.PictureBoxWithInterpolationMode();
-            this.grabScreenToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.tableLayoutPanel1.SuspendLayout();
-            this.contextMenuStrip2.SuspendLayout();
-            this.contextMenuStrip1.SuspendLayout();
-            this.statusStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            this.SuspendLayout();
+            components = new System.ComponentModel.Container();
+            tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            listView2 = new System.Windows.Forms.ListView();
+            columnHeader3 = new System.Windows.Forms.ColumnHeader();
+            columnHeader4 = new System.Windows.Forms.ColumnHeader();
+            columnHeader2 = new System.Windows.Forms.ColumnHeader();
+            columnHeader5 = new System.Windows.Forms.ColumnHeader();
+            columnHeader6 = new System.Windows.Forms.ColumnHeader();
+            contextMenuStrip2 = new System.Windows.Forms.ContextMenuStrip(components);
+            addItemToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            fromFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            fromClipboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            grabScreenToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            ditToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            deleteToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            listView1 = new System.Windows.Forms.ListView();
+            columnHeader1 = new System.Windows.Forms.ColumnHeader();
+            contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(components);
+            addPatternToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            updateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            newFromClipboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            generatePaaternToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            fromFontToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            fromScreenshotToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            grabScreenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            pictureBox1 = new PictureBoxWithInterpolationMode();
+            statusStrip1 = new System.Windows.Forms.StatusStrip();
+            toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            tableLayoutPanel1.SuspendLayout();
+            contextMenuStrip2.SuspendLayout();
+            contextMenuStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
+            statusStrip1.SuspendLayout();
+            SuspendLayout();
             // 
             // tableLayoutPanel1
             // 
-            this.tableLayoutPanel1.ColumnCount = 2;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.Controls.Add(this.listView2, 0, 1);
-            this.tableLayoutPanel1.Controls.Add(this.listView1, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.pictureBox1, 1, 0);
-            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 2;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(800, 428);
-            this.tableLayoutPanel1.TabIndex = 0;
+            tableLayoutPanel1.ColumnCount = 2;
+            tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 23F));
+            tableLayoutPanel1.Controls.Add(listView2, 0, 1);
+            tableLayoutPanel1.Controls.Add(listView1, 0, 0);
+            tableLayoutPanel1.Controls.Add(pictureBox1, 1, 0);
+            tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            tableLayoutPanel1.Name = "tableLayoutPanel1";
+            tableLayoutPanel1.RowCount = 2;
+            tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            tableLayoutPanel1.Size = new System.Drawing.Size(1060, 497);
+            tableLayoutPanel1.TabIndex = 0;
             // 
             // listView2
             // 
-            this.listView2.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader3,
-            this.columnHeader4,
-            this.columnHeader2,
-            this.columnHeader5});
-            this.listView2.ContextMenuStrip = this.contextMenuStrip2;
-            this.listView2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listView2.FullRowSelect = true;
-            this.listView2.GridLines = true;
-            this.listView2.HideSelection = false;
-            this.listView2.Location = new System.Drawing.Point(3, 217);
-            this.listView2.Name = "listView2";
-            this.listView2.Size = new System.Drawing.Size(394, 208);
-            this.listView2.TabIndex = 1;
-            this.listView2.UseCompatibleStateImageBehavior = false;
-            this.listView2.View = System.Windows.Forms.View.Details;
-            this.listView2.SelectedIndexChanged += new System.EventHandler(this.listView2_SelectedIndexChanged);
+            listView2.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] { columnHeader3, columnHeader4, columnHeader2, columnHeader5, columnHeader6 });
+            listView2.ContextMenuStrip = contextMenuStrip2;
+            listView2.Dock = System.Windows.Forms.DockStyle.Fill;
+            listView2.Enabled = false;
+            listView2.FullRowSelect = true;
+            listView2.GridLines = true;
+            listView2.Location = new System.Drawing.Point(4, 251);
+            listView2.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            listView2.Name = "listView2";
+            listView2.Size = new System.Drawing.Size(522, 243);
+            listView2.TabIndex = 1;
+            listView2.UseCompatibleStateImageBehavior = false;
+            listView2.View = System.Windows.Forms.View.Details;
+            listView2.SelectedIndexChanged += listView2_SelectedIndexChanged;
             // 
             // columnHeader3
             // 
-            this.columnHeader3.Text = "Name";
-            this.columnHeader3.Width = 120;
+            columnHeader3.Text = "Name";
+            columnHeader3.Width = 120;
             // 
             // columnHeader4
             // 
-            this.columnHeader4.Text = "Mode";
-            this.columnHeader4.Width = 120;
+            columnHeader4.Text = "Mode";
+            columnHeader4.Width = 120;
             // 
             // columnHeader2
             // 
-            this.columnHeader2.Text = "Pixels mode";
+            columnHeader2.Text = "Pixels mode";
+            columnHeader2.Width = 80;
             // 
             // columnHeader5
             // 
-            this.columnHeader5.Text = "Pixel dist";
+            columnHeader5.Text = "Pixel dist";
+            columnHeader5.Width = 80;
+            // 
+            // columnHeader6
+            // 
+            columnHeader6.Text = "Error rate (%)";
+            columnHeader6.Width = 90;
             // 
             // contextMenuStrip2
             // 
-            this.contextMenuStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.addItemToolStripMenuItem,
-            this.ditToolStripMenuItem,
-            this.deleteToolStripMenuItem1,
-            this.saveToolStripMenuItem});
-            this.contextMenuStrip2.Name = "contextMenuStrip2";
-            this.contextMenuStrip2.Size = new System.Drawing.Size(181, 114);
+            contextMenuStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { addItemToolStripMenuItem, ditToolStripMenuItem, deleteToolStripMenuItem1, saveToolStripMenuItem });
+            contextMenuStrip2.Name = "contextMenuStrip2";
+            contextMenuStrip2.Size = new System.Drawing.Size(122, 92);
             // 
             // addItemToolStripMenuItem
             // 
-            this.addItemToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fromFileToolStripMenuItem,
-            this.fromClipboardToolStripMenuItem,
-            this.grabScreenToolStripMenuItem1});
-            this.addItemToolStripMenuItem.Image = global::AutoUI.Properties.Resources.plus;
-            this.addItemToolStripMenuItem.Name = "addItemToolStripMenuItem";
-            this.addItemToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.addItemToolStripMenuItem.Text = "add item";
-            this.addItemToolStripMenuItem.Click += new System.EventHandler(this.addItemToolStripMenuItem_Click);
+            addItemToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { fromFileToolStripMenuItem, fromClipboardToolStripMenuItem, grabScreenToolStripMenuItem1 });
+            addItemToolStripMenuItem.Image = Properties.Resources.plus;
+            addItemToolStripMenuItem.Name = "addItemToolStripMenuItem";
+            addItemToolStripMenuItem.Size = new System.Drawing.Size(121, 22);
+            addItemToolStripMenuItem.Text = "add item";
+            addItemToolStripMenuItem.Click += addItemToolStripMenuItem_Click;
             // 
             // fromFileToolStripMenuItem
             // 
-            this.fromFileToolStripMenuItem.Name = "fromFileToolStripMenuItem";
-            this.fromFileToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.fromFileToolStripMenuItem.Text = "from file";
-            this.fromFileToolStripMenuItem.Click += new System.EventHandler(this.fromFileToolStripMenuItem_Click);
+            fromFileToolStripMenuItem.Name = "fromFileToolStripMenuItem";
+            fromFileToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
+            fromFileToolStripMenuItem.Text = "from file";
+            fromFileToolStripMenuItem.Click += fromFileToolStripMenuItem_Click;
             // 
             // fromClipboardToolStripMenuItem
             // 
-            this.fromClipboardToolStripMenuItem.Name = "fromClipboardToolStripMenuItem";
-            this.fromClipboardToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.fromClipboardToolStripMenuItem.Text = "from clipboard";
-            this.fromClipboardToolStripMenuItem.Click += new System.EventHandler(this.fromClipboardToolStripMenuItem_Click);
-            // 
-            // ditToolStripMenuItem
-            // 
-            this.ditToolStripMenuItem.Image = global::AutoUI.Properties.Resources.pencil;
-            this.ditToolStripMenuItem.Name = "ditToolStripMenuItem";
-            this.ditToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.ditToolStripMenuItem.Text = "edit";
-            this.ditToolStripMenuItem.Click += new System.EventHandler(this.ditToolStripMenuItem_Click);
-            // 
-            // deleteToolStripMenuItem1
-            // 
-            this.deleteToolStripMenuItem1.Image = global::AutoUI.Properties.Resources.cross;
-            this.deleteToolStripMenuItem1.Name = "deleteToolStripMenuItem1";
-            this.deleteToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
-            this.deleteToolStripMenuItem1.Text = "delete";
-            this.deleteToolStripMenuItem1.Click += new System.EventHandler(this.deleteToolStripMenuItem1_Click);
-            // 
-            // saveToolStripMenuItem
-            // 
-            this.saveToolStripMenuItem.Image = global::AutoUI.Properties.Resources.disk;
-            this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.saveToolStripMenuItem.Text = "save";
-            this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
-            // 
-            // listView1
-            // 
-            this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader1});
-            this.listView1.ContextMenuStrip = this.contextMenuStrip1;
-            this.listView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listView1.FullRowSelect = true;
-            this.listView1.GridLines = true;
-            this.listView1.HideSelection = false;
-            this.listView1.Location = new System.Drawing.Point(3, 3);
-            this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(394, 208);
-            this.listView1.TabIndex = 0;
-            this.listView1.UseCompatibleStateImageBehavior = false;
-            this.listView1.View = System.Windows.Forms.View.Details;
-            this.listView1.SelectedIndexChanged += new System.EventHandler(this.listView1_SelectedIndexChanged);
-            // 
-            // columnHeader1
-            // 
-            this.columnHeader1.Text = "Name";
-            this.columnHeader1.Width = 350;
-            // 
-            // contextMenuStrip1
-            // 
-            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.addPatternToolStripMenuItem,
-            this.editToolStripMenuItem,
-            this.deleteToolStripMenuItem,
-            this.toolStripSeparator1,
-            this.updateToolStripMenuItem,
-            this.newFromClipboardToolStripMenuItem,
-            this.generatePaaternToolStripMenuItem,
-            this.grabScreenToolStripMenuItem});
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(179, 164);
-            // 
-            // addPatternToolStripMenuItem
-            // 
-            this.addPatternToolStripMenuItem.Image = global::AutoUI.Properties.Resources.plus;
-            this.addPatternToolStripMenuItem.Name = "addPatternToolStripMenuItem";
-            this.addPatternToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
-            this.addPatternToolStripMenuItem.Text = "add pattern";
-            this.addPatternToolStripMenuItem.Click += new System.EventHandler(this.addPatternToolStripMenuItem_Click);
-            // 
-            // editToolStripMenuItem
-            // 
-            this.editToolStripMenuItem.Image = global::AutoUI.Properties.Resources.pencil;
-            this.editToolStripMenuItem.Name = "editToolStripMenuItem";
-            this.editToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
-            this.editToolStripMenuItem.Text = "edit";
-            this.editToolStripMenuItem.Click += new System.EventHandler(this.editToolStripMenuItem_Click);
-            // 
-            // deleteToolStripMenuItem
-            // 
-            this.deleteToolStripMenuItem.Image = global::AutoUI.Properties.Resources.cross;
-            this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
-            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
-            this.deleteToolStripMenuItem.Text = "delete";
-            this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(175, 6);
-            // 
-            // updateToolStripMenuItem
-            // 
-            this.updateToolStripMenuItem.Name = "updateToolStripMenuItem";
-            this.updateToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
-            this.updateToolStripMenuItem.Text = "update list";
-            this.updateToolStripMenuItem.Click += new System.EventHandler(this.updateToolStripMenuItem_Click);
-            // 
-            // newFromClipboardToolStripMenuItem
-            // 
-            this.newFromClipboardToolStripMenuItem.Image = global::AutoUI.Properties.Resources.plus_white;
-            this.newFromClipboardToolStripMenuItem.Name = "newFromClipboardToolStripMenuItem";
-            this.newFromClipboardToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
-            this.newFromClipboardToolStripMenuItem.Text = "new from clipboard";
-            this.newFromClipboardToolStripMenuItem.Click += new System.EventHandler(this.newFromClipboardToolStripMenuItem_Click);
-            // 
-            // generatePaaternToolStripMenuItem
-            // 
-            this.generatePaaternToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fromFontToolStripMenuItem,
-            this.fromScreenshotToolStripMenuItem});
-            this.generatePaaternToolStripMenuItem.Name = "generatePaaternToolStripMenuItem";
-            this.generatePaaternToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
-            this.generatePaaternToolStripMenuItem.Text = "generate pattern";
-            this.generatePaaternToolStripMenuItem.Click += new System.EventHandler(this.generatePaaternToolStripMenuItem_Click);
-            // 
-            // fromFontToolStripMenuItem
-            // 
-            this.fromFontToolStripMenuItem.Name = "fromFontToolStripMenuItem";
-            this.fromFontToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
-            this.fromFontToolStripMenuItem.Text = "from font";
-            this.fromFontToolStripMenuItem.Click += new System.EventHandler(this.fromFontToolStripMenuItem_Click);
-            // 
-            // fromScreenshotToolStripMenuItem
-            // 
-            this.fromScreenshotToolStripMenuItem.Name = "fromScreenshotToolStripMenuItem";
-            this.fromScreenshotToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
-            this.fromScreenshotToolStripMenuItem.Text = "from screenshot";
-            this.fromScreenshotToolStripMenuItem.Click += new System.EventHandler(this.fromScreenshotToolStripMenuItem_Click);
-            // 
-            // grabScreenToolStripMenuItem
-            // 
-            this.grabScreenToolStripMenuItem.Name = "grabScreenToolStripMenuItem";
-            this.grabScreenToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
-            this.grabScreenToolStripMenuItem.Text = "grab screen";
-            this.grabScreenToolStripMenuItem.Click += new System.EventHandler(this.grabScreenToolStripMenuItem_Click);
-            // 
-            // statusStrip1
-            // 
-            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripStatusLabel1});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 428);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(800, 22);
-            this.statusStrip1.TabIndex = 2;
-            this.statusStrip1.Text = "statusStrip1";
-            // 
-            // toolStripStatusLabel1
-            // 
-            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(13, 17);
-            this.toolStripStatusLabel1.Text = "..";
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pictureBox1.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.Default;
-            this.pictureBox1.Location = new System.Drawing.Point(403, 3);
-            this.pictureBox1.Name = "pictureBox1";
-            this.tableLayoutPanel1.SetRowSpan(this.pictureBox1, 2);
-            this.pictureBox1.Size = new System.Drawing.Size(394, 422);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox1.TabIndex = 2;
-            this.pictureBox1.TabStop = false;
-            this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
+            fromClipboardToolStripMenuItem.Name = "fromClipboardToolStripMenuItem";
+            fromClipboardToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
+            fromClipboardToolStripMenuItem.Text = "from clipboard";
+            fromClipboardToolStripMenuItem.Click += fromClipboardToolStripMenuItem_Click;
             // 
             // grabScreenToolStripMenuItem1
             // 
-            this.grabScreenToolStripMenuItem1.Name = "grabScreenToolStripMenuItem1";
-            this.grabScreenToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
-            this.grabScreenToolStripMenuItem1.Text = "grab screen";
-            this.grabScreenToolStripMenuItem1.Click += new System.EventHandler(this.grabScreenToolStripMenuItem1_Click);
+            grabScreenToolStripMenuItem1.Name = "grabScreenToolStripMenuItem1";
+            grabScreenToolStripMenuItem1.Size = new System.Drawing.Size(153, 22);
+            grabScreenToolStripMenuItem1.Text = "grab screen";
+            grabScreenToolStripMenuItem1.Click += grabScreenToolStripMenuItem1_Click;
+            // 
+            // ditToolStripMenuItem
+            // 
+            ditToolStripMenuItem.Image = Properties.Resources.pencil;
+            ditToolStripMenuItem.Name = "ditToolStripMenuItem";
+            ditToolStripMenuItem.Size = new System.Drawing.Size(121, 22);
+            ditToolStripMenuItem.Text = "edit";
+            ditToolStripMenuItem.Click += ditToolStripMenuItem_Click;
+            // 
+            // deleteToolStripMenuItem1
+            // 
+            deleteToolStripMenuItem1.Image = Properties.Resources.cross;
+            deleteToolStripMenuItem1.Name = "deleteToolStripMenuItem1";
+            deleteToolStripMenuItem1.Size = new System.Drawing.Size(121, 22);
+            deleteToolStripMenuItem1.Text = "delete";
+            deleteToolStripMenuItem1.Click += deleteToolStripMenuItem1_Click;
+            // 
+            // saveToolStripMenuItem
+            // 
+            saveToolStripMenuItem.Image = Properties.Resources.disk;
+            saveToolStripMenuItem.Name = "saveToolStripMenuItem";
+            saveToolStripMenuItem.Size = new System.Drawing.Size(121, 22);
+            saveToolStripMenuItem.Text = "save";
+            saveToolStripMenuItem.Click += saveToolStripMenuItem_Click;
+            // 
+            // listView1
+            // 
+            listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] { columnHeader1 });
+            listView1.ContextMenuStrip = contextMenuStrip1;
+            listView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            listView1.FullRowSelect = true;
+            listView1.GridLines = true;
+            listView1.Location = new System.Drawing.Point(4, 3);
+            listView1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            listView1.Name = "listView1";
+            listView1.Size = new System.Drawing.Size(522, 242);
+            listView1.TabIndex = 0;
+            listView1.UseCompatibleStateImageBehavior = false;
+            listView1.View = System.Windows.Forms.View.Details;
+            listView1.SelectedIndexChanged += listView1_SelectedIndexChanged;
+            // 
+            // columnHeader1
+            // 
+            columnHeader1.Text = "Name";
+            columnHeader1.Width = 350;
+            // 
+            // contextMenuStrip1
+            // 
+            contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { addPatternToolStripMenuItem, editToolStripMenuItem, deleteToolStripMenuItem, toolStripSeparator1, updateToolStripMenuItem, newFromClipboardToolStripMenuItem, generatePaaternToolStripMenuItem, grabScreenToolStripMenuItem });
+            contextMenuStrip1.Name = "contextMenuStrip1";
+            contextMenuStrip1.Size = new System.Drawing.Size(179, 164);
+            // 
+            // addPatternToolStripMenuItem
+            // 
+            addPatternToolStripMenuItem.Image = Properties.Resources.plus;
+            addPatternToolStripMenuItem.Name = "addPatternToolStripMenuItem";
+            addPatternToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            addPatternToolStripMenuItem.Text = "add pattern";
+            addPatternToolStripMenuItem.Click += addPatternToolStripMenuItem_Click;
+            // 
+            // editToolStripMenuItem
+            // 
+            editToolStripMenuItem.Image = Properties.Resources.pencil;
+            editToolStripMenuItem.Name = "editToolStripMenuItem";
+            editToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            editToolStripMenuItem.Text = "edit";
+            editToolStripMenuItem.Click += editToolStripMenuItem_Click;
+            // 
+            // deleteToolStripMenuItem
+            // 
+            deleteToolStripMenuItem.Image = Properties.Resources.cross;
+            deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
+            deleteToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            deleteToolStripMenuItem.Text = "delete";
+            deleteToolStripMenuItem.Click += deleteToolStripMenuItem_Click;
+            // 
+            // toolStripSeparator1
+            // 
+            toolStripSeparator1.Name = "toolStripSeparator1";
+            toolStripSeparator1.Size = new System.Drawing.Size(175, 6);
+            // 
+            // updateToolStripMenuItem
+            // 
+            updateToolStripMenuItem.Name = "updateToolStripMenuItem";
+            updateToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            updateToolStripMenuItem.Text = "update list";
+            updateToolStripMenuItem.Click += updateToolStripMenuItem_Click;
+            // 
+            // newFromClipboardToolStripMenuItem
+            // 
+            newFromClipboardToolStripMenuItem.Image = Properties.Resources.plus_white;
+            newFromClipboardToolStripMenuItem.Name = "newFromClipboardToolStripMenuItem";
+            newFromClipboardToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            newFromClipboardToolStripMenuItem.Text = "new from clipboard";
+            newFromClipboardToolStripMenuItem.Click += newFromClipboardToolStripMenuItem_Click;
+            // 
+            // generatePaaternToolStripMenuItem
+            // 
+            generatePaaternToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { fromFontToolStripMenuItem, fromScreenshotToolStripMenuItem });
+            generatePaaternToolStripMenuItem.Name = "generatePaaternToolStripMenuItem";
+            generatePaaternToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            generatePaaternToolStripMenuItem.Text = "generate pattern";
+            generatePaaternToolStripMenuItem.Click += generatePaaternToolStripMenuItem_Click;
+            // 
+            // fromFontToolStripMenuItem
+            // 
+            fromFontToolStripMenuItem.Name = "fromFontToolStripMenuItem";
+            fromFontToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            fromFontToolStripMenuItem.Text = "from font";
+            fromFontToolStripMenuItem.Click += fromFontToolStripMenuItem_Click;
+            // 
+            // fromScreenshotToolStripMenuItem
+            // 
+            fromScreenshotToolStripMenuItem.Name = "fromScreenshotToolStripMenuItem";
+            fromScreenshotToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            fromScreenshotToolStripMenuItem.Text = "from screenshot";
+            fromScreenshotToolStripMenuItem.Click += fromScreenshotToolStripMenuItem_Click;
+            // 
+            // grabScreenToolStripMenuItem
+            // 
+            grabScreenToolStripMenuItem.Name = "grabScreenToolStripMenuItem";
+            grabScreenToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            grabScreenToolStripMenuItem.Text = "grab screen";
+            grabScreenToolStripMenuItem.Click += grabScreenToolStripMenuItem_Click;
+            // 
+            // pictureBox1
+            // 
+            pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            pictureBox1.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.Default;
+            pictureBox1.Location = new System.Drawing.Point(534, 3);
+            pictureBox1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            pictureBox1.Name = "pictureBox1";
+            tableLayoutPanel1.SetRowSpan(pictureBox1, 2);
+            pictureBox1.Size = new System.Drawing.Size(522, 491);
+            pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            pictureBox1.TabIndex = 2;
+            pictureBox1.TabStop = false;
+            pictureBox1.Click += pictureBox1_Click;
+            // 
+            // statusStrip1
+            // 
+            statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripStatusLabel1 });
+            statusStrip1.Location = new System.Drawing.Point(0, 497);
+            statusStrip1.Name = "statusStrip1";
+            statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 16, 0);
+            statusStrip1.Size = new System.Drawing.Size(1060, 22);
+            statusStrip1.TabIndex = 2;
+            statusStrip1.Text = "statusStrip1";
+            // 
+            // toolStripStatusLabel1
+            // 
+            toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+            toolStripStatusLabel1.Size = new System.Drawing.Size(13, 17);
+            toolStripStatusLabel1.Text = "..";
             // 
             // PatternsEditor
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.tableLayoutPanel1);
-            this.Controls.Add(this.statusStrip1);
-            this.Name = "PatternsEditor";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Patterns editor";
-            this.tableLayoutPanel1.ResumeLayout(false);
-            this.contextMenuStrip2.ResumeLayout(false);
-            this.contextMenuStrip1.ResumeLayout(false);
-            this.statusStrip1.ResumeLayout(false);
-            this.statusStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            this.ResumeLayout(false);
-            this.PerformLayout();
+            AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            ClientSize = new System.Drawing.Size(1060, 519);
+            Controls.Add(tableLayoutPanel1);
+            Controls.Add(statusStrip1);
+            Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            Name = "PatternsEditor";
+            StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            Text = "Patterns editor";
+            tableLayoutPanel1.ResumeLayout(false);
+            contextMenuStrip2.ResumeLayout(false);
+            contextMenuStrip1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
+            statusStrip1.ResumeLayout(false);
+            statusStrip1.PerformLayout();
+            ResumeLayout(false);
+            PerformLayout();
 
         }
 
@@ -384,5 +374,6 @@ namespace AutoUI
         private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.ColumnHeader columnHeader5;
         private System.Windows.Forms.ToolStripMenuItem grabScreenToolStripMenuItem1;
+        private System.Windows.Forms.ColumnHeader columnHeader6;
     }
 }

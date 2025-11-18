@@ -43,7 +43,12 @@ namespace AutoUI
 
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (listView1.SelectedItems.Count == 0) return;
+            if (listView1.SelectedItems.Count == 0)
+            {
+                listView2.Enabled = false;
+                return;
+            }
+
             var tag = listView1.SelectedItems[0].Tag as PatternMatchingImage;
             updateSecondList(tag);
 
@@ -55,6 +60,7 @@ namespace AutoUI
 
         private void updateSecondList(PatternMatchingImage tag)
         {
+            listView2.Enabled = true;
             listView2.Items.Clear();
             foreach (var t in tag.Items)
             {
@@ -62,7 +68,8 @@ namespace AutoUI
                     t.Name,
                     t.Mode.ToString(),
                     t.PixelsMode.ToString(),
-                    t.PixelsMatchDistancePerChannel.ToString()
+                    t.PixelsMatchDistancePerChannel.ToString(),
+                    t.PixelsMatchAcceptableErrorLevel.ToString()
                 })
                 { Tag = t });
             }
@@ -86,7 +93,7 @@ namespace AutoUI
 
         private void fromFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (listView1.SelectedItems.Count == 0) 
+            if (listView1.SelectedItems.Count == 0)
                 return;
 
             OpenFileDialog ofd = new OpenFileDialog();
@@ -356,6 +363,7 @@ namespace AutoUI
             d.AddOptionsField("mode", "Mode", Enum.GetNames(typeof(PatternMatchingMode)), tag2.Mode.ToString());
             d.AddOptionsField("pmode", "Pixels mode", Enum.GetNames(typeof(PixelsMatchingMode)), tag2.PixelsMode.ToString());
             d.AddNumericField("pdist", "Pixels dist", tag2.PixelsMatchDistancePerChannel);
+            d.AddNumericField("perror", "Pixels error rate", tag2.PixelsMatchAcceptableErrorLevel, max: 100, min: 0);
 
             if (!d.ShowDialog())
                 return;
@@ -364,6 +372,7 @@ namespace AutoUI
             tag2.Mode = (PatternMatchingMode)Enum.Parse(typeof(PatternMatchingMode), d.GetOptionsField("mode"));
             tag2.PixelsMode = (PixelsMatchingMode)Enum.Parse(typeof(PixelsMatchingMode), d.GetOptionsField("pmode"));
             tag2.PixelsMatchDistancePerChannel = d.GetNumericField("pdist");
+            tag2.PixelsMatchAcceptableErrorLevel = d.GetNumericField("perror");
 
             updateSecondList(tag);
         }
@@ -411,10 +420,10 @@ namespace AutoUI
         private void grabScreenToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             if (listView1.SelectedItems.Count == 0)
-                return;            
+                return;
 
             var tag = listView1.SelectedItems[0].Tag as PatternMatchingImage;
-            
+
 
             Rectangle bounds = Screen.GetBounds(Point.Empty);
             Bitmap bitmap = new Bitmap(bounds.Width, bounds.Height);
@@ -422,7 +431,7 @@ namespace AutoUI
             using (Graphics g = Graphics.FromImage(bitmap))
             {
                 g.CopyFromScreen(0, 0, 0, 0, Screen.PrimaryScreen.Bounds.Size);
-            }            
+            }
 
             CropImage crop = new CropImage();
             crop.Init(bitmap);
@@ -434,7 +443,7 @@ namespace AutoUI
             }
 
             tag.Items.Add(new PatternMatchingImageItem() { Bitmap = bitmap });
-            
+
             updateSecondList(tag);
 
         }

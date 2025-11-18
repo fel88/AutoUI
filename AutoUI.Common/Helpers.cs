@@ -1,4 +1,6 @@
-﻿namespace AutoUI.Common
+﻿using System.Globalization;
+
+namespace AutoUI.Common
 {
     public static class Helpers
     {
@@ -7,5 +9,7 @@
         {
             return NewId++;
         }
+
+        public static double ToDouble(this string str) => double.Parse(str.Replace(",", "."), CultureInfo.InvariantCulture);
     }
-    }
+}

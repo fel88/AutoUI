@@ -15,10 +15,17 @@ namespace AutoUI.Common
         public PatternMatchingMode Mode { get; set; }
         public PixelsMatchingMode PixelsMode { get; set; }
         public double PixelsMatchDistancePerChannel { get; set; } = 15;
+        /// <summary>
+        /// percentage of acceptable error level
+        /// </summary>
+        public double PixelsMatchAcceptableErrorLevel { get; set; } = 0;
 
         public void ToXml(StringBuilder sb)
         {
-            sb.AppendLine($"<item name=\"{Name}\" mode=\"{Mode}\" pixelsMode=\"{PixelsMode}\" pixelDist=\"{PixelsMatchDistancePerChannel}\" >");
+            sb.AppendLine($"<item name=\"{Name}\" mode=\"{Mode}\" pixelsMode=\"{PixelsMode}\" " +
+                $"pixelDist=\"{PixelsMatchDistancePerChannel}\" " +
+                $"pixelErrorRate=\"{PixelsMatchAcceptableErrorLevel}\"" +
+                $" >");
             MemoryStream ms = new MemoryStream();
             Bitmap.Save(ms, ImageFormat.Png);
             var bb = Convert.ToBase64String(ms.ToArray());
@@ -38,7 +45,10 @@ namespace AutoUI.Common
                 Name = item.Attribute("name").Value;
 
             if (item.Attribute("pixelDist") != null)
-                PixelsMatchDistancePerChannel = double.Parse(item.Attribute("pixelDist").Value);
+                PixelsMatchDistancePerChannel = item.Attribute("pixelDist").Value.ToDouble();
+            
+            if (item.Attribute("pixelErrorRate") != null)
+                PixelsMatchAcceptableErrorLevel = item.Attribute("pixelErrorRate").Value.ToDouble();
 
         }
     }
