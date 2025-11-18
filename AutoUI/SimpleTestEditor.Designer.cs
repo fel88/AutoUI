@@ -76,12 +76,14 @@
             columnsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             columnsToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             columnToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             timer1 = new System.Windows.Forms.Timer(components);
+            splitContainer1 = new System.Windows.Forms.SplitContainer();
             contextMenuStrip1.SuspendLayout();
             statusStrip1.SuspendLayout();
             toolStrip1.SuspendLayout();
-            tableLayoutPanel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
+            splitContainer1.Panel1.SuspendLayout();
+            splitContainer1.SuspendLayout();
             SuspendLayout();
             // 
             // listView1
@@ -91,10 +93,10 @@
             listView1.Dock = System.Windows.Forms.DockStyle.Fill;
             listView1.FullRowSelect = true;
             listView1.GridLines = true;
-            listView1.Location = new System.Drawing.Point(4, 3);
+            listView1.Location = new System.Drawing.Point(0, 0);
             listView1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             listView1.Name = "listView1";
-            listView1.Size = new System.Drawing.Size(469, 466);
+            listView1.Size = new System.Drawing.Size(318, 472);
             listView1.TabIndex = 1;
             listView1.UseCompatibleStateImageBehavior = false;
             listView1.View = System.Windows.Forms.View.Details;
@@ -438,34 +440,31 @@
             columnToolStripMenuItem.Text = "1 column";
             columnToolStripMenuItem.Click += columnToolStripMenuItem_Click;
             // 
-            // tableLayoutPanel1
-            // 
-            tableLayoutPanel1.ColumnCount = 2;
-            tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            tableLayoutPanel1.Controls.Add(listView1, 0, 0);
-            tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            tableLayoutPanel1.Location = new System.Drawing.Point(0, 25);
-            tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            tableLayoutPanel1.Name = "tableLayoutPanel1";
-            tableLayoutPanel1.RowCount = 1;
-            tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            tableLayoutPanel1.Size = new System.Drawing.Size(954, 472);
-            tableLayoutPanel1.TabIndex = 6;
-            tableLayoutPanel1.Paint += tableLayoutPanel1_Paint;
-            // 
             // timer1
             // 
             timer1.Enabled = true;
             timer1.Interval = 25;
             timer1.Tick += timer1_Tick;
             // 
+            // splitContainer1
+            // 
+            splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            splitContainer1.Location = new System.Drawing.Point(0, 25);
+            splitContainer1.Name = "splitContainer1";
+            // 
+            // splitContainer1.Panel1
+            // 
+            splitContainer1.Panel1.Controls.Add(listView1);
+            splitContainer1.Size = new System.Drawing.Size(954, 472);
+            splitContainer1.SplitterDistance = 318;
+            splitContainer1.TabIndex = 2;
+            // 
             // SimpleTestEditor
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             ClientSize = new System.Drawing.Size(954, 519);
-            Controls.Add(tableLayoutPanel1);
+            Controls.Add(splitContainer1);
             Controls.Add(toolStrip1);
             Controls.Add(statusStrip1);
             Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
@@ -477,7 +476,9 @@
             statusStrip1.PerformLayout();
             toolStrip1.ResumeLayout(false);
             toolStrip1.PerformLayout();
-            tableLayoutPanel1.ResumeLayout(false);
+            splitContainer1.Panel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
+            splitContainer1.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
 
@@ -501,7 +502,6 @@
         private System.Windows.Forms.ToolStripMenuItem delayToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem mouseUpDownToolStripMenuItem;
         private System.Windows.Forms.ToolStripButton toolStripButton1;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.ToolStripButton toolStripButton2;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
@@ -532,6 +532,7 @@
         private System.Windows.Forms.ToolStripMenuItem columnsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem columnsToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem columnToolStripMenuItem;
+        private System.Windows.Forms.SplitContainer splitContainer1;
     }
 }
 

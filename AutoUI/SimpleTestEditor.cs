@@ -204,10 +204,10 @@ namespace AutoUI
         {
             if (listView1.SelectedItems.Count == 0)
             {
-                var del = tableLayoutPanel1.Controls.OfType<ITestItemEditor>().FirstOrDefault();
+                var del = splitContainer1.Panel2.Controls.OfType<ITestItemEditor>().FirstOrDefault();
                 if (del != null)
                 {
-                    tableLayoutPanel1.Controls.Remove(del as Control);
+                    splitContainer1.Panel2.Controls.Remove(del as Control);
                 }
                 return;
             }
@@ -224,12 +224,12 @@ namespace AutoUI
                 var tie = Activator.CreateInstance(editorType) as ITestItemEditor;
                 tie.Init(currentItem);
 
-                var del = tableLayoutPanel1.Controls.OfType<ITestItemEditor>().FirstOrDefault();
+                var del = splitContainer1.Panel2.Controls.OfType<ITestItemEditor>().FirstOrDefault();
                 if (del != null)
                 {
-                    tableLayoutPanel1.Controls.Remove(del as Control);
+                    splitContainer1.Panel2.Controls.Remove(del as Control);
                 }
-                tableLayoutPanel1.Controls.Add(tie as Control, 1, 0);
+                splitContainer1.Panel2.Controls.Add(tie as Control);
                 (tie as Control).Dock = DockStyle.Fill;
             }
         }
