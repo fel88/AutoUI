@@ -5,6 +5,7 @@
         Precise,
         Grayscale,        
         BinaryMean, //binary mean>128
-        FastBinary
+        FastBinary,
+        TemplateMatching
     }
 }

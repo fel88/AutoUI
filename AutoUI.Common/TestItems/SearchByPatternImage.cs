@@ -197,6 +197,8 @@ namespace AutoUI.TestItems
         {
             if (_pattern.Mode == PatternMatchingMode.FastBinary)
                 return SearchPatternBinary(screen, _pattern, startX, startY, maxWidth, maxHeight);
+            if (_pattern.Mode == PatternMatchingMode.TemplateMatching)
+                return SearchPatternTM(screen, _pattern, startX, startY, maxWidth, maxHeight);
 
             /*if (Debugger.IsAttached)
             {
@@ -307,6 +309,66 @@ namespace AutoUI.TestItems
             d.Dispose();
             d2.Dispose();
 
+            return null;
+        }
+       
+        static TemplateMatchInfo[] TemplateMatch(Mat reference, Mat template)
+        {
+            List<TemplateMatchInfo> matches = new List<TemplateMatchInfo>();
+            using Mat refMat = reference.Clone();
+            using Mat tplMat = template.Clone();
+            using Mat res = new Mat(refMat.Rows - tplMat.Rows + 1, refMat.Cols - tplMat.Cols + 1, MatType.CV_32FC1);
+
+            //Convert input images to gray
+            Mat gref = refMat.CvtColor(ColorConversionCodes.BGR2GRAY);
+            Mat gtpl = tplMat.CvtColor(ColorConversionCodes.BGR2GRAY);
+
+            Cv2.MatchTemplate(gref, gtpl, res, TemplateMatchModes.CCoeffNormed);
+            Cv2.Threshold(res, res, 0.8, 1.0, ThresholdTypes.Tozero);
+
+            while (true)
+            {
+                double minval, maxval, threshold = 0.8;
+                OpenCvSharp.Point minloc, maxloc;
+                Cv2.MinMaxLoc(res, out minval, out maxval, out minloc, out maxloc);
+
+                if (maxval >= threshold)
+                {
+                    //Setup the rectangle to draw
+                    Rect r = new Rect(new OpenCvSharp.Point(maxloc.X, maxloc.Y), new OpenCvSharp.Size(tplMat.Width, tplMat.Height));
+                    //WriteLine($"MinVal={minval.ToString()} MaxVal={maxval.ToString()} MinLoc={minloc.ToString()} MaxLoc={maxloc.ToString()} Rect={r.ToString()}");
+                    matches.Add(new TemplateMatchInfo() { Rect = r, Confidence = maxval });
+                    //Draw a rectangle of the matching area
+                    //Cv2.Rectangle(refMat, r, Scalar.LimeGreen, 2);
+
+                    //Fill in the res Mat so you don't find the same area again in the MinMaxLoc
+                    Rect outRect;
+                    Cv2.FloodFill(res, maxloc, new Scalar(0), out outRect, new Scalar(0.1), new Scalar(1.0));
+                }
+                else
+                    break;
+            }
+
+            return matches.ToArray();
+        }
+        public static TemplateMatchInfo[] TemplateMatchingAll(Bitmap screen,
+            PatternMatchingImageItem _pattern)
+        {
+            using var mat1 = screen.ToMat();
+            using var mat2 = _pattern.Bitmap.ToMat();
+            var matches = TemplateMatch(mat1, mat2);
+
+            return matches.ToArray();
+
+        }
+
+        public static System.Drawing.Point? SearchPatternTM(Bitmap screen, PatternMatchingImageItem _pattern, int startX = 0, int startY = 0, int? maxWidth = null, int? maxHeight = null)
+        {
+            using var mat1 = screen.ToMat();
+            using var mat2 = _pattern.Bitmap.ToMat();
+            var matches = TemplateMatch(mat1, mat2);
+            if (matches.Any())
+                return matches.Take(1).Select(z => new Point(z.Rect.X, z.Rect.Y)).First();
             return null;
         }
 

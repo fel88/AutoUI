@@ -56,20 +56,38 @@ namespace AutoUI
             }
             infos.Clear();
             var sw = Stopwatch.StartNew();
+
             foreach (var item in pattern.Items)
             {
-                Point? res = null;
-                do
+                if (item.Mode == PatternMatchingMode.TemplateMatching)
                 {
-                    res = SearchByPatternImage.SearchPattern(bmp, item, res == null ? 0 : (res.Value.X), res == null ? 0 : (res.Value.Y + 1));
-                    if (res != null)
+                    var results = SearchByPatternImage.TemplateMatchingAll(bmp, item);
+
+                    foreach (var res in results)
+                    {
                         infos.Add(new PatternFindInfo()
                         {
                             Pattern = item,
-                            Rect = new Rectangle(res.Value.X, res.Value.Y, item.Bitmap.Width, item.Bitmap.Height)
+                            Rect = new Rectangle(res.Rect.X, res.Rect.Y, item.Bitmap.Width, item.Bitmap.Height)
                         });
+                    }
 
-                } while (res != null);
+                }
+                else
+                {
+                    Point? res = null;
+                    do
+                    {
+                        res = SearchByPatternImage.SearchPattern(bmp, item, res == null ? 0 : (res.Value.X), res == null ? 0 : (res.Value.Y + 1));
+                        if (res != null)
+                            infos.Add(new PatternFindInfo()
+                            {
+                                Pattern = item,
+                                Rect = new Rectangle(res.Value.X, res.Value.Y, item.Bitmap.Width, item.Bitmap.Height)
+                            });
+
+                    } while (res != null);
+                }
             }
 
             //non-max suppress
@@ -202,7 +220,7 @@ namespace AutoUI
             }
 
             //non-max suppress
-                    
+
             sw.Stop();
             toolStripStatusLabel1.Text = $"Complete. Founded: {infos.Count}; time: {sw.ElapsedMilliseconds}ms";
 
