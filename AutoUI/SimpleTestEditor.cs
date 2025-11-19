@@ -718,6 +718,12 @@ namespace AutoUI
             th.IsBackground = true;
             th.Start();
         }
+
+        private void jumpToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            addOrInsertItem(new JumpTestItem());
+
+        }
     }
 
 }

@@ -22,7 +22,9 @@ namespace AutoUI.TestItems
     {
         public PatternMatchingImage Pattern;
 
-        public bool ClickOnSucceseed { get; set; }
+        public TestItemProcessResultEnum StatusIfFailed { get; set; } = TestItemProcessResultEnum.Failed;
+        public bool ClickIfSucceed { get; set; }
+        public bool MouseMoveIfSucceed { get; set; } = true;
         public bool DelayEnabled { get; set; }
 
         public int Delay { get; set; }
@@ -31,8 +33,14 @@ namespace AutoUI.TestItems
 
         public override void ParseXml(IAutoTest parent, XElement item)
         {
-            if (item.Attribute("clickOnSucceseed") != null)
-                ClickOnSucceseed = bool.Parse(item.Attribute("clickOnSucceseed").Value);
+            if (item.Attribute("clickIfSucceed") != null)
+                ClickIfSucceed = bool.Parse(item.Attribute("clickIfSucceed").Value);
+
+            if (item.Attribute("mouseMoveIfSucceed") != null)
+                MouseMoveIfSucceed = bool.Parse(item.Attribute("mouseMoveIfSucceed").Value);
+
+            if (item.Attribute("statusIfFailed") != null)
+                StatusIfFailed = Enum.Parse<TestItemProcessResultEnum>(item.Attribute("statusIfFailed").Value);
 
             if (item.Attribute("delay") != null)
                 Delay = int.Parse(item.Attribute("delay").Value);
@@ -107,19 +115,20 @@ namespace AutoUI.TestItems
                         ret = SearchPattern(screen, item);
                     if (ret != null)
                     {
-                        SetCursorPos(ret.Value.X + item.Bitmap.Width / 2, ret.Value.Y + item.Bitmap.Height / 2);
+                        if (ClickIfSucceed || MouseMoveIfSucceed)
+                            SetCursorPos(ret.Value.X + item.Bitmap.Width / 2, ret.Value.Y + item.Bitmap.Height / 2);
                         break;
                     }
                 }
                 if (ret == null)
                 {
-                    return TestItemProcessResultEnum.Failed;
+                    return StatusIfFailed;
                 }
                 ctx.LastSearchPosition = ret;
             }
 
             screen.Dispose();
-            if (ClickOnSucceseed)
+            if (ClickIfSucceed)
             {
                 var cc = new ClickAutoTestItem();
                 cc.Process(ctx);
@@ -311,7 +320,7 @@ namespace AutoUI.TestItems
 
             return null;
         }
-       
+
         static TemplateMatchInfo[] TemplateMatch(Mat reference, Mat template)
         {
             List<TemplateMatchInfo> matches = new List<TemplateMatchInfo>();
@@ -509,12 +518,11 @@ namespace AutoUI.TestItems
         }
 
         public override string ToXml()
-        {
-            MemoryStream ms = new MemoryStream();
-            //Pattern.Save(ms, ImageFormat.Png);
-            //var b64 = Convert.ToBase64String(ms.ToArray());
+        {            
             return $"<searchPattern patternId=\"{(Pattern == null ? string.Empty : Pattern.Id.ToString())}\" preCheck=\"{PreCheckCurrentPosition}\"" +
-                $" clickOnSucceseed=\"{ClickOnSucceseed}\"" +
+                $" clickIfSucceed=\"{ClickIfSucceed}\"" +
+                $" mouseMoveIfSucceed=\"{MouseMoveIfSucceed}\"" +
+                $" statusIfFailed=\"{StatusIfFailed}\"" +
                 $" delayEnabled=\"{DelayEnabled}\"" +
                 $" delay=\"{Delay}\"" +
                 $" ></searchPattern>";

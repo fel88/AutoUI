@@ -45,7 +45,7 @@ namespace AutoUI.TestItems
             stepCtx = ctx.TagRegisters[this] as GotoTestStepContext;
 
             bool skip = false;
-            if (UseCounter)            
+            if (UseCounter)
                 skip = stepCtx.Step();
 
             if (!skip)
@@ -70,6 +70,11 @@ namespace AutoUI.TestItems
                 CounterInitValue = int.Parse(item.Attribute("iterations").Value);
 
             base.ParseXml(set, item);
+        }
+
+        public override string ToString()
+        {
+            return $"goto ({Label})";
         }
 
         public override string ToXml()

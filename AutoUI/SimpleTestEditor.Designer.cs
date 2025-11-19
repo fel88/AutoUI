@@ -78,6 +78,7 @@
             columnToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             timer1 = new System.Windows.Forms.Timer(components);
             splitContainer1 = new System.Windows.Forms.SplitContainer();
+            jumpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             contextMenuStrip1.SuspendLayout();
             statusStrip1.SuspendLayout();
             toolStrip1.SuspendLayout();
@@ -128,7 +129,7 @@
             // 
             // addToolStripMenuItem
             // 
-            addToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { searchByPatternToolStripMenuItem, clickToolStripMenuItem, delayToolStripMenuItem, mouseUpDownToolStripMenuItem, scriptToolStripMenuItem, screenshotToolStripMenuItem, gotoToolStripMenuItem, labelToolStripMenuItem, processToolStripMenuItem, cursorPositionToolStripMenuItem, waitPatternToolStripMenuItem, findAllToolStripMenuItem, iterateToolStripMenuItem, wheelToolStripMenuItem, keyboardToolStripMenuItem });
+            addToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { searchByPatternToolStripMenuItem, clickToolStripMenuItem, delayToolStripMenuItem, mouseUpDownToolStripMenuItem, scriptToolStripMenuItem, screenshotToolStripMenuItem, gotoToolStripMenuItem, labelToolStripMenuItem, processToolStripMenuItem, cursorPositionToolStripMenuItem, waitPatternToolStripMenuItem, findAllToolStripMenuItem, iterateToolStripMenuItem, wheelToolStripMenuItem, keyboardToolStripMenuItem, jumpToolStripMenuItem });
             addToolStripMenuItem.Image = Properties.Resources.plus;
             addToolStripMenuItem.Name = "addToolStripMenuItem";
             addToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
@@ -139,7 +140,7 @@
             // 
             searchByPatternToolStripMenuItem.Image = Properties.Resources.eye;
             searchByPatternToolStripMenuItem.Name = "searchByPatternToolStripMenuItem";
-            searchByPatternToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
+            searchByPatternToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             searchByPatternToolStripMenuItem.Text = "search by pattern";
             searchByPatternToolStripMenuItem.Click += searchByPatternToolStripMenuItem_Click;
             // 
@@ -147,7 +148,7 @@
             // 
             clickToolStripMenuItem.Image = Properties.Resources.mouse_select;
             clickToolStripMenuItem.Name = "clickToolStripMenuItem";
-            clickToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
+            clickToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             clickToolStripMenuItem.Text = "click";
             clickToolStripMenuItem.Click += clickToolStripMenuItem_Click_1;
             // 
@@ -155,7 +156,7 @@
             // 
             delayToolStripMenuItem.Image = Properties.Resources.clock_select;
             delayToolStripMenuItem.Name = "delayToolStripMenuItem";
-            delayToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
+            delayToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             delayToolStripMenuItem.Text = "delay";
             delayToolStripMenuItem.Click += delayToolStripMenuItem_Click_1;
             // 
@@ -163,7 +164,7 @@
             // 
             mouseUpDownToolStripMenuItem.Image = Properties.Resources.mouse;
             mouseUpDownToolStripMenuItem.Name = "mouseUpDownToolStripMenuItem";
-            mouseUpDownToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
+            mouseUpDownToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             mouseUpDownToolStripMenuItem.Text = "mouseUpDown";
             mouseUpDownToolStripMenuItem.Click += mouseUpDownToolStripMenuItem_Click_1;
             // 
@@ -171,7 +172,7 @@
             // 
             scriptToolStripMenuItem.Image = Properties.Resources.script_binary;
             scriptToolStripMenuItem.Name = "scriptToolStripMenuItem";
-            scriptToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
+            scriptToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             scriptToolStripMenuItem.Text = "script";
             scriptToolStripMenuItem.Click += scriptToolStripMenuItem_Click;
             // 
@@ -179,7 +180,7 @@
             // 
             screenshotToolStripMenuItem.Image = Properties.Resources.image_select;
             screenshotToolStripMenuItem.Name = "screenshotToolStripMenuItem";
-            screenshotToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
+            screenshotToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             screenshotToolStripMenuItem.Text = "screenshot";
             screenshotToolStripMenuItem.Click += screenshotToolStripMenuItem_Click;
             // 
@@ -187,7 +188,7 @@
             // 
             gotoToolStripMenuItem.Image = Properties.Resources.arrow_branch;
             gotoToolStripMenuItem.Name = "gotoToolStripMenuItem";
-            gotoToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
+            gotoToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             gotoToolStripMenuItem.Text = "goto";
             gotoToolStripMenuItem.Click += gotoToolStripMenuItem_Click_1;
             // 
@@ -195,7 +196,7 @@
             // 
             labelToolStripMenuItem.Image = Properties.Resources.tag_hash;
             labelToolStripMenuItem.Name = "labelToolStripMenuItem";
-            labelToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
+            labelToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             labelToolStripMenuItem.Text = "label";
             labelToolStripMenuItem.Click += labelToolStripMenuItem_Click_1;
             // 
@@ -204,7 +205,7 @@
             processToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { runToolStripMenuItem, terminateToolStripMenuItem });
             processToolStripMenuItem.Image = Properties.Resources.application_terminal;
             processToolStripMenuItem.Name = "processToolStripMenuItem";
-            processToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
+            processToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             processToolStripMenuItem.Text = "process ";
             // 
             // runToolStripMenuItem
@@ -225,7 +226,7 @@
             // 
             cursorPositionToolStripMenuItem.Image = Properties.Resources.cursor;
             cursorPositionToolStripMenuItem.Name = "cursorPositionToolStripMenuItem";
-            cursorPositionToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
+            cursorPositionToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             cursorPositionToolStripMenuItem.Text = "cursor position";
             cursorPositionToolStripMenuItem.Click += cursorPositionToolStripMenuItem_Click;
             // 
@@ -233,7 +234,7 @@
             // 
             waitPatternToolStripMenuItem.Image = Properties.Resources.hourglass;
             waitPatternToolStripMenuItem.Name = "waitPatternToolStripMenuItem";
-            waitPatternToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
+            waitPatternToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             waitPatternToolStripMenuItem.Text = "wait image pattern";
             waitPatternToolStripMenuItem.Click += waitPatternToolStripMenuItem_Click;
             // 
@@ -241,7 +242,7 @@
             // 
             findAllToolStripMenuItem.Image = Properties.Resources.binocular;
             findAllToolStripMenuItem.Name = "findAllToolStripMenuItem";
-            findAllToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
+            findAllToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             findAllToolStripMenuItem.Text = "find all";
             findAllToolStripMenuItem.Click += findAllToolStripMenuItem_Click;
             // 
@@ -249,7 +250,7 @@
             // 
             iterateToolStripMenuItem.Image = Properties.Resources.arrow_circle_double_135;
             iterateToolStripMenuItem.Name = "iterateToolStripMenuItem";
-            iterateToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
+            iterateToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             iterateToolStripMenuItem.Text = "iterate";
             iterateToolStripMenuItem.Click += iterateToolStripMenuItem_Click;
             // 
@@ -257,7 +258,7 @@
             // 
             wheelToolStripMenuItem.Image = Properties.Resources.mouse_select_wheel;
             wheelToolStripMenuItem.Name = "wheelToolStripMenuItem";
-            wheelToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
+            wheelToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             wheelToolStripMenuItem.Text = "wheel";
             wheelToolStripMenuItem.Click += wheelToolStripMenuItem_Click;
             // 
@@ -265,7 +266,7 @@
             // 
             keyboardToolStripMenuItem.Image = Properties.Resources.keyboard_full_wireless;
             keyboardToolStripMenuItem.Name = "keyboardToolStripMenuItem";
-            keyboardToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
+            keyboardToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             keyboardToolStripMenuItem.Text = "keyboard";
             keyboardToolStripMenuItem.Click += keyboardToolStripMenuItem_Click;
             // 
@@ -460,6 +461,14 @@
             splitContainer1.SplitterDistance = 318;
             splitContainer1.TabIndex = 2;
             // 
+            // jumpToolStripMenuItem
+            // 
+            jumpToolStripMenuItem.Image = Properties.Resources.arrow_return_270;
+            jumpToolStripMenuItem.Name = "jumpToolStripMenuItem";
+            jumpToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            jumpToolStripMenuItem.Text = "jump";
+            jumpToolStripMenuItem.Click += jumpToolStripMenuItem_Click;
+            // 
             // SimpleTestEditor
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -534,6 +543,7 @@
         private System.Windows.Forms.ToolStripMenuItem columnsToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem columnToolStripMenuItem;
         private System.Windows.Forms.SplitContainer splitContainer1;
+        private System.Windows.Forms.ToolStripMenuItem jumpToolStripMenuItem;
     }
 }
 
