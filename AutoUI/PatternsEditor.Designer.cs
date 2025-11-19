@@ -41,6 +41,8 @@ namespace AutoUI
             addItemToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             fromFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             fromClipboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            asIsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            cropToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             grabScreenToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             ditToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             deleteToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
@@ -147,21 +149,36 @@ namespace AutoUI
             // fromFileToolStripMenuItem
             // 
             fromFileToolStripMenuItem.Name = "fromFileToolStripMenuItem";
-            fromFileToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
+            fromFileToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             fromFileToolStripMenuItem.Text = "from file";
             fromFileToolStripMenuItem.Click += fromFileToolStripMenuItem_Click;
             // 
             // fromClipboardToolStripMenuItem
             // 
+            fromClipboardToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { asIsToolStripMenuItem, cropToolStripMenuItem });
             fromClipboardToolStripMenuItem.Name = "fromClipboardToolStripMenuItem";
-            fromClipboardToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
+            fromClipboardToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             fromClipboardToolStripMenuItem.Text = "from clipboard";
             fromClipboardToolStripMenuItem.Click += fromClipboardToolStripMenuItem_Click;
+            // 
+            // asIsToolStripMenuItem
+            // 
+            asIsToolStripMenuItem.Name = "asIsToolStripMenuItem";
+            asIsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            asIsToolStripMenuItem.Text = "as is";
+            asIsToolStripMenuItem.Click += asIsToolStripMenuItem_Click;
+            // 
+            // cropToolStripMenuItem
+            // 
+            cropToolStripMenuItem.Name = "cropToolStripMenuItem";
+            cropToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            cropToolStripMenuItem.Text = "crop";
+            cropToolStripMenuItem.Click += cropToolStripMenuItem_Click;
             // 
             // grabScreenToolStripMenuItem1
             // 
             grabScreenToolStripMenuItem1.Name = "grabScreenToolStripMenuItem1";
-            grabScreenToolStripMenuItem1.Size = new System.Drawing.Size(153, 22);
+            grabScreenToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
             grabScreenToolStripMenuItem1.Text = "grab screen";
             grabScreenToolStripMenuItem1.Click += grabScreenToolStripMenuItem1_Click;
             // 
@@ -375,5 +392,7 @@ namespace AutoUI
         private System.Windows.Forms.ColumnHeader columnHeader5;
         private System.Windows.Forms.ToolStripMenuItem grabScreenToolStripMenuItem1;
         private System.Windows.Forms.ColumnHeader columnHeader6;
+        private System.Windows.Forms.ToolStripMenuItem asIsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem cropToolStripMenuItem;
     }
 }

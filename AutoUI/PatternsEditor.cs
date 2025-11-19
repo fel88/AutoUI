@@ -107,12 +107,7 @@ namespace AutoUI
 
         private void fromClipboardToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (listView1.SelectedItems.Count == 0) return;
 
-
-            var tag = listView1.SelectedItems[0].Tag as PatternMatchingImage;
-            tag.Items.Add(new PatternMatchingImageItem() { Bitmap = Clipboard.GetImage() as Bitmap });
-            updateSecondList(tag);
         }
 
         private void updateToolStripMenuItem_Click(object sender, EventArgs e)
@@ -444,6 +439,39 @@ namespace AutoUI
 
             tag.Items.Add(new PatternMatchingImageItem() { Bitmap = bitmap });
 
+            updateSecondList(tag);
+
+        }
+
+        private void asIsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (listView1.SelectedItems.Count == 0)
+                return;
+
+            var tag = listView1.SelectedItems[0].Tag as PatternMatchingImage;
+            tag.Items.Add(new PatternMatchingImageItem() { Bitmap = Clipboard.GetImage() as Bitmap });
+            updateSecondList(tag);
+        }
+
+        private void cropToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (listView1.SelectedItems.Count == 0)
+                return;
+
+            var tag = listView1.SelectedItems[0].Tag as PatternMatchingImage;
+                        
+            Bitmap bitmap = Clipboard.GetImage() as Bitmap;
+
+            CropImage crop = new CropImage();
+            crop.Init(bitmap);
+            if (crop.ShowDialog() == DialogResult.OK)
+            {
+                var temp = bitmap;
+                bitmap = bitmap.Clone(crop.CropArea, PixelFormat.Format32bppArgb);
+                temp.Dispose();
+            }
+
+            tag.Items.Add(new PatternMatchingImageItem() { Bitmap = bitmap });
             updateSecondList(tag);
 
         }

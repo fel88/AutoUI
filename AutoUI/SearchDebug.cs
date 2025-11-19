@@ -111,6 +111,7 @@ namespace AutoUI
             ps.Init(Tests.set.Pool);
             ps.ShowDialog();
             pattern = ps.Selected;
+            label1.Text = $"pattern: {pattern.Name}";
         }
 
         private void timer1_Tick(object sender, EventArgs e)

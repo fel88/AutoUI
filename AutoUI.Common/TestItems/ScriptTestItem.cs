@@ -14,7 +14,8 @@ namespace AutoUI.Common.TestItems
 
         }
         public bool FailedOnException { get; set; } = true;
-        public string ProgramText = @"
+        public string ProgramText = @"using System;
+using System.IO;
 using AutoUI.Common;
 using System.Windows.Forms;
 using System.Collections.Generic;

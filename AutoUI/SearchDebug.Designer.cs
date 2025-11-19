@@ -48,6 +48,7 @@ namespace AutoUI
             tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             panel1 = new System.Windows.Forms.Panel();
             button3 = new System.Windows.Forms.Button();
+            label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             contextMenuStrip1.SuspendLayout();
             statusStrip1.SuspendLayout();
@@ -201,6 +202,7 @@ namespace AutoUI
             // 
             // panel1
             // 
+            panel1.Controls.Add(label1);
             panel1.Controls.Add(button3);
             panel1.Controls.Add(button1);
             panel1.Controls.Add(button2);
@@ -227,6 +229,15 @@ namespace AutoUI
             button3.UseVisualStyleBackColor = true;
             button3.Click += button3_Click;
             // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new System.Drawing.Point(19, 6);
+            label1.Name = "label1";
+            label1.Size = new System.Drawing.Size(48, 15);
+            label1.TabIndex = 9;
+            label1.Text = "pattern:";
+            // 
             // SearchDebug
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -246,6 +257,7 @@ namespace AutoUI
             ((System.ComponentModel.ISupportInitialize)pictureBox3).EndInit();
             tableLayoutPanel1.ResumeLayout(false);
             panel1.ResumeLayout(false);
+            panel1.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
 
@@ -271,5 +283,6 @@ namespace AutoUI
         private System.Windows.Forms.ToolStripMenuItem grabScreenToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem showToolStripMenuItem;
         private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Label label1;
     }
 }
