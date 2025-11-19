@@ -171,5 +171,45 @@ namespace AutoUI
                 Process.Start("temp1.png");
             }
         }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            if (bmp == null)
+            {
+                Helpers.Error("bmp is null");
+                return;
+            }
+            if (pattern == null)
+            {
+                Helpers.Error("pattern is null");
+                return;
+            }
+            infos.Clear();
+            var sw = Stopwatch.StartNew();
+            foreach (var item in pattern.Items)
+            {
+                Point? res = SearchByPatternImage.SearchPattern(bmp, item, 0, 0);
+                if (res == null)
+                    continue;
+
+                infos.Add(new PatternFindInfo()
+                {
+                    Pattern = item,
+                    Rect = new Rectangle(res.Value.X, res.Value.Y, item.Bitmap.Width, item.Bitmap.Height)
+                });
+                break;
+            }
+
+            //non-max suppress
+                    
+            sw.Stop();
+            toolStripStatusLabel1.Text = $"Complete. Founded: {infos.Count}; time: {sw.ElapsedMilliseconds}ms";
+
+            listView1.Items.Clear();
+            foreach (var item in infos)
+            {
+                listView1.Items.Add(new ListViewItem(new string[] { item.Rect.ToString() }) { Tag = item });
+            }
+        }
     }
 }
