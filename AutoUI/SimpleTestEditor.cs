@@ -646,7 +646,7 @@ namespace AutoUI
             UpdateTestItemsList();
         }
 
-        
+
         private void columnsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             listView1.Columns[0].Width = 150;
@@ -671,6 +671,52 @@ namespace AutoUI
         {
             OneColumnLayout();
 
+        }
+
+        private void runFromHereToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (listView1.SelectedItems.Count == 0)
+                return;
+
+            listView1.SelectedItems[0].BackColor = Color.White;
+
+            currentItem = listView1.SelectedItems[0].Tag as AutoTestItem;
+
+
+            Thread th = new Thread(() =>
+        {
+            listView1.Invoke((Action)(() =>
+            {
+                for (int i = 0; i < listView1.Items.Count; i++)
+                {
+
+                    listView1.Items[i].BackColor = Color.White;
+                }
+            }));
+            var sw = Stopwatch.StartNew();
+            var ctx = test.Run(new AutoTestRunContext() { CodePointer = test.CurrentCodeSection.Items.IndexOf(currentItem) });
+            sw.Stop();
+            listView1.Invoke((Action)(() =>
+            {
+                toolStripStatusLabel1.Text = "test took: " + sw.ElapsedMilliseconds + "ms";
+            }));
+
+            if (ctx.WrongState != null)
+            {
+                listView1.Invoke((Action)(() =>
+                {
+                    for (int i = 0; i < listView1.Items.Count; i++)
+                    {
+                        if (listView1.Items[i].Tag == ctx.WrongState)
+                        {
+                            listView1.Items[i].BackColor = Color.Red;
+                        }
+                    }
+                }));
+            }
+        });
+            th.IsBackground = true;
+            th.Start();
         }
     }
 
