@@ -4,6 +4,7 @@
     {
         Precise,
         Grayscale,        
-        BinaryMean //binary mean>128
+        BinaryMean, //binary mean>128
+        FastBinary
     }
 }

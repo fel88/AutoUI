@@ -1,14 +1,18 @@
 ﻿using AutoUI.Common;
+using OpenCvSharp;
+using OpenCvSharp.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
 using System.Xml.Linq;
+using Point = System.Drawing.Point;
 
 namespace AutoUI.TestItems
 {
@@ -191,6 +195,9 @@ namespace AutoUI.TestItems
 
         public static Point? SearchPattern(Bitmap screen, PatternMatchingImageItem _pattern, int startX = 0, int startY = 0, int? maxWidth = null, int? maxHeight = null)
         {
+            if (_pattern.Mode == PatternMatchingMode.FastBinary)
+                return SearchPatternBinary(screen, _pattern, startX, startY, maxWidth, maxHeight);
+
             /*if (Debugger.IsAttached)
             {
                 Helpers.ExecuteSTA(() => { Clipboard.SetImage(GetConvertedBitmap(_pattern, screen)); });
@@ -293,12 +300,133 @@ namespace AutoUI.TestItems
 
                         sw.Stop();
 
-                        return new Point(i, j);
+                        return new System.Drawing.Point(i, j);
                     }
                 }
             }
             d.Dispose();
             d2.Dispose();
+
+            return null;
+        }
+
+        public static System.Drawing.Point? SearchPatternBinary(Bitmap screen, PatternMatchingImageItem _pattern, int startX = 0, int startY = 0, int? maxWidth = null, int? maxHeight = null)
+        {
+            using var mat1 = screen.ToMat();
+            using var d = mat1.Threshold(128, 255, ThresholdTypes.Binary);
+            using var mat2 = _pattern.Bitmap.ToMat();
+            using var d2 = mat2.Threshold(128, 255, ThresholdTypes.Binary);
+
+
+            Stopwatch sw = Stopwatch.StartNew();
+            Random r = new Random();
+
+            var maxErrors = d2.Cols * d2.Rows * (_pattern.PixelsMatchAcceptableErrorLevel / 100.0);
+
+            int previewPixelsQty = (int)(10 + maxErrors);
+
+            List<Point> points = new List<Point>();
+
+
+            byte[,] screenMap = new byte[d.Cols, d.Rows];
+            byte[,] patternMap = new byte[d2.Cols, d2.Rows];
+
+            for (int i1 = 0; i1 < d.Cols; i1++)
+            {
+                for (int j1 = 0; j1 < d.Rows; j1++)
+                {
+                    var px2 = d.Get<byte>(j1, i1);
+                    screenMap[i1, j1] = px2;
+
+                }
+            }
+            for (int i1 = 0; i1 < d2.Cols; i1++)
+            {
+                for (int j1 = 0; j1 < d2.Rows; j1++)
+                {
+                    var px2 = d2.Get<byte>(j1, i1);
+                    patternMap[i1, j1] = px2;
+
+                }
+            }
+            for (int t = 0; t < previewPixelsQty; t++)
+            {
+                var rx = r.Next(d2.Width);
+                var ry = r.Next(d2.Height);
+                points.Add(new Point(rx, ry));
+
+            }
+            //slide window
+            var www = d.Width - d2.Cols;
+            var hhh = d.Height - d2.Rows;
+            if (maxWidth != null)
+                www = Math.Min(maxWidth.Value, www);
+
+            if (maxHeight != null)
+                hhh = Math.Min(maxHeight.Value, hhh);
+
+            www -= d2.Width;
+            hhh -= d2.Height;
+
+            int errors = 0;
+            for (int i = startX; i < www; i++)
+            {
+                for (int j = startY; j < hhh; j++)
+                {
+                    startY = 0;
+                    bool good = true;
+                    //pre check random pixels
+                    for (int t = 0; t < points.Count; t++)
+                    {
+                        var rx = points[t].X;
+                        var ry = points[t].Y;
+                        var px = screenMap[i + rx, j + ry];
+                        var px2 = patternMap[rx, ry];
+
+                        if (px != px2)
+                            errors++;
+
+                        if (errors > maxErrors)
+                        {
+                            errors = 0;
+                            good = false;
+                            break;
+                        }
+                    }
+
+                    if (!good)
+                        continue;
+
+                    //check pattern match
+                    errors = 0;
+                    for (int i1 = 0; i1 < d2.Cols; i1++)
+                    {
+                        for (int j1 = 0; j1 < d2.Rows; j1++)
+                        {
+                            var px = screenMap[i + i1, j + j1];
+                            var px2 = patternMap[i1, j1];
+
+                            if (px != px2)
+                                errors++;
+
+                            if (errors > maxErrors)
+                            {
+                                errors = 0;
+                                good = false;
+                                break;
+                            }
+                        }
+                        if (!good)
+                            break;
+                    }
+
+                    if (good)
+                    {
+                        sw.Stop();
+                        return new System.Drawing.Point(i, j);
+                    }
+                }
+            }
 
             return null;
         }
