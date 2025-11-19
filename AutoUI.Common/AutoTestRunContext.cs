@@ -1,10 +1,18 @@
-﻿using System.Collections.Generic;
+﻿using AutoUI.TestItems;
+using System.Collections.Generic;
 using System.Drawing;
 
 namespace AutoUI.Common
 {
     public class AutoTestRunContext
     {
+        public void JumpToLabel(string label)
+        {
+            var fr = Test.CurrentCodeSection.Items.OfType<LabelAutoTestItem>().First(z => z.Label == label);
+            CodePointer = Test.CurrentCodeSection.Items.IndexOf(fr);
+            ForceCodePointer = true;
+        }
+
         // Example for retrieving clipboard text safely in a non-STA thread (e.g., console app):
         [STAThread] // Mark the Main method with this attribute for console apps
         public static string GetClipboardTextSafe()

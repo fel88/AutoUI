@@ -35,7 +35,7 @@ public void run(AutoTestRunContext ctx){
 
         public override string ToString()
         {
-            return $"script";
+            return $"script ({Name})";
         }
 
         public override TestItemProcessResultEnum Process(AutoTestRunContext ctx)

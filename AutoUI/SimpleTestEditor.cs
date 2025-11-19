@@ -187,9 +187,15 @@ namespace AutoUI
         public void UpdateTestItemsList()
         {
             listView1.Items.Clear();
-            foreach (var t in currentCodeSection.Items)
+            for (int i = 0; i < currentCodeSection.Items.Count; i++)
             {
-                listView1.Items.Add(new ListViewItem([t.Name, t.ToString(), t.GetType().Name]) { Tag = t });
+                AutoTestItem t = currentCodeSection.Items[i];
+                listView1.Items.Add(new ListViewItem([
+                    (i+1).ToString(),
+                    t.Name,
+                    t.ToString(),
+                    t.GetType().Name])
+                { Tag = t });
             }
         }
 
@@ -649,23 +655,26 @@ namespace AutoUI
 
         private void columnsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            listView1.Columns[0].Width = 150;
-            listView1.Columns[1].Width = 250;
+            listView1.Columns[0].Width = 40;
+            listView1.Columns[1].Width = 150;
             listView1.Columns[2].Width = 250;
+            listView1.Columns[3].Width = 250;
         }
 
         private void columnsToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            listView1.Columns[0].Width = 0;
-            listView1.Columns[1].Width = 250;
+            listView1.Columns[0].Width = 40;
+            listView1.Columns[1].Width = 0;
             listView1.Columns[2].Width = 250;
+            listView1.Columns[3].Width = 250;
 
         }
         void OneColumnLayout()
         {
-            listView1.Columns[0].Width = 0;
-            listView1.Columns[1].Width = 250;
-            listView1.Columns[2].Width = 0;
+            listView1.Columns[0].Width = 40;
+            listView1.Columns[1].Width = 0;
+            listView1.Columns[2].Width = 250;
+            listView1.Columns[3].Width = 0;
         }
         private void columnToolStripMenuItem_Click(object sender, EventArgs e)
         {

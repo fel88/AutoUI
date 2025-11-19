@@ -45,7 +45,10 @@ namespace AutoUI
                         listView1.Items.Add(lvi = new ListViewItem(new string[] { item.Name,
                             item.State.ToString(),
                             string.Empty,
-                        string.Empty})
+                        string.Empty,
+                        string.Empty,
+                        string.Empty,
+                        })
                         { Tag = item });
                     }));
 
@@ -61,7 +64,7 @@ namespace AutoUI
                     foreach (var sub in res.SubTests)
                     {
                         toolStripStatusLabel3.Visible = true;
-                        toolStripStatusLabel3.Text = "subtests: " + cc + " / " + res.SubTests.Count;
+                        toolStripStatusLabel3.Text = $"subtests: {cc} / {res.SubTests.Count}";
                         var res1 = sub.Run();
                         cc++;
                     }
@@ -87,6 +90,8 @@ namespace AutoUI
                         lvi.SubItems[1].Text = item.State.ToString();
                         lvi.SubItems[2].Text = DateTime.Now.ToLongTimeString();
                         lvi.SubItems[3].Text = duration.ToString();
+                        lvi.SubItems[4].Text = res.CodePointer.ToString();
+                        lvi.SubItems[5].Text = res.WrongState == null ? string.Empty : res.WrongState.ToString();
 
                     }));
 
