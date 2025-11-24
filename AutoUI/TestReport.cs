@@ -17,15 +17,10 @@ namespace AutoUI
     {
         public TestReport()
         {
-            InitializeComponent();
-            Shown += TestReport_Shown;
+            InitializeComponent();            
         }
 
-        private void TestReport_Shown(object sender, EventArgs e)
-        {
-            Run();
-        }
-
+      
         public void Init(TestSet set, string captionPrefix)
         {
             Text = $"{captionPrefix}{DateTime.Now.ToLongDateString()} {DateTime.Now.ToLongTimeString()}";
@@ -33,9 +28,9 @@ namespace AutoUI
         }
 
         TestSet Set;
-        public void Run()
+        public void Run(Func<IAutoTest , Task<AutoTestRunContext>> run)
         {
-            Thread th = new(() =>
+            Thread th = new(async () =>
             {
                 foreach (var item in Set.Tests)
                 {
@@ -52,10 +47,9 @@ namespace AutoUI
                         { Tag = item });
                     }));
 
-                    var sw = Stopwatch.StartNew();
-                    item.Reset();
+                    var sw = Stopwatch.StartNew();                    
 
-                    var res = item.Run();
+                    var res = await run(item);
                     sw.Stop();
 
                     var duration = sw.ElapsedMilliseconds;

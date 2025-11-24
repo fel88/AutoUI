@@ -146,6 +146,15 @@ namespace AutoUI
         private void toolStripButton4_Click(object sender, EventArgs e)
         {
             TestReport report = new TestReport();
+            report.Shown += (s, e) =>
+            {
+
+                report.Run(async (item) =>
+                {
+                    item.Reset();
+                    return item.Run();
+                });
+            };
             report.MdiParent = MdiParent;
 
             report.Init(set, $"Report testing (test set: {lastPathLoaded})  ");
@@ -169,7 +178,6 @@ namespace AutoUI
 
             Set.Tests.Remove(test);
             UpdateTestsList();
-
         }
 
         private void editSelected()
@@ -229,13 +237,13 @@ namespace AutoUI
             {
                 var d = DialogHelpers.StartDialog();
 
-                d.AddStringField("name", "Name", test.Name);                
+                d.AddStringField("name", "Name", test.Name);
                 d.AddEnumField("faction", "Failed action", ati.FailedAction);
 
                 if (!d.ShowDialog())
                     return;
 
-                test.Name = d.GetStringField("name");                
+                test.Name = d.GetStringField("name");
                 ati.FailedAction = d.GetEnumField<TestFailedBehaviour>("faction");
             }
             UpdateTestsList();
@@ -370,24 +378,44 @@ namespace AutoUI
             var port = d.GetIntegerNumericField("port");
             var s1 = $"TEST_SET={Convert.ToBase64String(Encoding.Default.GetBytes(set.ToXml().ToString()))}";
 
-            TcpClient client = new TcpClient();
-            await client.ConnectAsync(ip, port);
-            var stream = client.GetStream();
-            var wr = new StreamWriter(stream);
-            var rdr = new StreamReader(stream);
+            TestReport report = new TestReport();
+            report.Shown += async (s, e) =>
+            {
+                TcpClient client = new TcpClient();
+                await client.ConnectAsync(ip, port);
+                var stream = client.GetStream();
+                var wr = new StreamWriter(stream);
+                var rdr = new StreamReader(stream);
 
-            await wr.WriteLineAsync(s1);
+                await wr.WriteLineAsync(s1);
+                await wr.FlushAsync();
+                var res = await rdr.ReadLineAsync();
+
+                report.Run(async (item) =>
+                {
+                    var testIdx = set.Tests.IndexOf(item);
+                    var ret = await RunRemotely(wr, rdr, testIdx);
+                    item.State = ret.Item2;
+                    return ret.Item1;
+                });
+
+            };
+
+            report.MdiParent = MdiParent;
+            report.Init(set, $"Report testing (test set: {lastPathLoaded})  ");
+            report.Show();
+        }
+
+        private async Task<(AutoTestRunContext, TestStateEnum)> RunRemotely(StreamWriter wr, StreamReader rdr, int testIdx)
+        {
+            await wr.WriteLineAsync($"RUN_TEST={testIdx}");
             await wr.FlushAsync();
             var res = await rdr.ReadLineAsync();
-            for (int i = 0; i < set.Tests.Count; i++)
-            {
-                await wr.WriteLineAsync($"TEST={i}");
-                await wr.FlushAsync();
-                await Task.Delay(2000);
-                //polling here
-                res = await rdr.ReadLineAsync();
 
-            }
+            var spl = res.Split(new[] { "RESULT", "=" }, StringSplitOptions.RemoveEmptyEntries).ToArray();
+
+            var tt = Enum.Parse<TestStateEnum>(spl[0]);
+            return (new AutoTestRunContext(), tt);
         }
 
         private void somplToolStripMenuItem_Click(object sender, EventArgs e)

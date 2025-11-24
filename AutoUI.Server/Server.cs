@@ -21,10 +21,8 @@ namespace AutoUI.Server
         }
 
         static TestSet CurrentSet;
-        public override void NewClient()
-        {
-            sendAllClientUpdates();
-        }
+        static IAutoTest CurrentTest;
+
         public void ThreadProcessor(NetworkStream stream, object obj)
         {
             var cinf = obj as ConnectionInfo;
@@ -38,114 +36,7 @@ namespace AutoUI.Server
                 {
                     var line = reader.ReadLine();
 
-                    if (line.StartsWith("INIT"))
-                    {
-                        var ind = line.IndexOf("=");
-                        var msg = line.Substring(ind + 1);
-                        if (string.IsNullOrWhiteSpace(msg))
-                        {
-                            Console.ForegroundColor = ConsoleColor.Red;
-                            Console.WriteLine("[init] reject empty user name ");
-                            Console.ForegroundColor = ConsoleColor.White;
-                            //reject connection
-                            stream.Close();
-                            break;
-                        }
-                        uinfo.Name = msg;
-
-                        if (streams.Where(z => z.Tag != uinfo).Select(z => z.Tag as UserInfo).Any(z => z.Name == msg))
-                        {
-                            Console.ForegroundColor = ConsoleColor.Red;
-                            Console.WriteLine("[init] reject duplicate user name = " + msg);
-                            Console.ForegroundColor = ConsoleColor.White;
-                            //reject connection
-                            stream.Close();
-                            break;
-                        }
-                        Console.ForegroundColor = ConsoleColor.Green;
-                        Console.WriteLine("user init = " + msg);
-                        Console.ForegroundColor = ConsoleColor.White;
-                        NewClient();
-
-                    }
-                    else if (line.StartsWith("MSG"))
-                    {
-
-                        var ind = line.IndexOf("=");
-                        var msg = line.Substring(ind + 1);
-                        var spl = msg.Split(';').ToArray();
-                        var target = spl[1];
-
-                        var bs64 = Convert.FromBase64String(spl[0]);
-                        var str = Encoding.UTF8.GetString(bs64);
-
-
-                        StringBuilder sb = new StringBuilder();
-                        sb.AppendLine("<?xml version=\"1.0\"?>");
-                        sb.AppendLine("<root>");
-                        sb.AppendLine(string.Format("<message user=\"{0}\" target=\"{1}\">", uinfo.Name, target));
-                        sb.AppendFormat("<![CDATA[{0}]]>", str);
-                        sb.AppendLine(string.Format("</message>", uinfo.Name, str));
-                        sb.AppendLine("</root>");
-
-                        var estr = sb.ToString();
-
-
-                        var bt = Encoding.UTF8.GetBytes(estr);
-
-                        var ree = Convert.ToBase64String(bt);
-
-                        this.SendTo("MSG=" + ree, target);
-                    }
-                    else if (line.StartsWith("TYPING"))
-                    {
-
-                        var ind = line.IndexOf("=");
-                        var msg = line.Substring(ind + 1);
-                        var spl = msg.Split(';').ToArray();
-                        var target = spl[1];
-
-                        StringBuilder sb = new StringBuilder();
-                        sb.AppendLine("<?xml version=\"1.0\"?>");
-                        sb.AppendLine("<root>");
-                        sb.AppendLine(string.Format("<message user=\"{0}\" target=\"{1}\">", uinfo.Name, target));
-                        sb.AppendLine("</message>");
-                        sb.AppendLine("</root>");
-
-                        var estr = sb.ToString();
-
-
-                        var bt = Encoding.UTF8.GetBytes(estr);
-
-                        var ree = Convert.ToBase64String(bt);
-
-                        this.SendTo("TYPING=" + ree, target);
-                    }
-                    else if (line.StartsWith("CLIENTS"))
-                    {
-                        sendClientsList(wrt2);
-                    }
-                    else if (line.StartsWith("ACK"))//file download ack
-                    {
-                        //1.parse xml
-                        var ln = line.Substring("ACK".Length + 1);
-
-                        var bs64 = Convert.FromBase64String(ln);
-
-                        var str = Encoding.UTF8.GetString(bs64);
-                        var doc = XDocument.Parse(str);
-                        var w = doc.Descendants("ack").First();
-                        var targ = w.Attribute("target").Value;
-                        var cxstr = this.streams.First(z => (z.Tag as UserInfo).Name == targ);
-                        var wr = new StreamWriter(cxstr.Stream);
-                        //2. retranslate to specific client web request
-                        wr.WriteLine(line);
-                        wr.Flush();
-
-
-                        //server.SendAll(line);
-                    }
-                    else if (line.StartsWith("TEST_SET"))
+                    if (line.StartsWith("TEST_SET"))
                     {
                         //1.parse xml
                         var ln = line.Substring("TEST_SET".Length + 1);
@@ -160,16 +51,66 @@ namespace AutoUI.Server
                         wrt2.WriteLine($"OK");
                         wrt2.Flush();
                     }
-                    else if (line.StartsWith("TEST"))
+                    else if (line.StartsWith("LOCAL_TEST_SET"))
                     {
                         //1.parse xml
-                        var ln = line.Substring("TEST".Length + 1);
+                        var ln = line.Substring("LOCAL_TEST_SET".Length + 1);
+
+                        var bs64 = Convert.FromBase64String(ln);
+
+                        var str = Encoding.UTF8.GetString(bs64);
+                        var doc = XDocument.Load(str);
+
+                        CurrentSet = new TestSet(doc.Root);
+                        Console.WriteLine($"[LOCAL_TEST_SET] recieved ({str})");
+                        wrt2.WriteLine($"OK");
+                        wrt2.Flush();
+                    }
+                    else if (line.StartsWith("TEST_ITEM"))
+                    {
+                        //1.parse xml
+                        var ln = line.Substring("TEST_ITEM".Length + 1);
+                        var testIdx = int.Parse(ln);
+                        var subTest = CurrentTest.CurrentCodeSection.Items[testIdx];
+                        var ctx = new AutoTestRunContext() { Test = CurrentTest };
+                        var result = subTest.Process(ctx);
+
+                        Console.WriteLine($"{DateTime.Now.ToLongTimeString()} RESULT={result}");
+                        wrt2.WriteLine($"RESULT={result}");
+                        wrt2.Flush();
+                        Console.WriteLine($"{DateTime.Now.ToLongTimeString()} [TEST_ITEM #{testIdx}] finished.");
+
+                    }
+                    else if (line.StartsWith("SET_TEST"))
+                    {
+                        var ln = line.Substring("SET_TEST".Length + 1);
 
                         var testIdx = int.Parse(ln);
                         var item = CurrentSet.Tests[testIdx];
-                        Console.WriteLine($"[TEST #{testIdx}] starting...");
+                        Console.WriteLine($"[SET_TEST #{testIdx}]");
+                        wrt2.WriteLine($"OK");
+                        wrt2.Flush();
+                    }
+                    else if (line.StartsWith("RUN_TEST"))
+                    {
+                        var ln = line.Substring("RUN_TEST".Length + 1);
+                        var spl = ln.Split(new[] { ";" }, StringSplitOptions.RemoveEmptyEntries);
+                        var testIdx = int.Parse(spl[0]);
+                        var testParams = spl[1];
+                        var pp = testParams.Split(" ", StringSplitOptions.RemoveEmptyEntries).ToArray();
+
+                        var item = CurrentSet.Tests[testIdx];
+
+                        foreach (var p in pp)
+                        {
+                            var spl1 = ln.Split(new[] { "=" }, StringSplitOptions.RemoveEmptyEntries);
+                            item.Data[spl1[0]] = spl1[1];
+                        }
+
+                        Console.WriteLine($"[RUN_TEST #{testIdx}] starting...");
                         try
                         {
+
                             item.Reset();
                             var res = item.Run();
                             int cc = 0;
@@ -178,18 +119,18 @@ namespace AutoUI.Server
                                 var res1 = sub.Run();
                                 cc++;
                             }
-                                                       
+
 
                             wrt2.WriteLine($"RESULT={item.State}");
                             wrt2.Flush();
-                            Console.WriteLine($"[TEST #{testIdx}] finished.");
+                            Console.WriteLine($"[RUN_TEST #{testIdx}] finished.");
 
                         }
                         catch (Exception ex)
                         {
                             wrt2.WriteLine($"RESULT={TestStateEnum.Exception}");
                             wrt2.Flush();
-                            Console.WriteLine($"[TEST #{testIdx}] exception: {ex.Message}");
+                            Console.WriteLine($"[RUN_TEST #{testIdx}] exception: {ex.Message}");
                         }
 
                     }
@@ -226,7 +167,7 @@ namespace AutoUI.Server
                         Console.ForegroundColor = ConsoleColor.White;
                         streams.Remove(cinf);
                     }
-                    sendAllClientUpdates();
+
                     break;
                 }
                 catch (Exception ex)
@@ -239,43 +180,14 @@ namespace AutoUI.Server
                         Console.ForegroundColor = ConsoleColor.White;
                         streams.Remove(cinf);
                     }
-                    sendAllClientUpdates();
+
                     break;
                     //TcpRoutine.ErrorSend(stream);
                 }
             }
         }
 
-        void sendAllClientUpdates()
-        {
-            var estr = getClientsXml();
-            var bt = Encoding.UTF8.GetBytes(estr);
-            var ree = Convert.ToBase64String(bt);
-            var ss = "CLIENTS=" + ree;
 
-            SendAll(ss);
-        }
 
-        public string getClientsXml()
-        {
-            StringBuilder sb = new StringBuilder();
-            sb.AppendLine("<?xml version=\"1.0\"?>");
-            sb.AppendLine("<root>");
-            foreach (var connectionInfo in this.streams)
-            {
-                var uin = connectionInfo.Tag as UserInfo;
-                sb.AppendLine(string.Format("<client name=\"{0}\" />", uin.Name));
-            }
-            sb.AppendLine("</root>");
-            return sb.ToString();
-        }
-        private void sendClientsList(StreamWriter wrt2)
-        {
-            var estr = getClientsXml();
-            var bt = Encoding.UTF8.GetBytes(estr);
-            var ree = Convert.ToBase64String(bt);
-            wrt2.WriteLine("CLIENTS=" + ree);
-            wrt2.Flush();
-        }
     }
 }

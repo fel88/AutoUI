@@ -6,8 +6,11 @@ using AutoUI.TestItems;
 using System;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Net.Sockets;
 using System.Reflection;
+using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -252,24 +255,27 @@ namespace AutoUI
             return null;
         }
 
-        void deleteSelected()
+        void DeleteSelected()
         {
-            if (listView1.SelectedItems.Count == 0) return;
-            currentItem = listView1.SelectedItems[0].Tag as AutoTestItem;
-            if (MessageBox.Show($"sure to delete: {listView1.SelectedItems.Count}?", Text, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-            {
-                for (int i = 0; i < listView1.SelectedItems.Count; i++)
-                {
-                    var tt = listView1.SelectedItems[i].Tag as AutoTestItem;
-                    currentCodeSection.Items.Remove(tt);
-                }
+            if (listView1.SelectedItems.Count == 0)
+                return;
 
-                UpdateTestItemsList();
+            currentItem = listView1.SelectedItems[0].Tag as AutoTestItem;
+            if (MessageBox.Show($"sure to delete: {listView1.SelectedItems.Count}?", Text, MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+                return;
+
+            for (int i = 0; i < listView1.SelectedItems.Count; i++)
+            {
+                var tt = listView1.SelectedItems[i].Tag as AutoTestItem;
+                currentCodeSection.Items.Remove(tt);
             }
+
+            UpdateTestItemsList();
         }
+
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            deleteSelected();
+            DeleteSelected();
         }
 
         private void clickToolStripMenuItem_Click(object sender, EventArgs e)
@@ -489,7 +495,7 @@ namespace AutoUI
         {
             if (e.KeyCode == Keys.Delete)
             {
-                deleteSelected();
+                DeleteSelected();
             }
         }
 
@@ -731,8 +737,59 @@ namespace AutoUI
         private void jumpToolStripMenuItem_Click(object sender, EventArgs e)
         {
             addOrInsertItem(new JumpTestItem());
+        }
 
+        string lastIp = "127.0.0.1";
+        int lastPort = 8888;
+        bool dontAskConnectConfig = false;
+
+        private async void runSelectedRemotelyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (listView1.SelectedItems.Count == 0)
+                return;
+
+            if (!dontAskConnectConfig)
+            {
+                var d = AutoDialog.DialogHelpers.StartDialog();
+                d.AddStringField("ip", "IP", lastIp);
+                d.AddIntegerNumericField("port", "Port", lastPort, 100000, 10);
+                d.AddBoolField("permanent", "Don't ask again", dontAskConnectConfig);
+
+                if (!d.ShowDialog())
+                    return;
+
+                dontAskConnectConfig = d.GetBoolField("permanent");
+                lastIp = d.GetStringField("ip");
+                lastPort = d.GetIntegerNumericField("port");
+            }
+
+            var ip = lastIp;
+            var port = lastPort;
+
+            var s1 = $"TEST_SET={Convert.ToBase64String(Encoding.Default.GetBytes(test.Parent.ToXml().ToString()))}";
+
+            TcpClient client = new TcpClient();
+            await client.ConnectAsync(ip, port);
+            var stream = client.GetStream();
+            var wr = new StreamWriter(stream);
+            var rdr = new StreamReader(stream);
+
+            await wr.WriteLineAsync(s1);
+            await wr.FlushAsync();
+            var res = await rdr.ReadLineAsync();
+
+            await wr.WriteLineAsync($"SET_TEST={test.Parent.Tests.IndexOf(test)}");
+            await wr.FlushAsync();
+            var res2 = await rdr.ReadLineAsync();
+
+            for (int i = 0; i < listView1.SelectedItems.Count; i++)
+            {
+                var ati = listView1.SelectedItems[i].Tag as AutoTestItem;
+                var index = test.CurrentCodeSection.Items.IndexOf(ati);
+                await wr.WriteLineAsync($"TEST_ITEM={index}");
+                await wr.FlushAsync();
+                res = await rdr.ReadLineAsync();
+            }
         }
     }
-
 }

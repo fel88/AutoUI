@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoUI.Common", "AutoUI.Com
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoUI.CodeEditor", "AutoUI.CodeEditor\AutoUI.CodeEditor.csproj", "{C4B01C83-E0C0-4807-91C5-AC3097D496C9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoUI.Queue", "AutoUI.Queue\AutoUI.Queue.csproj", "{E3BAAD75-6B07-4764-9547-3020336A0E7A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{C4B01C83-E0C0-4807-91C5-AC3097D496C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C4B01C83-E0C0-4807-91C5-AC3097D496C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C4B01C83-E0C0-4807-91C5-AC3097D496C9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E3BAAD75-6B07-4764-9547-3020336A0E7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E3BAAD75-6B07-4764-9547-3020336A0E7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E3BAAD75-6B07-4764-9547-3020336A0E7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E3BAAD75-6B07-4764-9547-3020336A0E7A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
