@@ -11,6 +11,6 @@
         public int Duration { get; set; }
         public DateTime Timestamp { get; set; }
 
-        public List<TestStepRunItem > Steps { get; set; }
+        public List<TestStepRunItem> Steps { get; set; } = new List<TestStepRunItem>();
     }
 }

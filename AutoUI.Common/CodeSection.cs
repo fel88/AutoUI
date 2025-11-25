@@ -26,8 +26,7 @@ namespace AutoUI.Common
                     continue;
 
                 var tp = Activator.CreateInstance(fr) as AutoTestItem;
-                tp.ParseXml(test, item);
-                tp.ParentTest = test;
+                tp.ParseXml(test, item);                
                 Items.Add(tp);
             }
         }

@@ -168,15 +168,22 @@ namespace AutoUI
 
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            DeleteSelected();
+        }
+
+        private void DeleteSelected()
+        {
             if (listView1.SelectedItems.Count == 0)
                 return;
 
-            var test = listView1.SelectedItems[0].Tag as IAutoTest;
-
-            if (MessageBox.Show($"Are you sure to delete {test.Name}?", Text, MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+            if (MessageBox.Show($"Are you sure to delete selected tests ({listView1.SelectedItems.Count})?", Text, MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
                 return;
-
-            Set.Tests.Remove(test);
+            
+            for (int i = 0; i < listView1.SelectedItems.Count; i++)
+            {
+                var test = listView1.SelectedItems[i].Tag as IAutoTest;
+                Set.Tests.Remove(test);
+            }
             UpdateTestsList();
         }
 
@@ -289,6 +296,14 @@ namespace AutoUI
             {
                 Process.Start(sfd.FileName);
             }
+        }
+
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == Keys.Delete)            
+                DeleteSelected();
+            
+            return base.ProcessCmdKey(ref msg, keyData);
         }
 
         private void listView2_SelectedIndexChanged(object sender, EventArgs e)

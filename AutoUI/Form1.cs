@@ -540,7 +540,7 @@ namespace AutoUI
 
         void addOrInsertItem(AutoTestItem ati)
         {
-            ati.ParentTest = test;
+            ati.Parent = test;
             if (listView1.SelectedIndices.Count > 0)
             {
                 var ind1 = listView1.SelectedIndices[0];
@@ -555,7 +555,7 @@ namespace AutoUI
 
         private void waitPatternToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            addOrInsertItem(new WaitPatternImage() { ParentTest = test });
+            addOrInsertItem(new WaitPatternImage() { Parent = test });
         }
 
         private void gotoToolStripMenuItem_Click_1(object sender, EventArgs e)

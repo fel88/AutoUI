@@ -45,8 +45,10 @@ namespace AutoUI.TestItems.Editors
         private void addPatternToolStripMenuItem_Click(object sender, EventArgs e)
         {
             PatternSelector s = new PatternSelector();
-            s.Init(TestItem.ParentTest.Parent.Pool);
-            if (s.ShowDialog() != DialogResult.OK) return;
+            s.Init(TestItem.Parent.Parent.Pool);
+            if (s.ShowDialog() != DialogResult.OK)
+                return;
+
             TestItem.Patterns.Add(s.Selected);
             UpdateList();
         }

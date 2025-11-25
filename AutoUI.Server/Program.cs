@@ -10,6 +10,7 @@ namespace AutoUI.Server
         {
             int port = 8888;
             LoadConfig();
+            Console.WriteLine($"AutoUI.Server starting (port {port})");
             var server = new Server();
             server.Init(port);
             server.th.Join();

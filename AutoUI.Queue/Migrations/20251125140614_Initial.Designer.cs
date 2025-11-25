@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AutoUI.Queue.Migrations
 {
     [DbContext(typeof(QueueDbContext))]
-    [Migration("20251125083301_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20251125140614_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -34,6 +34,12 @@ namespace AutoUI.Queue.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ResultDescription")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ResultXml")
                         .HasColumnType("text");
 
                     b.Property<int>("Status")

@@ -33,6 +33,12 @@ namespace AutoUI.Queue.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
+                    b.Property<string>("ResultDescription")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ResultXml")
+                        .HasColumnType("text");
+
                     b.Property<int>("Status")
                         .HasColumnType("integer");
 

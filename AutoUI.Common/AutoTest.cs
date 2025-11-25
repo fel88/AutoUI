@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
+﻿using System.Text;
 using System.Xml.Linq;
 
 namespace AutoUI.Common
 {
-
     public class AutoTest : AbstractAutoTest, IAutoTest
     {
         public AutoTest()
@@ -112,12 +107,10 @@ namespace AutoUI.Common
 
         public CodeSection CurrentCodeSection { get => Code; }
 
-        public IAutoTest Clone()
-        {
-            var clone = new AutoTest();
-            clone.Name = Name;
-            clone.FailedAction = FailedAction;
-            clone.Code = Code.Clone();
+        public IAutoTest Clone()        
+        {            
+            var xml = ToXml();
+            var clone = new AutoTest(Parent,xml);            
 
             return clone;
         }

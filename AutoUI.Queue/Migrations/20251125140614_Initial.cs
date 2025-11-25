@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AutoUI.Queue.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -21,7 +21,9 @@ namespace AutoUI.Queue.Migrations
                     Name = table.Column<string>(type: "text", nullable: true),
                     Version = table.Column<string>(type: "text", nullable: true),
                     Status = table.Column<int>(type: "integer", nullable: false),
-                    Xml = table.Column<string>(type: "text", nullable: true)
+                    Xml = table.Column<string>(type: "text", nullable: true),
+                    ResultDescription = table.Column<string>(type: "text", nullable: true),
+                    ResultXml = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {

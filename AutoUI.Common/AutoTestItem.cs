@@ -15,6 +15,7 @@ namespace AutoUI.Common
         public abstract TestItemProcessResultEnum Process(AutoTestRunContext ctx);
         public virtual void ParseXml(IAutoTest parent, XElement item)
         {
+            Parent = parent;
             if (item.Attribute("name") != null)
                 Name = item.Attribute("name").Value;
         }
@@ -23,12 +24,13 @@ namespace AutoUI.Common
         public virtual AutoTestItem Clone()
         {
             var ret = Activator.CreateInstance(this.GetType()) as AutoTestItem;
-            ret.ParseXml(ParentTest, XElement.Parse(ToXml()));
+            ret.Parent = Parent;
+            ret.ParseXml(Parent, XElement.Parse(ToXml()));
             return ret;
         }
-
-        public AutoTestItem Parent;
-        public IAutoTest ParentTest;//?
+        
+        
+        public IAutoTest Parent;//?
         public List<AutoTestItem> Childs = new List<AutoTestItem>();
     }
 }
