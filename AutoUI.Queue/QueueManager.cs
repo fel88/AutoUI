@@ -67,20 +67,20 @@ namespace AutoUI.Queue
                             var status = await MakeRun(set, toRun, wr, rdr);
                             toRun.Status = status;
                             ctx.SaveChanges();
-                            
+
                             Console.ForegroundColor = ConsoleColor.Green;
-                            Console.WriteLine($"Run succeed #{toRun.Id}");                            
+                            Console.WriteLine($"Run succeed #{toRun.Id}");
                             Console.ForegroundColor = ConsoleColor.White;
                         }
                         catch (Exception ex)
                         {
                             toRun.Status = RunStatus.Failed;
                             toRun.ResultDescription = ex.Message;
-                            ctx.SaveChanges(); 
+                            ctx.SaveChanges();
 
-                            Console.ForegroundColor = ConsoleColor.Red;                            
+                            Console.ForegroundColor = ConsoleColor.Red;
                             Console.WriteLine($"Run failed #{toRun.Id}");
-                            Console.ForegroundColor = ConsoleColor.White;                            
+                            Console.ForegroundColor = ConsoleColor.White;
                         }
 
                         client.Close();
@@ -97,9 +97,7 @@ namespace AutoUI.Queue
             });
             th.IsBackground = true;
             th.Start();
-
         }
-
 
         private async static Task<RunStatus> MakeRun(TestSet set, Run toRun, StreamWriter wr, StreamReader rdr)
         {
@@ -108,7 +106,7 @@ namespace AutoUI.Queue
                 var test = set.Tests[i];
                 var testIdx = i;
 
-                var tri = new TestRunItem() { Parent = toRun, Name = test.Name };
+                var tri = new TestRunItem() { Parent = toRun, Name = test.Name, Timestamp = DateTime.UtcNow };
                 tri.Status = RunStatus.InProgress;
                 toRun.Tests.Add(tri);
                 ctx.SaveChanges();

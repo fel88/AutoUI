@@ -3,10 +3,12 @@ using AutoUI.Common.TestItems;
 using AutoUI.Editors;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.VisualBasic;
 using System;
 using System.Drawing;
 using System.Linq;
 using System.Reflection;
+using System.Reflection.Emit;
 using System.Windows.Forms;
 using System.Windows.Forms.Integration;
 
@@ -42,7 +44,7 @@ namespace AutoUI.TestItems.Editors
 
         private void TextEditor_TextChanged(object sender, EventArgs e)
         {
-            TestItem.ProgramText = codeEditor.Text;
+            TestItem.Program = codeEditor.Text;
         }
 
         ListView lv;
@@ -52,22 +54,40 @@ namespace AutoUI.TestItems.Editors
         public void Init(AutoTestItem item)
         {
             TestItem = item as ScriptTestItem;
-            codeEditor.Text = TestItem.ProgramText;
+            codeEditor.Text = TestItem.Program;
         }
 
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
-            var results = TestItem.compile();
-
-            errorPanel.Visible = false;
-
-            lv.Items.Clear();
-            foreach (var item in results.Errors)
+            try
             {
-                errorPanel.Visible = true;
-                lv.Items.Add(new ListViewItem([$"{item.Line}", $"{item.Line}: {item.Text}"]) { Tag = item, BackColor = Color.Pink, ForeColor = Color.White });
+                var results = TestItem.Compile();
+
+                errorPanel.Visible = false;
+
+                lv.Items.Clear();
+                foreach (var item in results.Errors)
+                {
+                    errorPanel.Visible = true;
+                    lv.Items.Add(new ListViewItem([$"{item.Line}", $"{item.Line}: {item.Text}"]) { Tag = item, BackColor = Color.Pink, ForeColor = Color.White });
+                }
+                if (results.Assembly != null)
+                {
+                    Assembly asm = results.Assembly;
+                    Type[] allTypes = asm.GetTypes();
+
+                    foreach (Type t in allTypes.Take(1))
+                    {
+                        var inst = (IRun)Activator.CreateInstance(t);
+                    }
+
+                    MessageBox.Show("No errors", Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
             }
-            
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
 
@@ -84,7 +104,7 @@ namespace AutoUI.TestItems.Editors
 
         private void toolStripButton4_Click(object sender, EventArgs e)
         {
-            var results = TestItem.compile();
+            var results = TestItem.Compile();
 
             errorPanel.Visible = false;
 
@@ -102,19 +122,19 @@ namespace AutoUI.TestItems.Editors
 
                 foreach (Type t in allTypes)
                 {
-                    var inst = Activator.CreateInstance(t);
+                    var inst = (IRun)Activator.CreateInstance(t);
                     //dynamic v = inst;
                     //var mf = t.GetMethods().FirstOrDefault(z => z.Name.Contains("sum"));
-                    var mf2 = t.GetMethods().FirstOrDefault(z => z.Name.Contains("run"));
+
                     /*   if (mf != null)
                        {
                            var res = mf.Invoke(inst, new object[] { 3, 5 });
                            MessageBox.Show(res + "");
                        }*/
-                    if (mf2 != null)
+                    if (inst != null)
                     {
                         var ctx = new AutoTestRunContext();
-                        mf2.Invoke(inst, new object[] { ctx });
+                        inst.Run(ctx);
                         //MessageBox.Show(ctx.Vars["temp"] + "");
                     }
                     //MessageBox.Show(v.sum(3, 5));

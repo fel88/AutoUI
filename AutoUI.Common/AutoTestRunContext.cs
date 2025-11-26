@@ -13,6 +13,11 @@ namespace AutoUI.Common
             ForceCodePointer = true;
         }
 
+        public string GetTextResource(string resourceName)
+        {
+            return ((TextAutoTestResource)Test.Parent.Resources.First(z => z.Name.Contains(resourceName))).Text;
+        }
+
         // Example for retrieving clipboard text safely in a non-STA thread (e.g., console app):
         [STAThread] // Mark the Main method with this attribute for console apps
         public static string GetClipboardTextSafe()

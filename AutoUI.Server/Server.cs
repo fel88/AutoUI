@@ -96,15 +96,19 @@ namespace AutoUI.Server
                         var ln = line.Substring("RUN_TEST".Length + 1);
                         var spl = ln.Split(new[] { ";" }, StringSplitOptions.RemoveEmptyEntries);
                         var testIdx = int.Parse(spl[0]);
-                        var testParams = spl[1];
-                        var pp = testParams.Split(" ", StringSplitOptions.RemoveEmptyEntries).ToArray();
 
                         var item = CurrentSet.Tests[testIdx];
-
-                        foreach (var p in pp)
+                        if (spl.Length > 1)
                         {
-                            var spl1 = ln.Split(new[] { "=" }, StringSplitOptions.RemoveEmptyEntries);
-                            item.Data[spl1[0]] = spl1[1];
+                            var testParams = spl[1];
+                            var pp = testParams.Split(" ", StringSplitOptions.RemoveEmptyEntries).ToArray();
+
+
+                            foreach (var p in pp)
+                            {
+                                var spl1 = ln.Split(new[] { "=" }, StringSplitOptions.RemoveEmptyEntries);
+                                item.Data[spl1[0]] = spl1[1];
+                            }
                         }
 
                         Console.WriteLine($"[RUN_TEST #{testIdx}] starting...");
@@ -120,6 +124,11 @@ namespace AutoUI.Server
                                 cc++;
                             }
 
+                            Console.WriteLine($"RESULT {item.State}");
+                            if (res.WrongState != null)
+                                Console.WriteLine($"WrongState {res.WrongState.Name}: {res.WrongState.ToString()}");
+
+                            Console.WriteLine($"CodePointer = {res.CodePointer} / {item.CurrentCodeSection.Items.Count}");                           
 
                             wrt2.WriteLine($"RESULT={item.State}");
                             wrt2.Flush();

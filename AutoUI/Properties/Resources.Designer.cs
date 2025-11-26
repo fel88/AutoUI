@@ -163,6 +163,16 @@ namespace AutoUI.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap box {
+            get {
+                object obj = ResourceManager.GetObject("box", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap bug__plus {
             get {
                 object obj = ResourceManager.GetObject("bug--plus", resourceCulture);
@@ -316,6 +326,16 @@ namespace AutoUI.Properties {
         public static System.Drawing.Bitmap flag_checker {
             get {
                 object obj = ResourceManager.GetObject("flag-checker", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap flag_green {
+            get {
+                object obj = ResourceManager.GetObject("flag-green", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -546,6 +566,16 @@ namespace AutoUI.Properties {
         public static System.Drawing.Bitmap spectrum {
             get {
                 object obj = ResourceManager.GetObject("spectrum", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap sticky_note_text {
+            get {
+                object obj = ResourceManager.GetObject("sticky-note-text", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

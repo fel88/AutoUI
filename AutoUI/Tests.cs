@@ -1,9 +1,11 @@
 ﻿using AutoDialog;
 using AutoUI.Common;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Net.Sockets;
 using System.Reflection;
@@ -67,27 +69,101 @@ namespace AutoUI
             sb.ToString();
 
             SaveFileDialog sfd = new SaveFileDialog();
-            sfd.Filter = "Auto UI (axml files)|*.axml";
+            sfd.Filter = "Auto UI zip (azip files)|*.azip|Auto UI (axml files)|*.axml";
             if (sfd.ShowDialog() != DialogResult.OK)
                 return;
 
             var doc = XDocument.Parse(sb.ToString());
-            doc.Save(sfd.FileName);
+
+            if (sfd.FileName.ToLower().EndsWith(".azip"))
+            {
+                using (var compressedFileStream = new MemoryStream())
+                {
+                    using (var zipArchive = new ZipArchive(compressedFileStream, ZipArchiveMode.Create, true))
+                    {
+                        var entry1 = zipArchive.CreateEntry("tests.axml");
+                        using (var entryStream = entry1.Open())
+                        {
+                            doc.Save(entryStream);
+                        }
+                        foreach (var item in set.Resources.Where(z => z.ResourceLoadType != ResourceLoadTypeEnum.Internal))
+                        {
+                            var entry2 = zipArchive.CreateEntry(item.Path);
+                            using (var entryStream = entry2.Open())
+                            {
+                                item.StoreData(entryStream);
+                            }
+                        }
+
+                    }
+
+                    // Return the complete zip file as a byte array
+                    File.WriteAllBytes(sfd.FileName, compressedFileStream.ToArray());
+                }
+            }
+            else
+            {
+
+                doc.Save(sfd.FileName);
+            }
         }
 
         private void loadToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Filter = "Auto UI (axml files)|*.axml";
+            ofd.Filter = "All Auto UI (axml, azip files)|*.axml;*.azip";
 
             if (ofd.ShowDialog() != DialogResult.OK)
                 return;
 
-            var doc = XDocument.Load(ofd.FileName);
-            set = new TestSet(doc.Root.Element("set"));
-            Text = $"Test set: {ofd.FileName}";
-            lastPathLoaded = ofd.FileName;
-            Init(set);
+            if (ofd.FileName.ToLower().EndsWith(".axml"))
+            {
+                var doc = XDocument.Load(ofd.FileName);
+                set = new TestSet(doc.Root.Element("set"));
+                Text = $"Test set: {ofd.FileName}";
+                lastPathLoaded = ofd.FileName;
+                Init(set);
+            }
+            else
+            {
+                // Open the ZIP archive for reading
+                using (ZipArchive archive = ZipFile.OpenRead(ofd.FileName))
+                {
+                    // Filter entries that are at the root level (no path separator in FullName)
+                    var rootEntries = archive.Entries
+                        .Where(entry => !entry.FullName.Contains(Path.DirectorySeparatorChar) &&
+                                        !entry.FullName.Contains(Path.AltDirectorySeparatorChar) &&
+                                        !string.IsNullOrEmpty(entry.Name));
+
+                    foreach (ZipArchiveEntry entry in rootEntries)
+                    {
+                        if (entry.FullName.EndsWith(".axml"))
+                        {
+                            using (Stream entryStream = entry.Open())
+                            {
+                                var doc = XDocument.Load(entryStream, LoadOptions.None);
+                                set = new TestSet(doc.Root.Element("set"));
+                                Text = $"Test set: {ofd.FileName}";
+                                lastPathLoaded = ofd.FileName;
+                                Init(set);
+                            }
+                        }
+                    }
+
+                    foreach (ZipArchiveEntry entry in archive.Entries)
+                    {
+                        var fr = set.Resources.FirstOrDefault(z => z.ResourceLoadType == ResourceLoadTypeEnum.External && z.Path == entry.FullName);
+                        if (fr == null)
+                            continue;
+
+                        using (Stream entryStream = entry.Open())
+                        {
+                            fr.LoadData(entryStream);
+                        }
+                    }
+                }
+
+            }
         }
         string lastPathLoaded;
 
@@ -178,7 +254,7 @@ namespace AutoUI
 
             if (MessageBox.Show($"Are you sure to delete selected tests ({listView1.SelectedItems.Count})?", Text, MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
                 return;
-            
+
             for (int i = 0; i < listView1.SelectedItems.Count; i++)
             {
                 var test = listView1.SelectedItems[i].Tag as IAutoTest;
@@ -300,9 +376,9 @@ namespace AutoUI
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
-            if (keyData == Keys.Delete)            
+            if (keyData == Keys.Delete)
                 DeleteSelected();
-            
+
             return base.ProcessCmdKey(ref msg, keyData);
         }
 
@@ -443,6 +519,98 @@ namespace AutoUI
         {
             Set.Tests.Add(new SpawnableAutoTest(Set) { Name = "new spawnable test1" });
             UpdateTestsList();
+        }
+
+        private void toolStripButton3_Click_1(object sender, EventArgs e)
+        {
+            ResourcesDialog rd = new ResourcesDialog();
+            rd.MdiParent = MdiParent;
+            rd.Init(set);
+            rd.Show();
+        }
+
+        private void runSelectedToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void localToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (listView1.SelectedItems.Count == 0)
+                return;
+
+            List<IAutoTest> tests = new();
+            for (int i = 0; i < listView1.SelectedItems.Count; i++)
+            {
+                var t = listView1.SelectedItems[i].Tag as IAutoTest;
+                tests.Add(t);
+            }
+
+            TestReport report = new TestReport();
+            report.Shown += (s, e) =>
+            {
+                report.Run(async (item) =>
+                {
+                    item.Reset();
+                    return item.Run();
+                });
+            };
+
+            report.MdiParent = MdiParent;
+
+            report.Init(set, $"Report testing (test set: {lastPathLoaded})  ", tests.ToArray());
+            report.Show();
+        }
+
+        private void remotelyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (listView1.SelectedItems.Count == 0)
+                return;
+
+            List<IAutoTest> tests = new();
+            for (int i = 0; i < listView1.SelectedItems.Count; i++)
+            {
+                var t = listView1.SelectedItems[i].Tag as IAutoTest;
+                tests.Add(t);
+            }
+
+            var d = AutoDialog.DialogHelpers.StartDialog();
+            d.AddStringField("ip", "IP", "127.0.0.1");
+            d.AddIntegerNumericField("port", "Port", 8888, 100000, 10);
+
+            if (!d.ShowDialog())
+                return;
+
+            var ip = d.GetStringField("ip");
+            var port = d.GetIntegerNumericField("port");
+            var s1 = $"TEST_SET={Convert.ToBase64String(Encoding.Default.GetBytes(set.ToXml().ToString()))}";
+
+            TestReport report = new TestReport();
+            report.Shown += async (s, e) =>
+            {
+                TcpClient client = new TcpClient();
+                await client.ConnectAsync(ip, port);
+                var stream = client.GetStream();
+                var wr = new StreamWriter(stream);
+                var rdr = new StreamReader(stream);
+
+                await wr.WriteLineAsync(s1);
+                await wr.FlushAsync();
+                var res = await rdr.ReadLineAsync();
+
+                report.Run(async (item) =>
+                {
+                    var testIdx = set.Tests.IndexOf(item);
+                    var ret = await RunRemotely(wr, rdr, testIdx);
+                    item.State = ret.Item2;
+                    return ret.Item1;
+                });
+
+            };
+
+            report.MdiParent = MdiParent;
+            report.Init(set, $"Report testing (test set: {lastPathLoaded})  ", tests.ToArray());
+            report.Show();
         }
     }
 }

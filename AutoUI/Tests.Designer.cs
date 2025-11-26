@@ -42,6 +42,7 @@
             toolStripButton4 = new System.Windows.Forms.ToolStripButton();
             toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             toolStripButton1 = new System.Windows.Forms.ToolStripButton();
+            toolStripButton3 = new System.Windows.Forms.ToolStripButton();
             tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             listView2 = new System.Windows.Forms.ListView();
             columnHeader4 = new System.Windows.Forms.ColumnHeader();
@@ -61,6 +62,9 @@
             paramsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             variablesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             cloneToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            runSelectedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            localToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            remotelyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             statusStrip1 = new System.Windows.Forms.StatusStrip();
             toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
@@ -74,7 +78,7 @@
             // 
             // toolStrip1
             // 
-            toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripDropDownButton1, toolStripButton2, toolStripDropDownButton2, toolStripButton4, toolStripSeparator1, toolStripButton1 });
+            toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripDropDownButton1, toolStripButton2, toolStripDropDownButton2, toolStripButton4, toolStripSeparator1, toolStripButton1, toolStripButton3 });
             toolStrip1.Location = new System.Drawing.Point(0, 0);
             toolStrip1.Name = "toolStrip1";
             toolStrip1.Size = new System.Drawing.Size(1111, 25);
@@ -137,7 +141,7 @@
             // 
             fontMatcherToolStripMenuItem.Image = Properties.Resources.edit_language;
             fontMatcherToolStripMenuItem.Name = "fontMatcherToolStripMenuItem";
-            fontMatcherToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            fontMatcherToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
             fontMatcherToolStripMenuItem.Text = "font matcher";
             fontMatcherToolStripMenuItem.Click += fontMatcherToolStripMenuItem_Click;
             // 
@@ -145,7 +149,7 @@
             // 
             searchDebugToolStripMenuItem.Image = Properties.Resources.magnifier_left;
             searchDebugToolStripMenuItem.Name = "searchDebugToolStripMenuItem";
-            searchDebugToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            searchDebugToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
             searchDebugToolStripMenuItem.Text = "search debug";
             searchDebugToolStripMenuItem.Click += searchDebugToolStripMenuItem_Click;
             // 
@@ -168,9 +172,18 @@
             toolStripButton1.Image = Properties.Resources.remote_control;
             toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
             toolStripButton1.Name = "toolStripButton1";
-            toolStripButton1.Size = new System.Drawing.Size(95, 22);
-            toolStripButton1.Text = "run remotely";
+            toolStripButton1.Size = new System.Drawing.Size(110, 22);
+            toolStripButton1.Text = "run all remotely";
             toolStripButton1.Click += toolStripButton1_Click_1;
+            // 
+            // toolStripButton3
+            // 
+            toolStripButton3.Image = Properties.Resources.sticky_note_text;
+            toolStripButton3.ImageTransparentColor = System.Drawing.Color.Magenta;
+            toolStripButton3.Name = "toolStripButton3";
+            toolStripButton3.Size = new System.Drawing.Size(80, 22);
+            toolStripButton3.Text = "Resources";
+            toolStripButton3.Click += toolStripButton3_Click_1;
             // 
             // tableLayoutPanel1
             // 
@@ -260,16 +273,16 @@
             // 
             // contextMenuStrip1
             // 
-            contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { addTestToolStripMenuItem, deleteToolStripMenuItem, editToolStripMenuItem, updateToolStripMenuItem, paramsToolStripMenuItem, variablesToolStripMenuItem, cloneToolStripMenuItem });
+            contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { addTestToolStripMenuItem, deleteToolStripMenuItem, editToolStripMenuItem, updateToolStripMenuItem, paramsToolStripMenuItem, variablesToolStripMenuItem, cloneToolStripMenuItem, runSelectedToolStripMenuItem });
             contextMenuStrip1.Name = "contextMenuStrip1";
-            contextMenuStrip1.Size = new System.Drawing.Size(121, 158);
+            contextMenuStrip1.Size = new System.Drawing.Size(139, 180);
             // 
             // addTestToolStripMenuItem
             // 
             addTestToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { somplToolStripMenuItem, spawnableToolStripMenuItem });
             addTestToolStripMenuItem.Image = Properties.Resources.plus;
             addTestToolStripMenuItem.Name = "addTestToolStripMenuItem";
-            addTestToolStripMenuItem.Size = new System.Drawing.Size(120, 22);
+            addTestToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
             addTestToolStripMenuItem.Text = "add test";
             addTestToolStripMenuItem.Click += addTestToolStripMenuItem_Click;
             // 
@@ -291,7 +304,7 @@
             // 
             deleteToolStripMenuItem.Image = Properties.Resources.cross;
             deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
-            deleteToolStripMenuItem.Size = new System.Drawing.Size(120, 22);
+            deleteToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
             deleteToolStripMenuItem.Text = "delete";
             deleteToolStripMenuItem.Click += deleteToolStripMenuItem_Click;
             // 
@@ -299,7 +312,7 @@
             // 
             editToolStripMenuItem.Image = Properties.Resources.pencil;
             editToolStripMenuItem.Name = "editToolStripMenuItem";
-            editToolStripMenuItem.Size = new System.Drawing.Size(120, 22);
+            editToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
             editToolStripMenuItem.Text = "edit";
             editToolStripMenuItem.Click += editToolStripMenuItem_Click;
             // 
@@ -307,7 +320,7 @@
             // 
             updateToolStripMenuItem.Image = Properties.Resources.arrow_circle;
             updateToolStripMenuItem.Name = "updateToolStripMenuItem";
-            updateToolStripMenuItem.Size = new System.Drawing.Size(120, 22);
+            updateToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
             updateToolStripMenuItem.Text = "update";
             updateToolStripMenuItem.Click += updateToolStripMenuItem_Click;
             // 
@@ -315,7 +328,7 @@
             // 
             paramsToolStripMenuItem.Image = Properties.Resources.gear;
             paramsToolStripMenuItem.Name = "paramsToolStripMenuItem";
-            paramsToolStripMenuItem.Size = new System.Drawing.Size(120, 22);
+            paramsToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
             paramsToolStripMenuItem.Text = "params";
             paramsToolStripMenuItem.Click += paramsToolStripMenuItem_Click;
             // 
@@ -323,7 +336,7 @@
             // 
             variablesToolStripMenuItem.Image = Properties.Resources.key;
             variablesToolStripMenuItem.Name = "variablesToolStripMenuItem";
-            variablesToolStripMenuItem.Size = new System.Drawing.Size(120, 22);
+            variablesToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
             variablesToolStripMenuItem.Text = "variables";
             variablesToolStripMenuItem.Click += variablesToolStripMenuItem_Click;
             // 
@@ -331,9 +344,32 @@
             // 
             cloneToolStripMenuItem.Image = Properties.Resources.disks_black;
             cloneToolStripMenuItem.Name = "cloneToolStripMenuItem";
-            cloneToolStripMenuItem.Size = new System.Drawing.Size(120, 22);
+            cloneToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
             cloneToolStripMenuItem.Text = "clone";
             cloneToolStripMenuItem.Click += cloneToolStripMenuItem_Click;
+            // 
+            // runSelectedToolStripMenuItem
+            // 
+            runSelectedToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { localToolStripMenuItem, remotelyToolStripMenuItem });
+            runSelectedToolStripMenuItem.Image = Properties.Resources.flag_green;
+            runSelectedToolStripMenuItem.Name = "runSelectedToolStripMenuItem";
+            runSelectedToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
+            runSelectedToolStripMenuItem.Text = "run selected";
+            runSelectedToolStripMenuItem.Click += runSelectedToolStripMenuItem_Click;
+            // 
+            // localToolStripMenuItem
+            // 
+            localToolStripMenuItem.Name = "localToolStripMenuItem";
+            localToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            localToolStripMenuItem.Text = "local";
+            localToolStripMenuItem.Click += localToolStripMenuItem_Click;
+            // 
+            // remotelyToolStripMenuItem
+            // 
+            remotelyToolStripMenuItem.Name = "remotelyToolStripMenuItem";
+            remotelyToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            remotelyToolStripMenuItem.Text = "remotely";
+            remotelyToolStripMenuItem.Click += remotelyToolStripMenuItem_Click;
             // 
             // statusStrip1
             // 
@@ -425,5 +461,9 @@
         private System.Windows.Forms.ToolStripButton toolStripButton1;
         private System.Windows.Forms.ToolStripMenuItem somplToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem spawnableToolStripMenuItem;
+        private System.Windows.Forms.ToolStripButton toolStripButton3;
+        private System.Windows.Forms.ToolStripMenuItem runSelectedToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem localToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem remotelyToolStripMenuItem;
     }
 }

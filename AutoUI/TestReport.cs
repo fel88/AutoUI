@@ -17,22 +17,27 @@ namespace AutoUI
     {
         public TestReport()
         {
-            InitializeComponent();            
+            InitializeComponent();
         }
 
-      
-        public void Init(TestSet set, string captionPrefix)
+
+        public void Init(TestSet set, string captionPrefix, IAutoTest[] tests = null)
         {
             Text = $"{captionPrefix}{DateTime.Now.ToLongDateString()} {DateTime.Now.ToLongTimeString()}";
             Set = set;
+            if (tests == null)
+                Tests = set.Tests.ToArray();
+            else
+                Tests = tests;
         }
 
+        IAutoTest[] Tests;
         TestSet Set;
-        public void Run(Func<IAutoTest , Task<AutoTestRunContext>> run)
+        public void Run(Func<IAutoTest, Task<AutoTestRunContext>> run)
         {
             Thread th = new(async () =>
             {
-                foreach (var item in Set.Tests)
+                foreach (var item in Tests)
                 {
                     ListViewItem lvi = null;
                     listView1.Invoke((Action)(() =>
@@ -47,7 +52,7 @@ namespace AutoUI
                         { Tag = item });
                     }));
 
-                    var sw = Stopwatch.StartNew();                    
+                    var sw = Stopwatch.StartNew();
 
                     var res = await run(item);
                     sw.Stop();
