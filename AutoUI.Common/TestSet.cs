@@ -77,9 +77,20 @@ namespace AutoUI.Common
 
         public static TestSet LoadFromAZip(string path)
         {
+            using ZipArchive archive = ZipFile.OpenRead(path);
+            return LoadFromZipArchive(archive);
+        }
+
+        public static TestSet LoadFromAZipStream(Stream stream)
+        {
+            using ZipArchive archive = new ZipArchive(stream, ZipArchiveMode.Read);
+            return LoadFromZipArchive(archive);
+        }
+
+        public static TestSet LoadFromZipArchive(ZipArchive archive)
+        {
             TestSet set = null;
             // Open the ZIP archive for reading
-            using ZipArchive archive = ZipFile.OpenRead(path);
 
             // Filter entries that are at the root level (no path separator in FullName)
             var rootEntries = archive.Entries
@@ -95,7 +106,7 @@ namespace AutoUI.Common
                     {
                         var doc = XDocument.Load(entryStream, LoadOptions.None);
                         set = new TestSet(doc.Root.Element("set"));
-                        
+
                     }
                 }
             }

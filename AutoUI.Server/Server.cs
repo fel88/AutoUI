@@ -36,9 +36,20 @@ namespace AutoUI.Server
                 {
                     var line = reader.ReadLine();
 
-                    if (line.StartsWith("TEST_SET"))
-                    {
-                        //1.parse xml
+                    if (line.StartsWith("TEST_SET_AZIP"))
+                    {                        
+                        var ln = line.Substring("TEST_SET_AZIP".Length + 1);
+
+                        var bs64 = Convert.FromBase64String(ln);
+                        using MemoryStream ms = new MemoryStream(bs64);                                                
+
+                        CurrentSet = TestSet.LoadFromAZipStream(ms);
+                        Console.WriteLine($"{DateTime.Now.ToShortDateString()} {DateTime.Now.ToLongTimeString()} [TEST_SET_AZIP] recieved");
+                        wrt2.WriteLine($"OK");
+                        wrt2.Flush();
+                    }
+                    else if (line.StartsWith("TEST_SET"))
+                    {                        
                         var ln = line.Substring("TEST_SET".Length + 1);
 
                         var bs64 = Convert.FromBase64String(ln);
@@ -47,7 +58,7 @@ namespace AutoUI.Server
                         var doc = XDocument.Parse(str);
 
                         CurrentSet = new TestSet(doc.Root);
-                        Console.WriteLine("[TEST_SET] recieved");
+                        Console.WriteLine($"{DateTime.Now.ToShortDateString()} {DateTime.Now.ToLongTimeString()} [TEST_SET] recieved");
                         wrt2.WriteLine($"OK");
                         wrt2.Flush();
                     }
@@ -111,7 +122,7 @@ namespace AutoUI.Server
                             }
                         }
 
-                        Console.WriteLine($"[RUN_TEST #{testIdx}] starting...");
+                        Console.WriteLine($"{DateTime.Now.ToShortDateString()} {DateTime.Now.ToLongTimeString()} [RUN_TEST #{testIdx}] starting...");
                         try
                         {
 
@@ -128,11 +139,11 @@ namespace AutoUI.Server
                             if (res.WrongState != null)
                                 Console.WriteLine($"WrongState {res.WrongState.Name}: {res.WrongState.ToString()}");
 
-                            Console.WriteLine($"CodePointer = {res.CodePointer} / {item.CurrentCodeSection.Items.Count}");                           
+                            Console.WriteLine($"CodePointer = {res.CodePointer} / {item.CurrentCodeSection.Items.Count}");
 
                             wrt2.WriteLine($"RESULT={item.State}");
                             wrt2.Flush();
-                            Console.WriteLine($"[RUN_TEST #{testIdx}] finished.");
+                            Console.WriteLine($"{DateTime.Now.ToShortDateString()} {DateTime.Now.ToLongTimeString()} [RUN_TEST #{testIdx}] finished.");
 
                         }
                         catch (Exception ex)

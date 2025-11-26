@@ -54,16 +54,21 @@ namespace AutoUI.Queue
                         if (xmlPath.ToLower().EndsWith(".azip"))
                         {                            
                             set = TestSet.LoadFromAZip(xmlPath);
+
+                            var s1 = $"TEST_SET_AZIP={Convert.ToBase64String(File.ReadAllBytes(xmlPath))}";
+
+                            await wr.WriteLineAsync(s1);
                         }
                         else
                         {
                             var testsXml = XDocument.Load(xmlPath);
-                            set = new TestSet(testsXml.Root);
+                            set = new TestSet(testsXml.Root); 
+                            var s1 = $"TEST_SET={Convert.ToBase64String(Encoding.Default.GetBytes(set.ToXml().ToString()))}";
+
+                            await wr.WriteLineAsync(s1);
                         }                       
 
-                        var s1 = $"TEST_SET={Convert.ToBase64String(Encoding.Default.GetBytes(set.ToXml().ToString()))}";
-
-                        await wr.WriteLineAsync(s1);
+                      
                         await wr.FlushAsync();
                         var res = await rdr.ReadLineAsync();
 
