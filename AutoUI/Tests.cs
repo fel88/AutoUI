@@ -119,52 +119,16 @@ namespace AutoUI
             if (ofd.FileName.ToLower().EndsWith(".axml"))
             {
                 var doc = XDocument.Load(ofd.FileName);
-                set = new TestSet(doc.Root.Element("set"));
-                Text = $"Test set: {ofd.FileName}";
-                lastPathLoaded = ofd.FileName;
-                Init(set);
+                set = new TestSet(doc.Root.Element("set"));                
             }
-            else
-            {
-                // Open the ZIP archive for reading
-                using (ZipArchive archive = ZipFile.OpenRead(ofd.FileName))
-                {
-                    // Filter entries that are at the root level (no path separator in FullName)
-                    var rootEntries = archive.Entries
-                        .Where(entry => !entry.FullName.Contains(Path.DirectorySeparatorChar) &&
-                                        !entry.FullName.Contains(Path.AltDirectorySeparatorChar) &&
-                                        !string.IsNullOrEmpty(entry.Name));
-
-                    foreach (ZipArchiveEntry entry in rootEntries)
-                    {
-                        if (entry.FullName.EndsWith(".axml"))
-                        {
-                            using (Stream entryStream = entry.Open())
-                            {
-                                var doc = XDocument.Load(entryStream, LoadOptions.None);
-                                set = new TestSet(doc.Root.Element("set"));
-                                Text = $"Test set: {ofd.FileName}";
-                                lastPathLoaded = ofd.FileName;
-                                Init(set);
-                            }
-                        }
-                    }
-
-                    foreach (ZipArchiveEntry entry in archive.Entries)
-                    {
-                        var fr = set.Resources.FirstOrDefault(z => z.ResourceLoadType == ResourceLoadTypeEnum.External && z.Path == entry.FullName);
-                        if (fr == null)
-                            continue;
-
-                        using (Stream entryStream = entry.Open())
-                        {
-                            fr.LoadData(entryStream);
-                        }
-                    }
-                }
-
-            }
+            else           
+                set = TestSet.LoadFromAZip(ofd.FileName);
+            
+            Text = $"Test set: {ofd.FileName}";
+            lastPathLoaded = ofd.FileName;
+            Init(set);
         }
+
         string lastPathLoaded;
 
         private void toolStripButton3_Click(object sender, EventArgs e)

@@ -50,15 +50,22 @@ namespace AutoUI.Queue
                             Console.ForegroundColor = ConsoleColor.White;
                         }
                         var xmlPath = doc.Descendants("testXmlPath").First().Value;
-                        var testsXml = XDocument.Load(xmlPath);
-                        var set = new TestSet(testsXml.Root);
+                        TestSet set = null;
+                        if (xmlPath.ToLower().EndsWith(".azip"))
+                        {                            
+                            set = TestSet.LoadFromAZip(xmlPath);
+                        }
+                        else
+                        {
+                            var testsXml = XDocument.Load(xmlPath);
+                            set = new TestSet(testsXml.Root);
+                        }                       
 
                         var s1 = $"TEST_SET={Convert.ToBase64String(Encoding.Default.GetBytes(set.ToXml().ToString()))}";
 
                         await wr.WriteLineAsync(s1);
                         await wr.FlushAsync();
                         var res = await rdr.ReadLineAsync();
-
 
                         toRun.Status = RunStatus.InProgress;
                         ctx.SaveChanges();
