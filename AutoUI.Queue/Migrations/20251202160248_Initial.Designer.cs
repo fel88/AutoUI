@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AutoUI.Queue.Migrations
 {
     [DbContext(typeof(QueueDbContext))]
-    [Migration("20251125140614_Initial")]
+    [Migration("20251202160248_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -81,6 +81,9 @@ namespace AutoUI.Queue.Migrations
 
                     b.Property<DateTime>("Timestamp")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("XmlOutput")
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 

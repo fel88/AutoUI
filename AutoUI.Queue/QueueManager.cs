@@ -52,7 +52,7 @@ namespace AutoUI.Queue
                         var xmlPath = doc.Descendants("testXmlPath").First().Value;
                         TestSet set = null;
                         if (xmlPath.ToLower().EndsWith(".azip"))
-                        {                            
+                        {
                             set = TestSet.LoadFromAZip(xmlPath);
 
                             var s1 = $"TEST_SET_AZIP={Convert.ToBase64String(File.ReadAllBytes(xmlPath))}";
@@ -62,13 +62,13 @@ namespace AutoUI.Queue
                         else
                         {
                             var testsXml = XDocument.Load(xmlPath);
-                            set = new TestSet(testsXml.Root); 
+                            set = new TestSet(testsXml.Root);
                             var s1 = $"TEST_SET={Convert.ToBase64String(Encoding.Default.GetBytes(set.ToXml().ToString()))}";
 
                             await wr.WriteLineAsync(s1);
-                        }                       
+                        }
 
-                      
+
                         await wr.FlushAsync();
                         var res = await rdr.ReadLineAsync();
 
@@ -76,7 +76,15 @@ namespace AutoUI.Queue
                         ctx.SaveChanges();
                         try
                         {
-                            var status = await MakeRun(set, toRun, wr, rdr);
+                            RunStatus status = RunStatus.NotStarted;
+                            for (int i = 0; i < set.Tests.Count; i++)
+                            {
+                                var test = set.Tests[i];
+                                var testIdx = i;
+                                status = await MakeRun(i, set, toRun, wr, rdr);
+                                if (status != RunStatus.Succeed)                                
+                                    break;                                
+                            }
                             toRun.Status = status;
                             ctx.SaveChanges();
 
@@ -111,57 +119,40 @@ namespace AutoUI.Queue
             th.Start();
         }
 
-        private async static Task<RunStatus> MakeRun(TestSet set, Run toRun, StreamWriter wr, StreamReader rdr)
+        private async static Task<RunStatus> MakeRun(int testIdx, TestSet set, Run toRun, StreamWriter wr, StreamReader rdr)
         {
-            for (int i = 0; i < set.Tests.Count; i++)
+            var test = set.Tests[testIdx];
+            var tri = new TestRunItem() { Parent = toRun, Name = test.Name, Timestamp = DateTime.UtcNow };
+            tri.Status = RunStatus.InProgress;
+            toRun.Tests.Add(tri);
+            ctx.SaveChanges();
+            StringBuilder sb = new StringBuilder();
+            var doc = XDocument.Parse(toRun.Xml);
+            foreach (var pitem in doc.Descendants("param"))
             {
-                var test = set.Tests[i];
-                var testIdx = i;
-
-                var tri = new TestRunItem() { Parent = toRun, Name = test.Name, Timestamp = DateTime.UtcNow };
-                tri.Status = RunStatus.InProgress;
-                toRun.Tests.Add(tri);
-                ctx.SaveChanges();
-                StringBuilder sb = new StringBuilder();
-                var doc = XDocument.Parse(toRun.Xml);
-                foreach (var pitem in doc.Descendants("param"))
-                {
-                    sb.Append(pitem.Attribute("name").Value);
-                    sb.Append("=");
-                    sb.Append($"{pitem.Value} ");
-                }
-
-                Stopwatch sw = Stopwatch.StartNew();
-                var ret = await RunRemotely(wr, rdr, sb.ToString(), testIdx);
-                sw.Stop();
-
-                tri.Duration = (int)sw.ElapsedMilliseconds;
-                tri.Timestamp = DateTime.UtcNow;
-                if (ret.Item2 == TestStateEnum.Failed)
-                {
-                    tri.Status = RunStatus.Failed;
-                    ctx.SaveChanges();
-                    return RunStatus.Failed;
-                }
-
-                tri.Status = RunStatus.Succeed;
-                ctx.SaveChanges();
+                sb.Append(pitem.Attribute("name").Value);
+                sb.Append("=");
+                sb.Append($"{pitem.Value} ");
             }
+
+            Stopwatch sw = Stopwatch.StartNew();
+            var ret = await RemoteRunner.RunRemotely(wr, rdr, testIdx, sb.ToString());
+            sw.Stop();
+
+            tri.Duration = (int)sw.ElapsedMilliseconds;
+            tri.Timestamp = DateTime.UtcNow;
+            if (ret.State == TestStateEnum.Failed)
+            {
+                tri.XmlOutput = ret.ToXml().ToString();
+                tri.Status = RunStatus.Failed;
+                ctx.SaveChanges();
+                return RunStatus.Failed;
+            }
+
+            tri.Status = RunStatus.Succeed;
+            ctx.SaveChanges();
 
             return RunStatus.Succeed;
         }
-
-        private static async Task<(AutoTestRunContext, TestStateEnum)> RunRemotely(StreamWriter wr, StreamReader rdr, string testParams, int testIdx)
-        {
-            await wr.WriteLineAsync($"RUN_TEST={testIdx};{testParams}");
-            await wr.FlushAsync();
-            var res = await rdr.ReadLineAsync();
-
-            var spl = res.Split(new[] { "RESULT", "=" }, StringSplitOptions.RemoveEmptyEntries).ToArray();
-
-            var tt = Enum.Parse<TestStateEnum>(spl[0]);
-            return (new AutoTestRunContext(), tt);
-        }
-
     }
 }

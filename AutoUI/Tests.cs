@@ -167,7 +167,7 @@ namespace AutoUI
             listView1.Items.Clear();
             foreach (var item in Set.Tests)
             {
-                listView1.Items.Add(new ListViewItem(new string[] { item.Name, item.State.ToString(), "" }) { Tag = item });
+                listView1.Items.Add(new ListViewItem(new string[] { item.Name, string.Empty, "" }) { Tag = item });
             }
         }
         public TestSet Set => set;
@@ -297,34 +297,34 @@ namespace AutoUI
         }
 
         private void exportReportToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        {            
             //form for custom report?
-            StringBuilder sb = new StringBuilder();
-            int failed = 0;
-            int total = 0;
-            sb.AppendLine($"Param;Duration (sec);State");
-            for (int i = 0; i < listView2.Items.Count; i++)
-            {
-                var et = listView2.Items[i].Tag as EmittedSubTest;
-                if (et.State == TestStateEnum.Failed)
-                    failed++;
+            //StringBuilder sb = new StringBuilder();
+            //int failed = 0;
+            //int total = 0;
+            //sb.AppendLine($"Param;Duration (sec);State");
+            //for (int i = 0; i < listView2.Items.Count; i++)
+            //{
+            //    var et = listView2.Items[i].Tag as EmittedSubTest;
+            //    if (et.State == TestStateEnum.Failed)
+            //        failed++;
 
-                total++;
-                sb.AppendLine($"{et.Data[et.Data.Keys.First()]};{et.Duration.TotalSeconds};{et.State}");
-            }
-            sb.AppendLine("");
-            sb.AppendLine($"Total;{total};Failed;{failed}");
+            //    total++;
+            //    sb.AppendLine($"{et.Data[et.Data.Keys.First()]};{et.Duration.TotalSeconds};{et.State}");
+            //}
+            //sb.AppendLine("");
+            //sb.AppendLine($"Total;{total};Failed;{failed}");
 
-            SaveFileDialog sfd = new SaveFileDialog();
-            if (sfd.ShowDialog() != DialogResult.OK)
-                return;
+            //SaveFileDialog sfd = new SaveFileDialog();
+            //if (sfd.ShowDialog() != DialogResult.OK)
+            //    return;
 
-            File.WriteAllText(sfd.FileName, sb.ToString(), Encoding.Default);
+            //File.WriteAllText(sfd.FileName, sb.ToString(), Encoding.Default);
 
-            if (Helpers.Question("Open report?", Text))
-            {
-                Process.Start(sfd.FileName);
-            }
+            //if (Helpers.Question("Open report?", Text))
+            //{
+            //    Process.Start(sfd.FileName);
+            //}
         }
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
@@ -377,23 +377,23 @@ namespace AutoUI
         }
         private void updateSubTestList(AutoTestRunContext lastContext)
         {
-            listView2.Items.Clear();
-            foreach (var item in lastContext.SubTests)
-            {
-                var lvi = new ListViewItem(new string[] { "sub", item.State.ToString(), item.Duration.TotalSeconds + "s", item.FinishTime.ToLongTimeString() }) { Tag = item };
-                listView2.Items.Add(lvi);
+            //listView2.Items.Clear();
+            //foreach (var item in lastContext.SubTests)
+            //{
+            //    var lvi = new ListViewItem(new string[] { "sub", item.State.ToString(), item.Duration.TotalSeconds + "s", item.FinishTime.ToLongTimeString() }) { Tag = item };
+            //    listView2.Items.Add(lvi);
 
-                if (item.State == TestStateEnum.Failed)
-                {
-                    lvi.BackColor = Color.Red;
-                    lvi.ForeColor = Color.White;
-                }
-                if (item.State == TestStateEnum.Success)
-                {
-                    lvi.BackColor = Color.LightGreen;
-                    lvi.ForeColor = Color.Black;
-                }
-            }
+            //    if (item.State == TestStateEnum.Failed)
+            //    {
+            //        lvi.BackColor = Color.Red;
+            //        lvi.ForeColor = Color.White;
+            //    }
+            //    if (item.State == TestStateEnum.Success)
+            //    {
+            //        lvi.BackColor = Color.LightGreen;
+            //        lvi.ForeColor = Color.Black;
+            //    }
+            //}
         }
 
         private void cloneToolStripMenuItem_Click(object sender, EventArgs e)
@@ -438,9 +438,7 @@ namespace AutoUI
                 report.Run(async (item) =>
                 {
                     var testIdx = set.Tests.IndexOf(item);
-                    var ret = await RunRemotely(wr, rdr, testIdx);
-                    item.State = ret.Item2;
-                    return ret.Item1;
+                    return await RemoteRunner.RunRemotely(wr, rdr, testIdx);                                        
                 });
 
             };
@@ -448,18 +446,6 @@ namespace AutoUI
             report.MdiParent = MdiParent;
             report.Init(set, $"Report testing (test set: {lastPathLoaded})  ");
             report.Show();
-        }
-
-        private async Task<(AutoTestRunContext, TestStateEnum)> RunRemotely(StreamWriter wr, StreamReader rdr, int testIdx)
-        {
-            await wr.WriteLineAsync($"RUN_TEST={testIdx}");
-            await wr.FlushAsync();
-            var res = await rdr.ReadLineAsync();
-
-            var spl = res.Split(new[] { "RESULT", "=" }, StringSplitOptions.RemoveEmptyEntries).ToArray();
-
-            var tt = Enum.Parse<TestStateEnum>(spl[0]);
-            return (new AutoTestRunContext(), tt);
         }
 
         private void somplToolStripMenuItem_Click(object sender, EventArgs e)
@@ -554,9 +540,7 @@ namespace AutoUI
                 report.Run(async (item) =>
                 {
                     var testIdx = set.Tests.IndexOf(item);
-                    var ret = await RunRemotely(wr, rdr, testIdx);
-                    item.State = ret.Item2;
-                    return ret.Item1;
+                    return await RemoteRunner.RunRemotely(wr, rdr, testIdx);                                        
                 });
 
             };

@@ -1,11 +1,12 @@
 ﻿using AutoUI.TestItems;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Xml.Linq;
 
 namespace AutoUI.Common
 {
     public class AutoTestRunContext
-    {        
+    {
         public AutoTestRunContext()
         {
 
@@ -14,6 +15,32 @@ namespace AutoUI.Common
         {
             Test = test;
         }
+
+        public AutoTestRunContext(XDocument xDocument)
+        {
+            State = Enum.Parse<TestStateEnum>(xDocument.Element("state").Value);
+            CodePointer = int.Parse(xDocument.Element("codePointer").Value);
+            foreach (var item in xDocument.Element("stringRegisters").Elements())
+            {
+                StringRegisters.Add(item.Attribute("key").Value, item.Value);
+            }
+        }
+
+        public XElement ToXml()
+        {
+            XElement element = new XElement("testRunContext");
+            element.Add(new XElement("state", State));
+            element.Add(new XElement("codePointer", CodePointer));
+            var srNode = new XElement("stringRegisters");
+            foreach (var item in StringRegisters)
+            {
+                var t = new XElement("string", new XCData(item.Value));
+                t.Add(new XAttribute("key", item.Key));
+                srNode.Add(t);
+            }
+            return element;
+        }
+
         public void JumpToLabel(string label)
         {
             var fr = Test.CurrentCodeSection.Items.OfType<LabelAutoTestItem>().First(z => z.Label == label);
@@ -61,6 +88,7 @@ namespace AutoUI.Common
 
             return clipboardText;
         }
+        public TestStateEnum State { get; set; }
 
         public IAutoTest Test { get; private set; }
         public int CodePointer;

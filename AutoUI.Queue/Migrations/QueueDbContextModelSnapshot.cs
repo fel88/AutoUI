@@ -79,6 +79,9 @@ namespace AutoUI.Queue.Migrations
                     b.Property<DateTime>("Timestamp")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<string>("XmlOutput")
+                        .HasColumnType("text");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ParentId");

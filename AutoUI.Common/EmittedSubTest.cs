@@ -7,7 +7,7 @@ namespace AutoUI.Common
     {
         public IAutoTest SourceTest;
         public Dictionary<string, object> Data = new Dictionary<string, object>();
-        public TestStateEnum State;
+        
         public DateTime FinishTime;
         public DateTime StartTime;
         public AutoTestRunContext lastContext;
@@ -27,7 +27,7 @@ namespace AutoUI.Common
             }
 
             SourceTest.Run(ctx);
-            State = SourceTest.State;
+            //State = SourceTest.State;
             FinishTime = DateTime.Now;
             return ctx;
         }

@@ -41,7 +41,8 @@ namespace AutoUI.Queue.Migrations
                     TestIndex = table.Column<int>(type: "integer", nullable: false),
                     Status = table.Column<int>(type: "integer", nullable: false),
                     Duration = table.Column<int>(type: "integer", nullable: false),
-                    Timestamp = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    Timestamp = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    XmlOutput = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {

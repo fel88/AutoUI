@@ -50,7 +50,8 @@ namespace AutoUI
                     listView1.Invoke((Action)(() =>
                     {
                         listView1.Items.Add(lvi = new ListViewItem(new string[] { item.Name,
-                            item.State.ToString(),
+                            //item.State.ToString(),
+                            string.Empty,
                             string.Empty,
                         string.Empty,
                         string.Empty,
@@ -79,22 +80,22 @@ namespace AutoUI
 
                     listView1.Invoke((Action)(() =>
                     {
-                        if (item.State == TestStateEnum.Failed)
+                        if (res.State == TestStateEnum.Failed)
                         {
                             lvi.BackColor = Color.Red;
                             lvi.ForeColor = Color.White;
                         }
-                        if (item.State == TestStateEnum.Success)
+                        if (res.State == TestStateEnum.Success)
                         {
                             lvi.BackColor = Color.LightGreen;
                             lvi.ForeColor = Color.Black;
                         }
-                        if (item.State == TestStateEnum.Emitter)
+                        if (res.State == TestStateEnum.Emitter)
                         {
                             lvi.BackColor = Color.Violet;
                             lvi.ForeColor = Color.White;
                         }
-                        lvi.SubItems[1].Text = item.State.ToString();
+                        lvi.SubItems[1].Text = res.State.ToString();
                         lvi.SubItems[2].Text = DateTime.Now.ToLongTimeString();
                         lvi.SubItems[3].Text = duration.ToString();
                         lvi.SubItems[4].Text = res.CodePointer.ToString();

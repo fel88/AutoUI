@@ -85,7 +85,7 @@ namespace AutoUI.Common
                         ctx.Finished = true;
 
                     ctx.WrongState = Code.Items[ctx.CodePointer];
-                    State = TestStateEnum.Failed;
+                    ctx.State = TestStateEnum.Failed;
                 }
 
                 if (ctx.Finished)
@@ -99,7 +99,7 @@ namespace AutoUI.Common
             }
 
             if (ctx.WrongState == null)
-                State = TestStateEnum.Success;
+                ctx.State = TestStateEnum.Success;
 
 
             return ctx;

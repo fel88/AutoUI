@@ -66,7 +66,7 @@ namespace AutoUI.Common
             if (UseEmitter)
             {
                 CurrentCodeSection = Emitter;
-                State = TestStateEnum.Emitter;
+                ctx.State = TestStateEnum.Emitter;
             }
 
             if (ctx != null && ctx.IsSubTest)
@@ -97,7 +97,7 @@ namespace AutoUI.Common
                         ctx.Finished = true;
 
                     ctx.WrongState = CurrentCodeSection.Items[ctx.CodePointer];
-                    State = TestStateEnum.Failed;
+                    ctx.State = TestStateEnum.Failed;
                 }
 
                 if (ctx.Finished)
@@ -111,7 +111,7 @@ namespace AutoUI.Common
             }
 
             if (ctx.WrongState == null)
-                State = TestStateEnum.Success;
+                ctx.State = TestStateEnum.Success;
 
 
             if (CurrentCodeSection != Emitter && Finalizer != null)
@@ -119,15 +119,15 @@ namespace AutoUI.Common
                     item.Process(ctx);
 
             if (CurrentCodeSection == Emitter)
-                State = TestStateEnum.Emitter;
+                ctx.State = TestStateEnum.Emitter;
 
             return ctx;
         }
 
         public void Reset()
         {
-            if (UseEmitter)
-                State = TestStateEnum.Emitter;
+           // if (UseEmitter)
+               // State = TestStateEnum.Emitter;
         }
 
 

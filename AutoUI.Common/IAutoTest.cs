@@ -11,7 +11,7 @@ namespace AutoUI.Common
         Dictionary<string, object> Data { get; set; }
 
         string Name { get; set; }
-        TestStateEnum State { get; set; }
+        
         TestSet Parent { get; }
         XElement ToXml();
     }
