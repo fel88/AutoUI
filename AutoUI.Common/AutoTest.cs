@@ -56,7 +56,7 @@ namespace AutoUI.Common
         public AutoTestRunContext Run(AutoTestRunContext ctx = null)
         {
             if (ctx == null)
-                ctx = new AutoTestRunContext() { Test = this };
+                ctx = new AutoTestRunContext(this);
 
             if (!ctx.IsSubTest)
             {

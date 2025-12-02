@@ -43,6 +43,7 @@
             toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             toolStripButton3 = new System.Windows.Forms.ToolStripButton();
+            toolStripButton5 = new System.Windows.Forms.ToolStripButton();
             tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             listView2 = new System.Windows.Forms.ListView();
             columnHeader4 = new System.Windows.Forms.ColumnHeader();
@@ -78,7 +79,7 @@
             // 
             // toolStrip1
             // 
-            toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripDropDownButton1, toolStripButton2, toolStripDropDownButton2, toolStripButton4, toolStripSeparator1, toolStripButton1, toolStripButton3 });
+            toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripDropDownButton1, toolStripButton2, toolStripDropDownButton2, toolStripButton4, toolStripSeparator1, toolStripButton1, toolStripButton3, toolStripButton5 });
             toolStrip1.Location = new System.Drawing.Point(0, 0);
             toolStrip1.Name = "toolStrip1";
             toolStrip1.Size = new System.Drawing.Size(1111, 25);
@@ -184,6 +185,15 @@
             toolStripButton3.Size = new System.Drawing.Size(80, 22);
             toolStripButton3.Text = "Resources";
             toolStripButton3.Click += toolStripButton3_Click_1;
+            // 
+            // toolStripButton5
+            // 
+            toolStripButton5.Image = Properties.Resources.key;
+            toolStripButton5.ImageTransparentColor = System.Drawing.Color.Magenta;
+            toolStripButton5.Name = "toolStripButton5";
+            toolStripButton5.Size = new System.Drawing.Size(84, 22);
+            toolStripButton5.Text = "global vars";
+            toolStripButton5.Click += toolStripButton5_Click;
             // 
             // tableLayoutPanel1
             // 
@@ -360,14 +370,14 @@
             // localToolStripMenuItem
             // 
             localToolStripMenuItem.Name = "localToolStripMenuItem";
-            localToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            localToolStripMenuItem.Size = new System.Drawing.Size(121, 22);
             localToolStripMenuItem.Text = "local";
             localToolStripMenuItem.Click += localToolStripMenuItem_Click;
             // 
             // remotelyToolStripMenuItem
             // 
             remotelyToolStripMenuItem.Name = "remotelyToolStripMenuItem";
-            remotelyToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            remotelyToolStripMenuItem.Size = new System.Drawing.Size(121, 22);
             remotelyToolStripMenuItem.Text = "remotely";
             remotelyToolStripMenuItem.Click += remotelyToolStripMenuItem_Click;
             // 
@@ -465,5 +475,6 @@
         private System.Windows.Forms.ToolStripMenuItem runSelectedToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem localToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem remotelyToolStripMenuItem;
+        private System.Windows.Forms.ToolStripButton toolStripButton5;
     }
 }

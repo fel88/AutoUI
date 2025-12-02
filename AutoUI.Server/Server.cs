@@ -83,7 +83,7 @@ namespace AutoUI.Server
                         var ln = line.Substring("TEST_ITEM".Length + 1);
                         var testIdx = int.Parse(ln);
                         var subTest = CurrentTest.CurrentCodeSection.Items[testIdx];
-                        var ctx = new AutoTestRunContext() { Test = CurrentTest };
+                        var ctx = new AutoTestRunContext(CurrentTest);
                         var result = subTest.Process(ctx);
 
                         Console.WriteLine($"{DateTime.Now.ToLongTimeString()} RESULT={result}");

@@ -529,7 +529,7 @@ namespace AutoUI
                 listView1.SelectedItems[i].BackColor = Color.White;
 
                 currentItem = listView1.SelectedItems[i].Tag as AutoTestItem;
-                var result = currentItem.Process(new AutoTestRunContext() { Test = test });
+                var result = currentItem.Process(new AutoTestRunContext(test));
                 if (result == TestItemProcessResultEnum.Failed)
                 {
                     listView1.SelectedItems[i].BackColor = Color.Red;

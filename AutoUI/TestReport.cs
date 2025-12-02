@@ -33,6 +33,12 @@ namespace AutoUI
 
         IAutoTest[] Tests;
         TestSet Set;
+
+        public class TestRunInfo
+        {
+            public AutoTestRunContext Context;
+            public IAutoTest Test;
+        }
         public void Run(Func<IAutoTest, Task<AutoTestRunContext>> run)
         {
             Thread th = new(async () =>
@@ -40,6 +46,7 @@ namespace AutoUI
                 foreach (var item in Tests)
                 {
                     ListViewItem lvi = null;
+                    var tri = new TestRunInfo() { Test = item };
                     listView1.Invoke((Action)(() =>
                     {
                         listView1.Items.Add(lvi = new ListViewItem(new string[] { item.Name,
@@ -49,12 +56,13 @@ namespace AutoUI
                         string.Empty,
                         string.Empty,
                         })
-                        { Tag = item });
+                        { Tag = tri });
                     }));
 
                     var sw = Stopwatch.StartNew();
 
                     var res = await run(item);
+                    tri.Context = res;
                     sw.Stop();
 
                     var duration = sw.ElapsedMilliseconds;
@@ -104,5 +112,19 @@ namespace AutoUI
 
         }
 
+        private void registersToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (listView1.SelectedItems.Count == 0)
+                return;
+
+            var tri = listView1.SelectedItems[0].Tag as TestRunInfo;
+            var d = AutoDialog.DialogHelpers.StartDialog();
+            foreach (var item in tri.Context.StringRegisters)
+            {
+                d.AddStringField(item.Key, item.Key, item.Value);
+            }
+            d.ShowDialog();
+
+        }
     }
 }

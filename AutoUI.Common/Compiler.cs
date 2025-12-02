@@ -1,7 +1,9 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using OBSWebsocketDotNet;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Reflection;
 
 namespace AutoUI.Common
@@ -19,12 +21,17 @@ namespace AutoUI.Common
             assembliesToBind.Add("System.Runtime.dll");
             assembliesToBind.Add("System.Collections.dll");
             assembliesToBind.Add("System.Windows.Forms.dll");
-
+            assembliesToBind.Add("System.ComponentModel.Primitives.dll");
+            assembliesToBind.Add("netstandard.dll");
+            
             assembliesToBind.Add(Assembly.GetAssembly(typeof(System.Dynamic.DynamicObject)).FullName);
             assembliesToBind.Add(Assembly.GetAssembly(typeof(System.Attribute)).FullName);
             assembliesToBind.Add(Assembly.GetAssembly(typeof(AutoTestRunContext)).FullName);
             assembliesToBind.Add(Assembly.GetAssembly(typeof(Task)).FullName);
+            assembliesToBind.Add(Assembly.GetAssembly(typeof(Process)).FullName);
+            assembliesToBind.Add(Assembly.GetAssembly(typeof(ProcessStartInfo)).FullName);
             assembliesToBind.Add(Assembly.GetAssembly(typeof(IRun)).FullName);
+            assembliesToBind.Add(Assembly.GetAssembly(typeof(OBSWebsocket)).FullName);
 
             foreach (var item in assembliesToBind)
             {

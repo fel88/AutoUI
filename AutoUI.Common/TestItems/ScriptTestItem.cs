@@ -23,6 +23,8 @@ using AutoUI.Common;
 using System.Windows.Forms;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading.Tasks;
+using OBSWebsocketDotNet;
 
 class Program : IRun
 {

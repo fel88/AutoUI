@@ -5,7 +5,15 @@ using System.Drawing;
 namespace AutoUI.Common
 {
     public class AutoTestRunContext
-    {
+    {        
+        public AutoTestRunContext()
+        {
+
+        }
+        public AutoTestRunContext(IAutoTest test)
+        {
+            Test = test;
+        }
         public void JumpToLabel(string label)
         {
             var fr = Test.CurrentCodeSection.Items.OfType<LabelAutoTestItem>().First(z => z.Label == label);
@@ -54,7 +62,7 @@ namespace AutoUI.Common
             return clipboardText;
         }
 
-        public IAutoTest Test;
+        public IAutoTest Test { get; private set; }
         public int CodePointer;
         public bool ForceCodePointer;
         public AutoTestItem WrongState;

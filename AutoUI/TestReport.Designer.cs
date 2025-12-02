@@ -28,23 +28,28 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             listView1 = new System.Windows.Forms.ListView();
             columnHeader1 = new System.Windows.Forms.ColumnHeader();
             columnHeader2 = new System.Windows.Forms.ColumnHeader();
             columnHeader3 = new System.Windows.Forms.ColumnHeader();
             columnHeader4 = new System.Windows.Forms.ColumnHeader();
+            columnHeader5 = new System.Windows.Forms.ColumnHeader();
+            columnHeader6 = new System.Windows.Forms.ColumnHeader();
             statusStrip1 = new System.Windows.Forms.StatusStrip();
             toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
             toolStripStatusLabel3 = new System.Windows.Forms.ToolStripStatusLabel();
-            columnHeader5 = new System.Windows.Forms.ColumnHeader();
-            columnHeader6 = new System.Windows.Forms.ColumnHeader();
+            contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(components);
+            registersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             statusStrip1.SuspendLayout();
+            contextMenuStrip1.SuspendLayout();
             SuspendLayout();
             // 
             // listView1
             // 
             listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] { columnHeader1, columnHeader2, columnHeader3, columnHeader4, columnHeader5, columnHeader6 });
+            listView1.ContextMenuStrip = contextMenuStrip1;
             listView1.Dock = System.Windows.Forms.DockStyle.Fill;
             listView1.FullRowSelect = true;
             listView1.GridLines = true;
@@ -76,6 +81,16 @@
             columnHeader4.Text = "Duration (ms)";
             columnHeader4.Width = 120;
             // 
+            // columnHeader5
+            // 
+            columnHeader5.Text = "Code pointer";
+            columnHeader5.Width = 122;
+            // 
+            // columnHeader6
+            // 
+            columnHeader6.Text = "Wrong state";
+            columnHeader6.Width = 177;
+            // 
             // statusStrip1
             // 
             statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripStatusLabel1, toolStripStatusLabel2, toolStripStatusLabel3 });
@@ -104,15 +119,18 @@
             toolStripStatusLabel3.Size = new System.Drawing.Size(30, 17);
             toolStripStatusLabel3.Text = ".. / ..";
             // 
-            // columnHeader5
+            // contextMenuStrip1
             // 
-            columnHeader5.Text = "Code pointer";
-            columnHeader5.Width = 122;
+            contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { registersToolStripMenuItem });
+            contextMenuStrip1.Name = "contextMenuStrip1";
+            contextMenuStrip1.Size = new System.Drawing.Size(181, 48);
             // 
-            // columnHeader6
+            // registersToolStripMenuItem
             // 
-            columnHeader6.Text = "Wrong state";
-            columnHeader6.Width = 177;
+            registersToolStripMenuItem.Name = "registersToolStripMenuItem";
+            registersToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            registersToolStripMenuItem.Text = "registers";
+            registersToolStripMenuItem.Click += registersToolStripMenuItem_Click;
             // 
             // TestReport
             // 
@@ -126,6 +144,7 @@
             Text = "TestReport";
             statusStrip1.ResumeLayout(false);
             statusStrip1.PerformLayout();
+            contextMenuStrip1.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -143,5 +162,7 @@
         private System.Windows.Forms.ColumnHeader columnHeader4;
         private System.Windows.Forms.ColumnHeader columnHeader5;
         private System.Windows.Forms.ColumnHeader columnHeader6;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem registersToolStripMenuItem;
     }
 }

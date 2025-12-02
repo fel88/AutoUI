@@ -136,6 +136,7 @@ namespace AutoUI.TestItems.Editors
                         var ctx = new AutoTestRunContext();
                         inst.Run(ctx);
                         //MessageBox.Show(ctx.Vars["temp"] + "");
+                        break;
                     }
                     //MessageBox.Show(v.sum(3, 5));
                     //TryLoadCompiledType(res, t.ToString());

@@ -23,12 +23,25 @@ namespace AutoUI
 
         private void addKeyvaleToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var test = listView3.Tag as AutoTest;
-            KeyValueDialog kvd = new KeyValueDialog();
-            if (kvd.ShowDialog() == DialogResult.OK)
+
+            var d = AutoDialog.DialogHelpers.StartDialog();
+
+            d.AddStringField("key", "Key", "new_key");
+            d.AddStringField("value", "Value", "");
+
+            if (d.ShowDialog())
             {
-                test.Data.Add(kvd.Key, kvd.Value);
+                if (listView3.Tag is AutoTest test)
+                {
+                    test.Data.Add(d.GetStringField("key"), d.GetStringField("value"));
+                } else
+                if (listView3.Tag is TestSet set)
+                {
+                    set.Vars.Add(d.GetStringField("key"), d.GetStringField("value"));
+                }
+                updateKeyValueList();
             }
+
             //update lv3
             updateKeyValueList();
         }
@@ -42,13 +55,32 @@ namespace AutoUI
                     listView3.Items.Add(new ListViewItem(new string[] { item.Key, item.Value.ToString() }) { Tag = item });
                 }
             }
+            if (listView3.Tag is TestSet set)
+            {
+                listView3.Items.Clear();
+                foreach (var item in set.Vars)
+                {
+                    listView3.Items.Add(new ListViewItem(new string[] { item.Key, item.Value.ToString() }) { Tag = item });
+                }
+            }
         }
+
         private void deleteToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            if (listView3.SelectedItems.Count == 0) return;
+            if (listView3.SelectedItems.Count == 0)
+                return;
+
             var p = (KeyValuePair<string, object>)listView3.SelectedItems[0].Tag;
-            var test = listView3.Tag as AutoTest;
-            test.Data.Remove(p.Key);
+            if (listView3.Tag is AutoTest test)
+            {
+                test.Data.Remove(p.Key);
+            }
+            else
+            if (listView3.Tag is TestSet set)
+            {
+                set.Vars.Remove(p.Key);
+
+            }
             updateKeyValueList();
         }
 
@@ -76,7 +108,20 @@ namespace AutoUI
             }
             listView3.Tag = et;
         }
+        public void Init(TestSet set)
+        {
+            listView3.Items.Clear();
+            foreach (var item in set.Vars)
+            {
+                listView3.Items.Add(new ListViewItem(new string[] { item.Key, item.Value.ToString() }) { Tag = item });
+            }
+            listView3.Tag = set;
+        }
         private void listView3_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            EditSelected();
+        }
+        private void EditSelected()
         {
             if (listView3.SelectedItems.Count > 0)
             {
@@ -91,37 +136,71 @@ namespace AutoUI
                 }
             }
 
+            if (listView3.Tag is TestSet set)
+            {
+                var pair = (KeyValuePair<string, object>)listView3.SelectedItems[0].Tag;
+                if (pair.Value is string)
+                {
+                    var d = AutoDialog.DialogHelpers.StartDialog();
+
+                    d.AddStringField("key", "Key", pair.Key);
+                    d.AddStringField("value", "Value", pair.Value as string);
+                    d.CreatedControls["key"][1].Enabled = false;
+
+                    if (d.ShowDialog())
+                    {
+                        set.Vars[pair.Key] = d.GetStringField("value");
+                        updateKeyValueList();
+                    }
+                }
+            }
 
             if (listView3.Tag is AutoTest test)
             {
                 var pair = (KeyValuePair<string, object>)listView3.SelectedItems[0].Tag;
-                KeyValueDialog kvd = new KeyValueDialog();
-                kvd.Init(pair);
-                if (kvd.ShowDialog() == DialogResult.OK)
+                if (pair.Value is string)
                 {
-                    test.Data[pair.Key] = kvd.Value;
-                    updateKeyValueList();
+                    var d = AutoDialog.DialogHelpers.StartDialog();
+
+                    d.AddStringField("key", "Key", pair.Key);
+                    d.AddStringField("value", "Value", pair.Value as string);
+                    d.CreatedControls["key"][1].Enabled = false;
+
+                    if (d.ShowDialog())
+                    {
+                        test.Data[pair.Key] = d.GetStringField("value");
+                        updateKeyValueList();
+                    }
                 }
             }
             if (listView3.Tag is EmittedSubTest esub)
             {
-                if (listView3.SelectedItems.Count == 0) return;
+                if (listView3.SelectedItems.Count == 0)
+                    return;
+
                 var tag = listView3.SelectedItems[0].Tag;
             }
         }
 
         private void contextMenuStrip3_Opening(object sender, CancelEventArgs e)
         {
-            if (!(listView3.Tag is AutoTest))
-                e.Cancel = true;
+            if ((listView3.Tag is AutoTest))
+            {
+                return;
+            }
+            if ((listView3.Tag is TestSet))
+            {
+                return;
+            }
+            e.Cancel = true;
         }
 
         private void editToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (listView3.SelectedItems.Count == 0) 
+            if (listView3.SelectedItems.Count == 0)
                 return;
 
-            listView3_MouseDoubleClick(sender, null);
+            EditSelected();
         }
     }
 }

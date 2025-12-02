@@ -19,21 +19,10 @@ namespace AutoUI
 {
     /*
   * todo: 
-  * - test list
-  * - run process
-  * - waitPattern operator
-  * - if operator and branching . better language to code.. maybe script language or graphical scenario editor. Dagre.NET should be use this case probably.
   * - states (set of condition)
-  * - complex pattern (set of images which mean same pattern)
-  * - loose pattern matching -> pre-binarize, percentrage equality allowed
   * - complex shapes searching and counting. rectangles for example
-  * - debug TCP protocol. send code to execute on main programm side
-  * - parametrized test with different input parameters (different files for example)
-  * - keyboard input 
-  * - text recognize from screen probably..
-  * - mouse wheel events 
-  * - ROI (seach only in regions of intereset) and count primitives there - number of horizontal lines or rectangles, etc.
-  * - speed-up pattern search
+  * - text recognize from screen probably..  
+  * - ROI (seach only in regions of intereset) and count primitives there - number of horizontal lines or rectangles, etc.  
   * 
   */
     public partial class Tests : Form
@@ -119,11 +108,11 @@ namespace AutoUI
             if (ofd.FileName.ToLower().EndsWith(".axml"))
             {
                 var doc = XDocument.Load(ofd.FileName);
-                set = new TestSet(doc.Root.Element("set"));                
+                set = new TestSet(doc.Root.Element("set"));
             }
-            else           
+            else
                 set = TestSet.LoadFromAZip(ofd.FileName);
-            
+
             Text = $"Test set: {ofd.FileName}";
             lastPathLoaded = ofd.FileName;
             Init(set);
@@ -575,6 +564,13 @@ namespace AutoUI
             report.MdiParent = MdiParent;
             report.Init(set, $"Report testing (test set: {lastPathLoaded})  ", tests.ToArray());
             report.Show();
+        }
+
+        private void toolStripButton5_Click(object sender, EventArgs e)
+        {
+            VariablesEditor ved = new VariablesEditor();
+            ved.Init(set);
+            ved.Show();
         }
     }
 }

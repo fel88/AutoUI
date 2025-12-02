@@ -18,7 +18,7 @@ namespace AutoUI.Common
         {
             StartTime = DateTime.Now;
 
-            AutoTestRunContext ctx = new AutoTestRunContext() { Test = SourceTest };
+            AutoTestRunContext ctx = new AutoTestRunContext(SourceTest);
             ctx.SubTest = this;
             lastContext = ctx;
             foreach (var item in Data)

@@ -25,26 +25,31 @@ namespace AutoUI.Common
             }
 
             var resourcesNode = root.Element("resources");
-            if (resourcesNode == null)
-                return;
+            if (resourcesNode != null)
+                foreach (var item in resourcesNode.Elements("resource"))
+                {
+                    var type = item.Attribute("type").Value;
 
-            foreach (var item in resourcesNode.Elements("resource"))
-            {
-                var type = item.Attribute("type").Value;
+                    AutoTestResource resource = null;
+                    if (type == "text")
+                        resource = new TextAutoTestResource();
 
-                AutoTestResource resource = null;
-                if (type == "text")
-                    resource = new TextAutoTestResource();
+                    if (resource == null)
+                        continue;
 
-                if (resource == null)
-                    continue;
+                    resource.Name = item.Attribute("name").Value;
+                    resource.Path = item.Element("path").Value;
+                    resource.ResourceLoadType = Enum.Parse<ResourceLoadTypeEnum>(item.Attribute("location").Value);
 
-                resource.Name = item.Attribute("name").Value;
-                resource.Path = item.Element("path").Value;
-                resource.ResourceLoadType = Enum.Parse<ResourceLoadTypeEnum>(item.Attribute("location").Value);
+                    Resources.Add(resource);
+                }
 
-                Resources.Add(resource);
-            }
+            var varsNode = root.Element("vars");
+            if (varsNode != null)
+                foreach (var item in varsNode.Elements("var"))
+                {
+                    Vars.Add(item.Attribute("key").Value, item.Value);
+                }
         }
 
         public List<AutoTestResource> Resources = new List<AutoTestResource>();
@@ -53,6 +58,7 @@ namespace AutoUI.Common
         public string ProcessPath;
         public List<IAutoTest> Tests = new List<IAutoTest>();
         public PatternMatchingPool Pool = new PatternMatchingPool();
+        public Dictionary<string, string> Vars = new Dictionary<string, string>();
 
         public XElement ToXml()
         {
@@ -71,6 +77,15 @@ namespace AutoUI.Common
             }
 
             sb.AppendLine("</resources>");
+            sb.AppendLine("<vars>");
+            foreach (var var in Vars)
+            {
+                XElement el = new XElement("var", new XCData(var.Value));
+                el.Add(new XAttribute("key", var.Key));
+                sb.AppendLine(el.ToString());
+            }
+
+            sb.AppendLine("</vars>");
             sb.AppendLine("</set>");
             return XElement.Parse(sb.ToString());
         }
