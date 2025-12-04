@@ -24,6 +24,27 @@ namespace AutoUI.Common
                     Tests.Add(new SpawnableAutoTest(this, titem));
             }
 
+            var scriptsNode = root.Element("scripts");
+            if (scriptsNode != null)
+                foreach (var item in scriptsNode.Elements("script"))
+                {
+                    switch (item.Attribute("type").Value)
+                    {
+                        case nameof(StartupScript):
+                            StartupScript = item.Value;
+                            break;
+                        case nameof(FinalizerScript):
+                            FinalizerScript = item.Value;
+                            break;
+                        case nameof(BeforeTestScript):
+                            BeforeTestScript = item.Value;
+                            break;
+                        case nameof(AfterTestScript):
+                            AfterTestScript = item.Value;
+                            break;
+                    }
+                }
+
             var resourcesNode = root.Element("resources");
             if (resourcesNode != null)
                 foreach (var item in resourcesNode.Elements("resource"))
@@ -32,14 +53,10 @@ namespace AutoUI.Common
 
                     AutoTestResource resource = null;
                     if (type == "text")
-                        resource = new TextAutoTestResource();
+                        resource = new TextAutoTestResource(item);
 
                     if (resource == null)
                         continue;
-
-                    resource.Name = item.Attribute("name").Value;
-                    resource.Path = item.Element("path").Value;
-                    resource.ResourceLoadType = Enum.Parse<ResourceLoadTypeEnum>(item.Attribute("location").Value);
 
                     Resources.Add(resource);
                 }
@@ -54,15 +71,51 @@ namespace AutoUI.Common
 
         public List<AutoTestResource> Resources = new List<AutoTestResource>();
 
+        public string StartupScript = DefaultScripts.DefaultTestSetScript;
+        public string FinalizerScript = DefaultScripts.DefaultTestSetScript;
+        public string BeforeTestScript = DefaultScripts.DefaultTestScript;
+        public string AfterTestScript = DefaultScripts.DefaultTestScript;
+
         public string Name { get; set; }
         public string ProcessPath;
         public List<IAutoTest> Tests = new List<IAutoTest>();
         public PatternMatchingPool Pool = new PatternMatchingPool();
         public Dictionary<string, string> Vars = new Dictionary<string, string>();
 
-        public XElement ToXml()
+        public void ToStream(Stream stream)
         {
             StringBuilder sb = new StringBuilder();
+            sb.AppendLine("<?xml version=\"1.0\"?>");
+            sb.AppendLine("<root>");
+            var el1 = ToXml();
+            sb.AppendLine(el1.ToString());
+
+            sb.AppendLine("</root>");
+            sb.ToString();
+
+            var doc = XDocument.Parse(sb.ToString());
+
+            using (var zipArchive = new ZipArchive(stream, ZipArchiveMode.Create, true))
+            {
+                var entry1 = zipArchive.CreateEntry("tests.axml");
+                using (var entryStream = entry1.Open())
+                {
+                    doc.Save(entryStream);
+                }
+                foreach (var item in Resources.Where(z => z.ResourceLoadType != ResourceLoadTypeEnum.Internal))
+                {
+                    var entry2 = zipArchive.CreateEntry(item.Path);
+                    using (var entryStream = entry2.Open())
+                    {
+                        item.StoreData(entryStream);
+                    }
+                }
+            }
+        }
+
+        public XElement ToXml()
+        {
+            StringBuilder sb = new();
             sb.AppendLine("<set>");
             foreach (var test in Tests)
             {
@@ -75,8 +128,15 @@ namespace AutoUI.Common
             {
                 sb.AppendLine(resource.ToXml().ToString());
             }
-
             sb.AppendLine("</resources>");
+
+            sb.AppendLine("<scripts>");
+            sb.AppendLine(new XElement("script", new XAttribute("type", nameof(StartupScript)), new XCData(StartupScript)).ToString());
+            sb.AppendLine(new XElement("script", new XAttribute("type", nameof(FinalizerScript)), new XCData(FinalizerScript)).ToString());
+            sb.AppendLine(new XElement("script", new XAttribute("type", nameof(BeforeTestScript)), new XCData(BeforeTestScript)).ToString());
+            sb.AppendLine(new XElement("script", new XAttribute("type", nameof(AfterTestScript)), new XCData(AfterTestScript)).ToString());
+            sb.AppendLine("</scripts>");
+
             sb.AppendLine("<vars>");
             foreach (var var in Vars)
             {

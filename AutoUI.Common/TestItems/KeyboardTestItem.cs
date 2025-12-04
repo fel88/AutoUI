@@ -7,7 +7,7 @@ namespace AutoUI.TestItems
     public class KeyboardTestItem : AutoTestItem
     {
         public string Command { get; set; } = "^{c}";        
-        public override TestItemProcessResultEnum Process(AutoTestRunContext ctx)
+        public override TestItemProcessResultEnum Process(TestRunContext ctx)
         {
             SendKeys.SendWait(Command);
             SendKeys.Flush();

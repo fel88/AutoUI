@@ -28,7 +28,7 @@ namespace AutoUI.TestItems
 
         public bool MoveCursorOnSuccessed { get; set; } = false;
         public int Timeout { get; set; } = 100 * 1000;
-        public override TestItemProcessResultEnum Process(AutoTestRunContext ctx)
+        public override TestItemProcessResultEnum Process(TestRunContext ctx)
         {
             Stopwatch start = Stopwatch.StartNew();
             Point? ret = null;

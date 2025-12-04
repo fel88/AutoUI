@@ -13,7 +13,7 @@ namespace AutoUI.TestItems
             return $"jump ({JumpLabel})";
         }
 
-        public override TestItemProcessResultEnum Process(AutoTestRunContext ctx)
+        public override TestItemProcessResultEnum Process(TestRunContext ctx)
         {
             if (ctx.LastSearchPosition != null)
             {

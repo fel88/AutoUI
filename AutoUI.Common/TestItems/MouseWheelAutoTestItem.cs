@@ -26,7 +26,7 @@ namespace AutoUI.TestItems
 
         public int Delta { get; set; } = 120;
 
-        public override TestItemProcessResultEnum Process(AutoTestRunContext ctx)
+        public override TestItemProcessResultEnum Process(TestRunContext ctx)
         {
             mouse_event(MOUSEEVENTF_WHEEL, 0, 0, Delta, 0);
             return TestItemProcessResultEnum.Success;

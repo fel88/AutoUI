@@ -3,9 +3,8 @@
 namespace AutoUI.Common
 {
     public interface IAutoTest
-    {
-        void Reset();
-        AutoTestRunContext Run(AutoTestRunContext ctx = null);
+    {        
+        TestRunContext Run(TestRunContext ctx = null);
         CodeSection CurrentCodeSection { get; }
         IAutoTest Clone();
         Dictionary<string, object> Data { get; set; }

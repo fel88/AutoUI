@@ -7,7 +7,7 @@ namespace AutoUI.TestItems
     [XmlParse(XmlKey = "cursorPos")]
     public class CursorPositionTestItem : AutoTestItem
     {
-        public override TestItemProcessResultEnum Process(AutoTestRunContext ctx)
+        public override TestItemProcessResultEnum Process(TestRunContext ctx)
         {
             var pos = Cursor.Position;
             if (CursorToFindItem)

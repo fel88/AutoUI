@@ -529,7 +529,7 @@ namespace AutoUI
                 listView1.SelectedItems[i].BackColor = Color.White;
 
                 currentItem = listView1.SelectedItems[i].Tag as AutoTestItem;
-                var result = currentItem.Process(new AutoTestRunContext(test));
+                var result = currentItem.Process(new TestRunContext(test));
                 if (result == TestItemProcessResultEnum.Failed)
                 {
                     listView1.SelectedItems[i].BackColor = Color.Red;
@@ -709,7 +709,7 @@ namespace AutoUI
                 }
             }));
             var sw = Stopwatch.StartNew();
-            var ctx = test.Run(new AutoTestRunContext() { CodePointer = test.CurrentCodeSection.Items.IndexOf(currentItem) });
+            var ctx = test.Run(new TestRunContext() { CodePointer = test.CurrentCodeSection.Items.IndexOf(currentItem) });
             sw.Stop();
             listView1.Invoke((Action)(() =>
             {

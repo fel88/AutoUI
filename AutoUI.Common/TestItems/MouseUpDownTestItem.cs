@@ -38,7 +38,7 @@ namespace AutoUI.TestItems
             mouse_event(MOUSEEVENTF_LEFTUP, X, Y, 0, 0);
         }
         public bool Down { get; set; }
-        public override TestItemProcessResultEnum Process(AutoTestRunContext ctx)
+        public override TestItemProcessResultEnum Process(TestRunContext ctx)
         {
             if (Down)
             {

@@ -35,7 +35,7 @@ namespace AutoUI.TestItems
         static extern bool GetWindowRect(IntPtr hWnd, out RECT lpRect);
         [DllImport("user32.dll")]
         private static extern IntPtr GetForegroundWindow();
-        public override TestItemProcessResultEnum Process(AutoTestRunContext ctx)
+        public override TestItemProcessResultEnum Process(TestRunContext ctx)
         {
             Image scr = null;            
             if (ProcessOnly)

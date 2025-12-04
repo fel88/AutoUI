@@ -8,7 +8,7 @@ namespace AutoUI.TestItems
     public class LabelAutoTestItem : AutoTestItem
     {
         public string Label { get; set; }
-        public override TestItemProcessResultEnum Process(AutoTestRunContext ctx)
+        public override TestItemProcessResultEnum Process(TestRunContext ctx)
         {
             return TestItemProcessResultEnum.Success;
         }

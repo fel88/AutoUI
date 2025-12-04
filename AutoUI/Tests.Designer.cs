@@ -44,6 +44,11 @@
             toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             toolStripButton3 = new System.Windows.Forms.ToolStripButton();
             toolStripButton5 = new System.Windows.Forms.ToolStripButton();
+            toolStripDropDownButton3 = new System.Windows.Forms.ToolStripDropDownButton();
+            setupCodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            beforeEachTestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            afterEachTestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            finalizerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             listView2 = new System.Windows.Forms.ListView();
             columnHeader4 = new System.Windows.Forms.ColumnHeader();
@@ -79,7 +84,7 @@
             // 
             // toolStrip1
             // 
-            toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripDropDownButton1, toolStripButton2, toolStripDropDownButton2, toolStripButton4, toolStripSeparator1, toolStripButton1, toolStripButton3, toolStripButton5 });
+            toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripDropDownButton1, toolStripButton2, toolStripDropDownButton2, toolStripButton4, toolStripSeparator1, toolStripButton1, toolStripButton3, toolStripButton5, toolStripDropDownButton3 });
             toolStrip1.Location = new System.Drawing.Point(0, 0);
             toolStrip1.Name = "toolStrip1";
             toolStrip1.Size = new System.Drawing.Size(1111, 25);
@@ -194,6 +199,43 @@
             toolStripButton5.Size = new System.Drawing.Size(84, 22);
             toolStripButton5.Text = "global vars";
             toolStripButton5.Click += toolStripButton5_Click;
+            // 
+            // toolStripDropDownButton3
+            // 
+            toolStripDropDownButton3.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { setupCodeToolStripMenuItem, beforeEachTestToolStripMenuItem, afterEachTestToolStripMenuItem, finalizerToolStripMenuItem });
+            toolStripDropDownButton3.Image = Properties.Resources.script_binary1;
+            toolStripDropDownButton3.ImageTransparentColor = System.Drawing.Color.Magenta;
+            toolStripDropDownButton3.Name = "toolStripDropDownButton3";
+            toolStripDropDownButton3.Size = new System.Drawing.Size(70, 22);
+            toolStripDropDownButton3.Text = "scripts";
+            // 
+            // setupCodeToolStripMenuItem
+            // 
+            setupCodeToolStripMenuItem.Name = "setupCodeToolStripMenuItem";
+            setupCodeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            setupCodeToolStripMenuItem.Text = "setup code";
+            setupCodeToolStripMenuItem.Click += setupCodeToolStripMenuItem_Click;
+            // 
+            // beforeEachTestToolStripMenuItem
+            // 
+            beforeEachTestToolStripMenuItem.Name = "beforeEachTestToolStripMenuItem";
+            beforeEachTestToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            beforeEachTestToolStripMenuItem.Text = "before each test";
+            beforeEachTestToolStripMenuItem.Click += beforeEachTestToolStripMenuItem_Click;
+            // 
+            // afterEachTestToolStripMenuItem
+            // 
+            afterEachTestToolStripMenuItem.Name = "afterEachTestToolStripMenuItem";
+            afterEachTestToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            afterEachTestToolStripMenuItem.Text = "after each test";
+            afterEachTestToolStripMenuItem.Click += afterEachTestToolStripMenuItem_Click;
+            // 
+            // finalizerToolStripMenuItem
+            // 
+            finalizerToolStripMenuItem.Name = "finalizerToolStripMenuItem";
+            finalizerToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            finalizerToolStripMenuItem.Text = "finalizer";
+            finalizerToolStripMenuItem.Click += finalizerToolStripMenuItem_Click;
             // 
             // tableLayoutPanel1
             // 
@@ -476,5 +518,10 @@
         private System.Windows.Forms.ToolStripMenuItem localToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem remotelyToolStripMenuItem;
         private System.Windows.Forms.ToolStripButton toolStripButton5;
+        private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownButton3;
+        private System.Windows.Forms.ToolStripMenuItem setupCodeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem beforeEachTestToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem afterEachTestToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem finalizerToolStripMenuItem;
     }
 }

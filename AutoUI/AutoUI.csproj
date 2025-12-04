@@ -43,6 +43,9 @@
 		<Compile Update="Editors\WaitPatternEditor.cs">
 			<SubType>UserControl</SubType>
 		</Compile>
+		<Compile Update="StringsListEditor.cs">
+		  <SubType>Form</SubType>
+		</Compile>
 	</ItemGroup>
 	<ItemGroup>
 		<Content Include="flask.ico" />

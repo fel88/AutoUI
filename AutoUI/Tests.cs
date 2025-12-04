@@ -1,5 +1,7 @@
 ﻿using AutoDialog;
+using AutoUI.CodeEditor;
 using AutoUI.Common;
+using AutoUI.Editors;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -48,51 +50,32 @@ namespace AutoUI
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            StringBuilder sb = new StringBuilder();
-            sb.AppendLine("<?xml version=\"1.0\"?>");
-            sb.AppendLine("<root>");
-            var el1 = set.ToXml();
-            sb.AppendLine(el1.ToString());
-
-            sb.AppendLine("</root>");
-            sb.ToString();
-
             SaveFileDialog sfd = new SaveFileDialog();
             sfd.Filter = "Auto UI zip (azip files)|*.azip|Auto UI (axml files)|*.axml";
             if (sfd.ShowDialog() != DialogResult.OK)
-                return;
-
-            var doc = XDocument.Parse(sb.ToString());
+                return;         
 
             if (sfd.FileName.ToLower().EndsWith(".azip"))
             {
                 using (var compressedFileStream = new MemoryStream())
                 {
-                    using (var zipArchive = new ZipArchive(compressedFileStream, ZipArchiveMode.Create, true))
-                    {
-                        var entry1 = zipArchive.CreateEntry("tests.axml");
-                        using (var entryStream = entry1.Open())
-                        {
-                            doc.Save(entryStream);
-                        }
-                        foreach (var item in set.Resources.Where(z => z.ResourceLoadType != ResourceLoadTypeEnum.Internal))
-                        {
-                            var entry2 = zipArchive.CreateEntry(item.Path);
-                            using (var entryStream = entry2.Open())
-                            {
-                                item.StoreData(entryStream);
-                            }
-                        }
-
-                    }
-
-                    // Return the complete zip file as a byte array
+                    set.ToStream(compressedFileStream);                                       
                     File.WriteAllBytes(sfd.FileName, compressedFileStream.ToArray());
                 }
             }
             else
             {
+                StringBuilder sb = new StringBuilder();
+                sb.AppendLine("<?xml version=\"1.0\"?>");
+                sb.AppendLine("<root>");
+                var el1 = set.ToXml();
+                sb.AppendLine(el1.ToString());
 
+                sb.AppendLine("</root>");
+                sb.ToString();
+
+
+                var doc = XDocument.Parse(sb.ToString());
                 doc.Save(sfd.FileName);
             }
         }
@@ -174,20 +157,30 @@ namespace AutoUI
 
         private void toolStripButton4_Click(object sender, EventArgs e)
         {
+            RunLocal(set.Tests.ToArray());           
+        }
+
+        public SetRunContext RunLocal(IAutoTest[] tests)
+        {
             TestReport report = new TestReport();
+            var trun = new SetRunContext(set);
             report.Shown += (s, e) =>
             {
+                Compiler.CompileAndGetInstance<ISetRun>(Set.StartupScript)?.Run(trun);
 
                 report.Run(async (item) =>
                 {
-                    item.Reset();
                     return item.Run();
+                }, () =>
+                {
+                    Compiler.CompileAndGetInstance<ISetRun>(Set.FinalizerScript)?.Run(trun);
                 });
             };
             report.MdiParent = MdiParent;
 
-            report.Init(set, $"Report testing (test set: {lastPathLoaded})  ");
+            report.Init(set, $"Report testing (test set: {lastPathLoaded})  ", tests);
             report.Show();
+            return trun;
         }
 
         private void addTestToolStripMenuItem_Click(object sender, EventArgs e)
@@ -297,7 +290,7 @@ namespace AutoUI
         }
 
         private void exportReportToolStripMenuItem_Click(object sender, EventArgs e)
-        {            
+        {
             //form for custom report?
             //StringBuilder sb = new StringBuilder();
             //int failed = 0;
@@ -375,7 +368,7 @@ namespace AutoUI
             }
 
         }
-        private void updateSubTestList(AutoTestRunContext lastContext)
+        private void updateSubTestList(TestRunContext lastContext)
         {
             //listView2.Items.Clear();
             //foreach (var item in lastContext.SubTests)
@@ -409,7 +402,7 @@ namespace AutoUI
             UpdateTestsList();
         }
 
-        private async void toolStripButton1_Click_1(object sender, EventArgs e)
+        public void RunRemotely(IAutoTest[] tests)
         {
             var d = AutoDialog.DialogHelpers.StartDialog();
             d.AddStringField("ip", "IP", "127.0.0.1");
@@ -435,17 +428,31 @@ namespace AutoUI
                 await wr.FlushAsync();
                 var res = await rdr.ReadLineAsync();
 
+                await wr.WriteLineAsync($"START_TEST_SET");
+                await wr.FlushAsync();
+                await rdr.ReadLineAsync();
+
                 report.Run(async (item) =>
                 {
                     var testIdx = set.Tests.IndexOf(item);
-                    return await RemoteRunner.RunRemotely(wr, rdr, testIdx);                                        
+                    return await RemoteRunner.RunRemotely(wr, rdr, testIdx);
+                }, async () =>
+                {
+                    await wr.WriteLineAsync($"FINISH_TEST_SET");
+                    await wr.FlushAsync();
+                    await rdr.ReadLineAsync();
+
                 });
 
             };
 
             report.MdiParent = MdiParent;
-            report.Init(set, $"Report testing (test set: {lastPathLoaded})  ");
+            report.Init(set, $"Report testing (test set: {lastPathLoaded})  ", tests.ToArray());
             report.Show();
+        }
+        private async void toolStripButton1_Click_1(object sender, EventArgs e)
+        {
+            RunRemotely(set.Tests.ToArray());            
         }
 
         private void somplToolStripMenuItem_Click(object sender, EventArgs e)
@@ -479,26 +486,11 @@ namespace AutoUI
                 return;
 
             List<IAutoTest> tests = new();
-            for (int i = 0; i < listView1.SelectedItems.Count; i++)
-            {
-                var t = listView1.SelectedItems[i].Tag as IAutoTest;
-                tests.Add(t);
-            }
 
-            TestReport report = new TestReport();
-            report.Shown += (s, e) =>
-            {
-                report.Run(async (item) =>
-                {
-                    item.Reset();
-                    return item.Run();
-                });
-            };
+            for (int i = 0; i < listView1.SelectedItems.Count; i++)            
+                tests.Add(listView1.SelectedItems[i].Tag as IAutoTest);            
 
-            report.MdiParent = MdiParent;
-
-            report.Init(set, $"Report testing (test set: {lastPathLoaded})  ", tests.ToArray());
-            report.Show();
+            RunLocal(tests.ToArray());  
         }
 
         private void remotelyToolStripMenuItem_Click(object sender, EventArgs e)
@@ -513,41 +505,7 @@ namespace AutoUI
                 tests.Add(t);
             }
 
-            var d = AutoDialog.DialogHelpers.StartDialog();
-            d.AddStringField("ip", "IP", "127.0.0.1");
-            d.AddIntegerNumericField("port", "Port", 8888, 100000, 10);
-
-            if (!d.ShowDialog())
-                return;
-
-            var ip = d.GetStringField("ip");
-            var port = d.GetIntegerNumericField("port");
-            var s1 = $"TEST_SET={Convert.ToBase64String(Encoding.Default.GetBytes(set.ToXml().ToString()))}";
-
-            TestReport report = new TestReport();
-            report.Shown += async (s, e) =>
-            {
-                TcpClient client = new TcpClient();
-                await client.ConnectAsync(ip, port);
-                var stream = client.GetStream();
-                var wr = new StreamWriter(stream);
-                var rdr = new StreamReader(stream);
-
-                await wr.WriteLineAsync(s1);
-                await wr.FlushAsync();
-                var res = await rdr.ReadLineAsync();
-
-                report.Run(async (item) =>
-                {
-                    var testIdx = set.Tests.IndexOf(item);
-                    return await RemoteRunner.RunRemotely(wr, rdr, testIdx);                                        
-                });
-
-            };
-
-            report.MdiParent = MdiParent;
-            report.Init(set, $"Report testing (test set: {lastPathLoaded})  ", tests.ToArray());
-            report.Show();
+            RunRemotely(tests.ToArray());            
         }
 
         private void toolStripButton5_Click(object sender, EventArgs e)
@@ -555,6 +513,54 @@ namespace AutoUI
             VariablesEditor ved = new VariablesEditor();
             ved.Init(set);
             ved.Show();
+        }
+
+        private void setupCodeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            TextEditor ted = new TextEditor();
+            ted.TextChanged += () =>
+            {
+                set.StartupScript = ted.Editor.Text;
+            };
+            ted.Init(set.StartupScript);
+            ted.MdiParent = MdiParent;
+            ted.Show();
+        }
+
+        private void beforeEachTestToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            TextEditor ted = new TextEditor();
+            ted.TextChanged += () =>
+            {
+                set.BeforeTestScript = ted.Editor.Text;
+            };
+            ted.Init(set.BeforeTestScript);
+            ted.MdiParent = MdiParent;
+            ted.Show();
+        }
+
+        private void afterEachTestToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            TextEditor ted = new TextEditor();
+            ted.TextChanged += () =>
+            {
+                set.AfterTestScript = ted.Editor.Text;
+            };
+            ted.Init(set.AfterTestScript);
+            ted.MdiParent = MdiParent;
+            ted.Show();
+        }
+
+        private void finalizerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            TextEditor ted = new TextEditor();
+            ted.TextChanged += () =>
+            {
+                set.FinalizerScript = ted.Editor.Text;
+            };
+            ted.Init(set.FinalizerScript);
+            ted.MdiParent = MdiParent;
+            ted.Show();
         }
     }
 }

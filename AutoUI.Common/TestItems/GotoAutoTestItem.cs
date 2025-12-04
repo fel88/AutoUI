@@ -35,7 +35,7 @@ namespace AutoUI.TestItems
             }
         }
 
-        public override TestItemProcessResultEnum Process(AutoTestRunContext ctx)
+        public override TestItemProcessResultEnum Process(TestRunContext ctx)
         {
             GotoTestStepContext stepCtx = null;
             if (!ctx.TagRegisters.ContainsKey(this))

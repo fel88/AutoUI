@@ -63,7 +63,7 @@ namespace AutoUI.TestItems
         public bool PreCheckCurrentPosition { get; set; } = false;
 
         public bool NextSearch { get; set; }
-        public override TestItemProcessResultEnum Process(AutoTestRunContext ctx)
+        public override TestItemProcessResultEnum Process(TestRunContext ctx)
         {
             var screen = GetScreenshot();
 

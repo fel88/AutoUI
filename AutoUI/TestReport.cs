@@ -36,72 +36,92 @@ namespace AutoUI
 
         public class TestRunInfo
         {
-            public AutoTestRunContext Context;
+            public TestRunContext Context;
             public IAutoTest Test;
         }
-        public void Run(Func<IAutoTest, Task<AutoTestRunContext>> run)
+
+        public void Run(Func<IAutoTest, Task<TestRunContext>> run, Action finalize = null)
         {
             Thread th = new(async () =>
             {
-                foreach (var item in Tests)
+                SetRunContext trun = new(Set);
+                try
                 {
-                    ListViewItem lvi = null;
-                    var tri = new TestRunInfo() { Test = item };
-                    listView1.Invoke((Action)(() =>
+
+                    foreach (var item in Tests)
                     {
-                        listView1.Items.Add(lvi = new ListViewItem(new string[] { item.Name,
-                            //item.State.ToString(),
-                            string.Empty,
-                            string.Empty,
-                        string.Empty,
-                        string.Empty,
-                        string.Empty,
-                        })
-                        { Tag = tri });
-                    }));
+                        ListViewItem lvi = null;
+                        var tri = new TestRunInfo() { Test = item };
+                        listView1.Invoke((Action)(() =>
+                        {
+                            listView1.Items.Add(lvi = new ListViewItem([
+                                item.Name,
+                                //item.State.ToString(),
+                                string.Empty,
+                                string.Empty,
+                                string.Empty,
+                                string.Empty,
+                                string.Empty,
+                            ])
+                            { Tag = tri });
+                        }));
 
-                    var sw = Stopwatch.StartNew();
+                        var sw = Stopwatch.StartNew();
 
-                    var res = await run(item);
-                    tri.Context = res;
-                    sw.Stop();
+                        var res = await run(item);
+                        tri.Context = res;
+                        sw.Stop();
 
-                    var duration = sw.ElapsedMilliseconds;
+                        var duration = sw.ElapsedMilliseconds;
 
-                    int cc = 0;
-                    foreach (var sub in res.SubTests)
-                    {
-                        toolStripStatusLabel3.Visible = true;
-                        toolStripStatusLabel3.Text = $"subtests: {cc} / {res.SubTests.Count}";
-                        var res1 = sub.Run();
-                        cc++;
+                        int cc = 0;
+                        foreach (var sub in res.SubTests)
+                        {
+                            toolStripStatusLabel3.Visible = true;
+                            toolStripStatusLabel3.Text = $"subtests: {cc} / {res.SubTests.Count}";
+                            var res1 = sub.Run();
+                            cc++;
+                        }
+                        toolStripStatusLabel3.Visible = false;
+
+                        listView1.Invoke((Action)(() =>
+                        {
+                            if (res.State == TestStateEnum.Failed)
+                            {
+                                lvi.BackColor = Color.Red;
+                                lvi.ForeColor = Color.White;
+                            }
+                            if (res.State == TestStateEnum.Success)
+                            {
+                                lvi.BackColor = Color.LightGreen;
+                                lvi.ForeColor = Color.Black;
+                            }
+                            if (res.State == TestStateEnum.Emitter)
+                            {
+                                lvi.BackColor = Color.Violet;
+                                lvi.ForeColor = Color.White;
+                            }
+                            lvi.SubItems[1].Text = res.State.ToString();
+                            lvi.SubItems[2].Text = DateTime.Now.ToLongTimeString();
+                            lvi.SubItems[3].Text = duration.ToString();
+                            lvi.SubItems[4].Text = res.CodePointer.ToString();
+                            lvi.SubItems[5].Text = res.WrongState == null ? string.Empty : res.WrongState.ToString();
+
+                        }));
+
                     }
-                    toolStripStatusLabel3.Visible = false;
-
-                    listView1.Invoke((Action)(() =>
-                    {
-                        if (res.State == TestStateEnum.Failed)
-                        {
-                            lvi.BackColor = Color.Red;
-                            lvi.ForeColor = Color.White;
-                        }
-                        if (res.State == TestStateEnum.Success)
-                        {
-                            lvi.BackColor = Color.LightGreen;
-                            lvi.ForeColor = Color.Black;
-                        }
-                        if (res.State == TestStateEnum.Emitter)
-                        {
-                            lvi.BackColor = Color.Violet;
-                            lvi.ForeColor = Color.White;
-                        }
-                        lvi.SubItems[1].Text = res.State.ToString();
-                        lvi.SubItems[2].Text = DateTime.Now.ToLongTimeString();
-                        lvi.SubItems[3].Text = duration.ToString();
-                        lvi.SubItems[4].Text = res.CodePointer.ToString();
-                        lvi.SubItems[5].Text = res.WrongState == null ? string.Empty : res.WrongState.ToString();
-
-                    }));
+                }
+                catch (Exception ex)
+                {
+                    Helpers.Error(ex.Message);
+                }
+                try
+                {
+                    finalize?.Invoke();
+                }
+                catch (Exception ex)
+                {
+                    Helpers.Error(ex.Message);
 
                 }
             })
@@ -119,13 +139,9 @@ namespace AutoUI
                 return;
 
             var tri = listView1.SelectedItems[0].Tag as TestRunInfo;
-            var d = AutoDialog.DialogHelpers.StartDialog();
-            foreach (var item in tri.Context.StringRegisters)
-            {
-                d.AddStringField(item.Key, item.Key, item.Value);
-            }
-            d.ShowDialog();
-
+            StringsListEditor s = new StringsListEditor();
+            s.Init(tri.Context.StringRegisters, false);
+            s.ShowDialog();
         }
     }
 }

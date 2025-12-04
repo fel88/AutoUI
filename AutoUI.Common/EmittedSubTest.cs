@@ -10,15 +10,15 @@ namespace AutoUI.Common
         
         public DateTime FinishTime;
         public DateTime StartTime;
-        public AutoTestRunContext lastContext;
+        public TestRunContext lastContext;
         public AutoTestItem WrongState => lastContext.WrongState;
         public TimeSpan Duration => FinishTime - StartTime;
 
-        public AutoTestRunContext Run()
+        public TestRunContext Run()
         {
             StartTime = DateTime.Now;
 
-            AutoTestRunContext ctx = new AutoTestRunContext(SourceTest);
+            TestRunContext ctx = new TestRunContext(SourceTest);
             ctx.SubTest = this;
             lastContext = ctx;
             foreach (var item in Data)

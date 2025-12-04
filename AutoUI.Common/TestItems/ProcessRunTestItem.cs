@@ -9,7 +9,7 @@ namespace AutoUI.Common.TestItems
     [XmlParse(XmlKey = "processRun")]
     public class ProcessRunTestItem : AutoTestItem
     {
-        public override TestItemProcessResultEnum Process(AutoTestRunContext ctx)
+        public override TestItemProcessResultEnum Process(TestRunContext ctx)
         {
             Process p = new System.Diagnostics.Process();
             p.StartInfo.FileName = RunFromVar ? (string)ctx.Vars[Var] : ExePath;

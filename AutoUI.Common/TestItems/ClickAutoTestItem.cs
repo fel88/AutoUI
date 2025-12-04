@@ -30,7 +30,7 @@ namespace AutoUI.TestItems
             }
             else { mouse_event(MOUSEEVENTF_LEFTDOWN | MOUSEEVENTF_LEFTUP, X, Y, 0, 0); }
         }
-        public override TestItemProcessResultEnum Process(AutoTestRunContext ctx)
+        public override TestItemProcessResultEnum Process(TestRunContext ctx)
         {
             DoMouseClick();
             if (DoubleClick)

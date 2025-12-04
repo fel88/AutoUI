@@ -61,7 +61,7 @@ namespace AutoUI.TestItems
         }
 
         public string StoreVarName { get; set; }
-        public override TestItemProcessResultEnum Process(AutoTestRunContext ctx)
+        public override TestItemProcessResultEnum Process(TestRunContext ctx)
         {
             var f = Run();
             ctx.Vars[StoreVarName] = f.ToList();

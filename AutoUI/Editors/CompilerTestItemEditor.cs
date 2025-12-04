@@ -133,7 +133,7 @@ namespace AutoUI.TestItems.Editors
                        }*/
                     if (inst != null)
                     {
-                        var ctx = new AutoTestRunContext();
+                        var ctx = new TestRunContext();
                         inst.Run(ctx);
                         //MessageBox.Show(ctx.Vars["temp"] + "");
                         break;

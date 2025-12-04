@@ -9,7 +9,7 @@ namespace AutoUI.TestItems
     public class Iterator : AutoTestItem
     {
         public string Label { get; set; }
-        public override TestItemProcessResultEnum Process(AutoTestRunContext ctx)
+        public override TestItemProcessResultEnum Process(TestRunContext ctx)
         {
             var collection = ctx.Vars[CollectionVarName] as IList<PatternFindInfo>;
             if (collection.Count > 0)

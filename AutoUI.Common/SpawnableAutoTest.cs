@@ -57,10 +57,10 @@ namespace AutoUI.Common
         public CodeSection Main => Sections.FirstOrDefault(z => z.Role == CodeSectionRole.Main);
         public CodeSection Emitter => Sections.FirstOrDefault(z => z.Role == CodeSectionRole.Emitter);
 
-        public AutoTestRunContext lastContext;
+        public TestRunContext lastContext;
 
         public CodeSection CurrentCodeSection = null;
-        public AutoTestRunContext Run(AutoTestRunContext ctx = null)
+        public TestRunContext Run(TestRunContext ctx = null)
         {
             CurrentCodeSection = Main;
             if (UseEmitter)
@@ -76,7 +76,7 @@ namespace AutoUI.Common
 
 
             if (ctx == null)
-                ctx = new AutoTestRunContext(this);
+                ctx = new TestRunContext(this);
 
             if (!ctx.IsSubTest)
             {
@@ -123,14 +123,8 @@ namespace AutoUI.Common
 
             return ctx;
         }
-
-        public void Reset()
-        {
-           // if (UseEmitter)
-               // State = TestStateEnum.Emitter;
-        }
-
-
+                
+        
         CodeSection IAutoTest.CurrentCodeSection => CurrentCodeSection;
 
         internal void ParseXml(XElement titem)

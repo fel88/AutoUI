@@ -7,7 +7,7 @@ namespace AutoUI.TestItems
     [XmlParse(XmlKey = "processTerminate")]
     public class ProcessTerminateTestItem : AutoTestItem
     {
-        public override TestItemProcessResultEnum Process(AutoTestRunContext ctx)
+        public override TestItemProcessResultEnum Process(TestRunContext ctx)
         {
             var p = System.Diagnostics.Process.GetProcessById((int)ctx.Vars[RegisterKey]);
             p.Kill(true);            

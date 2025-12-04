@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Design;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -9,6 +10,7 @@ using System.Net.Sockets;
 using System.Security.Cryptography;
 using System.Text;
 using System.Xml.Linq;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 
 namespace AutoUI.Server
 {
@@ -21,6 +23,7 @@ namespace AutoUI.Server
         }
 
         static TestSet CurrentSet;
+        static SetRunContext CurrentSetContext;
         static IAutoTest CurrentTest;
 
         public void ThreadProcessor(NetworkStream stream, object obj)
@@ -44,6 +47,10 @@ namespace AutoUI.Server
                         using MemoryStream ms = new MemoryStream(bs64);
 
                         CurrentSet = TestSet.LoadFromAZipStream(ms);
+
+                        CurrentSetContext = new SetRunContext(CurrentSet);
+                        
+
                         Console.WriteLine($"{DateTime.Now.ToShortDateString()} {DateTime.Now.ToLongTimeString()} [TEST_SET_AZIP] recieved");
                         wrt2.WriteLine($"OK");
                         wrt2.Flush();
@@ -58,7 +65,31 @@ namespace AutoUI.Server
                         var doc = XDocument.Parse(str);
 
                         CurrentSet = new TestSet(doc.Root);
+
+                        CurrentSetContext = new SetRunContext(CurrentSet);
+                        
+
                         Console.WriteLine($"{DateTime.Now.ToShortDateString()} {DateTime.Now.ToLongTimeString()} [TEST_SET] recieved");
+                        wrt2.WriteLine($"OK");
+                        wrt2.Flush();
+                    }
+                    else if (line.StartsWith("FINISH_TEST_SET"))
+                    {
+                        var ln = line.Substring("FINISH_TEST_SET".Length + 1);
+                                              
+                        Compiler.CompileAndGetInstance<ISetRun>(CurrentSet.FinalizerScript)?.Run(CurrentSetContext);
+
+                        Console.WriteLine($"{DateTime.Now.ToShortDateString()} {DateTime.Now.ToLongTimeString()} [FINISH_TEST_SET] recieved");
+                        wrt2.WriteLine($"OK");
+                        wrt2.Flush();
+                    }
+                    else if (line.StartsWith("START_TEST_SET"))
+                    {
+                        var ln = line.Substring("START_TEST_SET".Length + 1);
+
+                        Compiler.CompileAndGetInstance<ISetRun>(CurrentSet.StartupScript)?.Run(CurrentSetContext);
+
+                        Console.WriteLine($"{DateTime.Now.ToShortDateString()} {DateTime.Now.ToLongTimeString()} [START_TEST_SET] recieved");
                         wrt2.WriteLine($"OK");
                         wrt2.Flush();
                     }
@@ -83,7 +114,7 @@ namespace AutoUI.Server
                         var ln = line.Substring("TEST_ITEM".Length + 1);
                         var testIdx = int.Parse(ln);
                         var subTest = CurrentTest.CurrentCodeSection.Items[testIdx];
-                        var ctx = new AutoTestRunContext(CurrentTest);
+                        var ctx = new TestRunContext(CurrentTest);
                         var result = subTest.Process(ctx);
 
                         Console.WriteLine($"{DateTime.Now.ToLongTimeString()} RESULT={result}");
@@ -125,8 +156,6 @@ namespace AutoUI.Server
                         Console.WriteLine($"{DateTime.Now.ToShortDateString()} {DateTime.Now.ToLongTimeString()} [RUN_TEST #{testIdx}] starting...");
                         try
                         {
-
-                            item.Reset();
                             var res = item.Run();
                             int cc = 0;
                             foreach (var sub in res.SubTests)

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AutoUI.Common;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -20,6 +21,12 @@ namespace AutoUI.Editors
             elementHost.Dock = DockStyle.Fill;
             elementHost.Child = Editor = new CodeEditor.CodeEditor();
             panel1.Controls.Add(elementHost);
+            Editor.TextEditor.TextChanged += TextEditor_TextChanged;
+        }
+
+        private void TextEditor_TextChanged(object sender, EventArgs e)
+        {
+            TextChanged?.Invoke();
         }
 
         public void Init(string text)
@@ -29,9 +36,15 @@ namespace AutoUI.Editors
         public CodeEditor.CodeEditor Editor;
 
         public event Action Save;
+        public event Action TextChanged;
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
             Save?.Invoke();
+        }
+
+        private void defaultITestRunToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Editor.Text = DefaultScripts.DefaultTestSetScript;
         }
     }
 }

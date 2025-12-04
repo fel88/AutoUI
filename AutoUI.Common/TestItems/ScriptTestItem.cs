@@ -15,23 +15,7 @@ namespace AutoUI.Common.TestItems
 
         }
         public bool FailedOnException { get; set; } = true;
-        public string Program = @"using System;
-using System.IO;
-using AutoUI.Common;
-using System.Linq;
-using AutoUI.Common;
-using System.Windows.Forms;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Threading.Tasks;
-using OBSWebsocketDotNet;
-
-class Program : IRun
-{
-    public void Run(AutoTestRunContext ctx)
-    {
-    }
-}";
+        public string Program = DefaultScripts.DefaultTestScript;
 
         public RoslynCompilerResults Compile()
         {
@@ -46,7 +30,7 @@ class Program : IRun
         IRun Generator = null;
         string LastGeneratedProgramHash;
 
-        private TestItemProcessResultEnum Run(IRun generator, AutoTestRunContext ctx)
+        private TestItemProcessResultEnum Run(IRun generator, TestRunContext ctx)
         {
             if (FailedOnException)
             {
@@ -65,7 +49,7 @@ class Program : IRun
             return TestItemProcessResultEnum.Success;
 
         }
-        public override TestItemProcessResultEnum Process(AutoTestRunContext ctx)
+        public override TestItemProcessResultEnum Process(TestRunContext ctx)
         {
             var hash1 = Program.MD5Hash();
             if (Generator != null && hash1 == LastGeneratedProgramHash)

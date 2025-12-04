@@ -2,6 +2,6 @@
 {
     public interface IRun
     {
-        void Run(AutoTestRunContext ctx);
+        void Run(TestRunContext ctx);
     }
 }

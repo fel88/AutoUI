@@ -75,7 +75,11 @@ namespace AutoUI.Queue
                         toRun.Status = RunStatus.InProgress;
                         ctx.SaveChanges();
                         try
-                        {
+                        {                            
+                            await wr.WriteLineAsync($"START_TEST_SET");
+                            await wr.FlushAsync();
+                            await rdr.ReadLineAsync();
+
                             RunStatus status = RunStatus.NotStarted;
                             for (int i = 0; i < set.Tests.Count; i++)
                             {
@@ -87,6 +91,10 @@ namespace AutoUI.Queue
                             }
                             toRun.Status = status;
                             ctx.SaveChanges();
+                                                        
+                            await wr.WriteLineAsync($"FINISH_TEST_SET");
+                            await wr.FlushAsync();
+                            await rdr.ReadLineAsync();
 
                             Console.ForegroundColor = ConsoleColor.Green;
                             Console.WriteLine($"Run succeed #{toRun.Id}");

@@ -563,6 +563,16 @@ namespace AutoUI.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap script_binary1 {
+            get {
+                object obj = ResourceManager.GetObject("script-binary1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap spectrum {
             get {
                 object obj = ResourceManager.GetObject("spectrum", resourceCulture);

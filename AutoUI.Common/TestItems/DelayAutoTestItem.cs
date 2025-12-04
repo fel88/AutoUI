@@ -9,7 +9,7 @@ namespace AutoUI.TestItems
     public class DelayAutoTestItem : AutoTestItem
     {
         public int Delay { get; set; }
-        public override TestItemProcessResultEnum Process(AutoTestRunContext ctx)
+        public override TestItemProcessResultEnum Process(TestRunContext ctx)
         {
             Thread.Sleep(Delay);
             return TestItemProcessResultEnum.Success;

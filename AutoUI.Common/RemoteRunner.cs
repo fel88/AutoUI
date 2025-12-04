@@ -5,7 +5,7 @@ namespace AutoUI.Common
 {
     public class RemoteRunner
     {
-        public static async Task<AutoTestRunContext> RunRemotely(StreamWriter wr,
+        public static async Task<TestRunContext> RunRemotely(StreamWriter wr,
             StreamReader rdr,
             int testIdx,
             string testParams = null)
@@ -17,7 +17,7 @@ namespace AutoUI.Common
             var spl = res.Split(new[] { "RESULT", "=" }, StringSplitOptions.RemoveEmptyEntries).ToArray();
 
             //var tt = Enum.Parse<TestStateEnum>(spl[0]);
-            return new AutoTestRunContext(XDocument.Parse(Encoding.UTF8.GetString(Convert.FromBase64String(spl[0]))));
+            return new TestRunContext(XDocument.Parse(Encoding.UTF8.GetString(Convert.FromBase64String(spl[0]))));
         }
     }
 }

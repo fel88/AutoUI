@@ -5,6 +5,7 @@ using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
+using System.Reflection.Emit;
 
 namespace AutoUI.Common
 {
@@ -23,10 +24,10 @@ namespace AutoUI.Common
             assembliesToBind.Add("System.Windows.Forms.dll");
             assembliesToBind.Add("System.ComponentModel.Primitives.dll");
             assembliesToBind.Add("netstandard.dll");
-            
+
             assembliesToBind.Add(Assembly.GetAssembly(typeof(System.Dynamic.DynamicObject)).FullName);
             assembliesToBind.Add(Assembly.GetAssembly(typeof(System.Attribute)).FullName);
-            assembliesToBind.Add(Assembly.GetAssembly(typeof(AutoTestRunContext)).FullName);
+            assembliesToBind.Add(Assembly.GetAssembly(typeof(TestRunContext)).FullName);
             assembliesToBind.Add(Assembly.GetAssembly(typeof(Task)).FullName);
             assembliesToBind.Add(Assembly.GetAssembly(typeof(Process)).FullName);
             assembliesToBind.Add(Assembly.GetAssembly(typeof(ProcessStartInfo)).FullName);
@@ -67,6 +68,49 @@ namespace AutoUI.Common
                 options);
             bool debug = true;
             return new RoslynCompilerResults(compilation, debug);
+        }
+
+        public static Dictionary<string, object> CompileCache = new Dictionary<string, object>();
+        public static T CompileAndGetInstance<T>(string program, bool nullOnFailed = true)
+        {
+            if (string.IsNullOrEmpty(program))
+                return default;
+
+            if (CompileCache.ContainsKey(program))
+                return (T)CompileCache[program];
+
+            try
+            {
+                var results = Compile(program);
+
+                foreach (var item in results.Errors)
+                {
+                    throw new Exception(item.Text);
+                }
+
+                Assembly asm = results.Assembly;
+
+                Type[] allTypes = asm.GetTypes();
+
+                foreach (Type t in allTypes.Take(1))
+                {
+                    var inst = (T)Activator.CreateInstance(t);
+
+
+                    if (inst == null)
+                        return default;
+
+                    CompileCache.Add(program, inst);
+                    return inst;
+                }
+                return default;
+            }
+            catch (Exception ex)
+            {
+                if (!nullOnFailed)
+                    throw ex;
+            }
+            return default;
         }
 
         private static Assembly TryGetAssemblyFromGAC(string path)

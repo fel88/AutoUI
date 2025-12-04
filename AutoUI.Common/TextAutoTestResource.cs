@@ -9,6 +9,21 @@ namespace AutoUI.Common
     {
         public string Text;
 
+        public TextAutoTestResource()
+        {
+        }
+
+        public TextAutoTestResource(XElement item)
+        {
+            Name = item.Attribute("name").Value;
+            Path = item.Element("path").Value;
+            ResourceLoadType = Enum.Parse<ResourceLoadTypeEnum>(item.Attribute("location").Value);
+            if (ResourceLoadType == ResourceLoadTypeEnum.Internal)
+            {
+                Text = item.Value;
+            }
+        }
+
         public override void LoadData(Stream stream)
         {
             using var reader = new StreamReader(stream, Encoding.UTF8);
@@ -31,6 +46,10 @@ namespace AutoUI.Common
             ret.Add(new XAttribute("type", "text"));
             ret.Add(new XAttribute("location", ResourceLoadType));
             ret.Add(new XElement("path", new XCData(Path)));
+
+            if (ResourceLoadType == ResourceLoadTypeEnum.Internal)           
+                ret.SetValue(new XCData(Text));
+            
             return ret;
         }
     }

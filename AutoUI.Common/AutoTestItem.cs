@@ -12,7 +12,7 @@ namespace AutoUI.Common
 
         public int Id { get; private set; }
         public string Name { get; set; }
-        public abstract TestItemProcessResultEnum Process(AutoTestRunContext ctx);
+        public abstract TestItemProcessResultEnum Process(TestRunContext ctx);
         public virtual void ParseXml(IAutoTest parent, XElement item)
         {
             Parent = parent;

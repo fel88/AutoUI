@@ -5,18 +5,19 @@ using System.Xml.Linq;
 
 namespace AutoUI.Common
 {
-    public class AutoTestRunContext
+    public class TestRunContext
     {
-        public AutoTestRunContext()
+        public TestRunContext()
         {
 
         }
-        public AutoTestRunContext(IAutoTest test)
+        public TestRunContext(IAutoTest test)
         {
             Test = test;
         }
 
-        public AutoTestRunContext(XDocument xDocument)
+        
+        public TestRunContext(XDocument xDocument)
         {
             State = Enum.Parse<TestStateEnum>(xDocument.Element("state").Value);
             CodePointer = int.Parse(xDocument.Element("codePointer").Value);
@@ -119,3 +120,4 @@ namespace AutoUI.Common
         }
     }
 }
+

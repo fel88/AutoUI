@@ -9,7 +9,7 @@ namespace AutoUI.TestItems
     public class JumpFsmStateItem : AutoTestItem
     {
         public CodeSection Target { get; set; }
-        public override TestItemProcessResultEnum Process(AutoTestRunContext ctx)
+        public override TestItemProcessResultEnum Process(TestRunContext ctx)
         {
             ((SpawnableAutoTest)ctx.Test).CurrentCodeSection = Target;
             ctx.CodePointer = 0;

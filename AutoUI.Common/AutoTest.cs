@@ -22,7 +22,7 @@ namespace AutoUI.Common
                 }
             }
 
-            Name = titem.Attribute("name").Value;            
+            Name = titem.Attribute("name").Value;
 
             if (titem.Attribute("failedAction") != null)
                 FailedAction = Enum.Parse<TestFailedBehaviour>(titem.Attribute("failedAction").Value);
@@ -49,14 +49,16 @@ namespace AutoUI.Common
 
         public CodeSection Code = new CodeSection();
 
+        public TestRunContext lastContext;
 
-        public AutoTestRunContext lastContext;
+        
 
-
-        public AutoTestRunContext Run(AutoTestRunContext ctx = null)
+        public TestRunContext Run(TestRunContext ctx = null)
         {
             if (ctx == null)
-                ctx = new AutoTestRunContext(this);
+                ctx = new TestRunContext(this);
+                        
+            Compiler.CompileAndGetInstance<IRun>(Parent.BeforeTestScript)?.Run(ctx);
 
             if (!ctx.IsSubTest)
             {
@@ -101,16 +103,17 @@ namespace AutoUI.Common
             if (ctx.WrongState == null)
                 ctx.State = TestStateEnum.Success;
 
+            Compiler.CompileAndGetInstance<IRun>(Parent.AfterTestScript)?.Run(ctx);
 
             return ctx;
         }
 
         public CodeSection CurrentCodeSection { get => Code; }
 
-        public IAutoTest Clone()        
-        {            
+        public IAutoTest Clone()
+        {
             var xml = ToXml();
-            var clone = new AutoTest(Parent,xml);            
+            var clone = new AutoTest(Parent, xml);
 
             return clone;
         }
@@ -135,9 +138,6 @@ namespace AutoUI.Common
             return XElement.Parse(sb.ToString());
         }
 
-        public void Reset()
-        {
 
-        }
     }
 }
