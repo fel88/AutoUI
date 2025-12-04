@@ -17,6 +17,9 @@
 		<PackageReference Include="Dagre.NET" Version="1.0.0.6" />
 	</ItemGroup>
 	<ItemGroup>
+		<Compile Update="Editors\ScriptTextEditor.cs">
+		  <SubType>Form</SubType>
+		</Compile>
 		<Compile Update="SimpleTestEditor.cs">
 			<SubType>Form</SubType>
 		</Compile>

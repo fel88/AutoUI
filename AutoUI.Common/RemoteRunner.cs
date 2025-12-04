@@ -13,11 +13,11 @@ namespace AutoUI.Common
             await wr.WriteLineAsync($"RUN_TEST={testIdx};{testParams ?? string.Empty}");
             await wr.FlushAsync();
             var res = await rdr.ReadLineAsync();
-
-            var spl = res.Split(new[] { "RESULT", "=" }, StringSplitOptions.RemoveEmptyEntries).ToArray();
+            
+            var sub = res.Substring("RESULT=".Length);
 
             //var tt = Enum.Parse<TestStateEnum>(spl[0]);
-            return new TestRunContext(XDocument.Parse(Encoding.UTF8.GetString(Convert.FromBase64String(spl[0]))));
+            return new TestRunContext(XDocument.Parse(Encoding.UTF8.GetString(Convert.FromBase64String(sub))));
         }
     }
 }

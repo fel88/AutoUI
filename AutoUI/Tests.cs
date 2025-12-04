@@ -53,13 +53,13 @@ namespace AutoUI
             SaveFileDialog sfd = new SaveFileDialog();
             sfd.Filter = "Auto UI zip (azip files)|*.azip|Auto UI (axml files)|*.axml";
             if (sfd.ShowDialog() != DialogResult.OK)
-                return;         
+                return;
 
             if (sfd.FileName.ToLower().EndsWith(".azip"))
             {
                 using (var compressedFileStream = new MemoryStream())
                 {
-                    set.ToStream(compressedFileStream);                                       
+                    set.ToStream(compressedFileStream);
                     File.WriteAllBytes(sfd.FileName, compressedFileStream.ToArray());
                 }
             }
@@ -157,7 +157,7 @@ namespace AutoUI
 
         private void toolStripButton4_Click(object sender, EventArgs e)
         {
-            RunLocal(set.Tests.ToArray());           
+            RunLocal(set.Tests.ToArray());
         }
 
         public SetRunContext RunLocal(IAutoTest[] tests)
@@ -452,7 +452,7 @@ namespace AutoUI
         }
         private async void toolStripButton1_Click_1(object sender, EventArgs e)
         {
-            RunRemotely(set.Tests.ToArray());            
+            RunRemotely(set.Tests.ToArray());
         }
 
         private void somplToolStripMenuItem_Click(object sender, EventArgs e)
@@ -487,10 +487,10 @@ namespace AutoUI
 
             List<IAutoTest> tests = new();
 
-            for (int i = 0; i < listView1.SelectedItems.Count; i++)            
-                tests.Add(listView1.SelectedItems[i].Tag as IAutoTest);            
+            for (int i = 0; i < listView1.SelectedItems.Count; i++)
+                tests.Add(listView1.SelectedItems[i].Tag as IAutoTest);
 
-            RunLocal(tests.ToArray());  
+            RunLocal(tests.ToArray());
         }
 
         private void remotelyToolStripMenuItem_Click(object sender, EventArgs e)
@@ -505,7 +505,7 @@ namespace AutoUI
                 tests.Add(t);
             }
 
-            RunRemotely(tests.ToArray());            
+            RunRemotely(tests.ToArray());
         }
 
         private void toolStripButton5_Click(object sender, EventArgs e)
@@ -517,7 +517,7 @@ namespace AutoUI
 
         private void setupCodeToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            TextEditor ted = new TextEditor();
+            ScriptTextEditor ted = new();
             ted.TextChanged += () =>
             {
                 set.StartupScript = ted.Editor.Text;
@@ -529,7 +529,7 @@ namespace AutoUI
 
         private void beforeEachTestToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            TextEditor ted = new TextEditor();
+            ScriptTextEditor ted = new();
             ted.TextChanged += () =>
             {
                 set.BeforeTestScript = ted.Editor.Text;
@@ -541,7 +541,7 @@ namespace AutoUI
 
         private void afterEachTestToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            TextEditor ted = new TextEditor();
+            ScriptTextEditor ted = new();
             ted.TextChanged += () =>
             {
                 set.AfterTestScript = ted.Editor.Text;
@@ -553,7 +553,7 @@ namespace AutoUI
 
         private void finalizerToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            TextEditor ted = new TextEditor();
+            ScriptTextEditor ted = new();
             ted.TextChanged += () =>
             {
                 set.FinalizerScript = ted.Editor.Text;
