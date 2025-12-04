@@ -75,7 +75,7 @@ namespace AutoUI.Queue
                         toRun.Status = RunStatus.InProgress;
                         ctx.SaveChanges();
                         try
-                        {                            
+                        {
                             await wr.WriteLineAsync($"START_TEST_SET");
                             await wr.FlushAsync();
                             await rdr.ReadLineAsync();
@@ -86,12 +86,12 @@ namespace AutoUI.Queue
                                 var test = set.Tests[i];
                                 var testIdx = i;
                                 status = await MakeRun(i, set, toRun, wr, rdr);
-                                if (status != RunStatus.Succeed)                                
-                                    break;                                
+                                if (status != RunStatus.Succeed)
+                                    break;
                             }
                             toRun.Status = status;
                             ctx.SaveChanges();
-                                                        
+
                             await wr.WriteLineAsync($"FINISH_TEST_SET");
                             await wr.FlushAsync();
                             await rdr.ReadLineAsync();
@@ -149,18 +149,19 @@ namespace AutoUI.Queue
 
             tri.Duration = (int)sw.ElapsedMilliseconds;
             tri.Timestamp = DateTime.UtcNow;
-            if (ret.State == TestStateEnum.Failed)
+            try
             {
                 tri.XmlOutput = ret.ToXml().ToString();
-                tri.Status = RunStatus.Failed;
-                ctx.SaveChanges();
-                return RunStatus.Failed;
+            }
+            catch (Exception ex)
+            {
+
             }
 
-            tri.Status = RunStatus.Succeed;
+            tri.Status = ret.State == TestStateEnum.Failed ? RunStatus.Failed : RunStatus.Succeed;
             ctx.SaveChanges();
 
-            return RunStatus.Succeed;
+            return tri.Status;
         }
     }
 }

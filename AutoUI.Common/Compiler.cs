@@ -33,30 +33,36 @@ namespace AutoUI.Common
             assembliesToBind.Add(Assembly.GetAssembly(typeof(ProcessStartInfo)).FullName);
             assembliesToBind.Add(Assembly.GetAssembly(typeof(IRun)).FullName);
             assembliesToBind.Add(Assembly.GetAssembly(typeof(OBSWebsocket)).FullName);
+            assembliesToBind.Add(Assembly.GetAssembly(typeof(Form)).FullName);
 
             foreach (var item in assembliesToBind)
             {
-                if (File.Exists(item))
+                try
                 {
-                    References.Add(MetadataReference.CreateFromFile(item));
+                    if (File.Exists(item))
+                    {
+                        References.Add(MetadataReference.CreateFromFile(item));
+                    }
+                    else
+                    {
+                        Assembly assm = null;
+                        try
+                        {
+                            assm = Assembly.Load(item);
+                        }
+                        catch (Exception ex)
+                        {
+
+                        }
+                        if (assm == null)
+                        {
+                            assm = TryGetAssemblyFromGAC(item);
+                        }
+                        References.Add(MetadataReference.CreateFromFile(assm.Location));
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    Assembly assm = null;
-                    try
-                    {
-                        assm = Assembly.Load(item);
-                    }
-                    catch (Exception ex)
-                    {
-
-                    }
-                    if (assm == null)
-                    {
-                        assm = TryGetAssemblyFromGAC(item);
-                    }
-                    References.Add(MetadataReference.CreateFromFile(assm.Location));
-
                 }
             }
 

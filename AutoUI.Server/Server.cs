@@ -74,9 +74,7 @@ namespace AutoUI.Server
                         wrt2.Flush();
                     }
                     else if (line.StartsWith("FINISH_TEST_SET"))
-                    {
-                        var ln = line.Substring("FINISH_TEST_SET".Length + 1);
-                                              
+                    {              
                         Compiler.CompileAndGetInstance<ISetRun>(CurrentSet.FinalizerScript)?.Run(CurrentSetContext);
 
                         Console.WriteLine($"{DateTime.Now.ToShortDateString()} {DateTime.Now.ToLongTimeString()} [FINISH_TEST_SET] recieved");
@@ -84,9 +82,7 @@ namespace AutoUI.Server
                         wrt2.Flush();
                     }
                     else if (line.StartsWith("START_TEST_SET"))
-                    {
-                        var ln = line.Substring("START_TEST_SET".Length + 1);
-
+                    {                        
                         Compiler.CompileAndGetInstance<ISetRun>(CurrentSet.StartupScript)?.Run(CurrentSetContext);
 
                         Console.WriteLine($"{DateTime.Now.ToShortDateString()} {DateTime.Now.ToLongTimeString()} [START_TEST_SET] recieved");

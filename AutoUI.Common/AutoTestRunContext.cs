@@ -16,15 +16,21 @@ namespace AutoUI.Common
             Test = test;
         }
 
-        
-        public TestRunContext(XDocument xDocument)
+
+        public TestRunContext(XDocument xDocument) : this(xDocument.Root)
         {
-            State = Enum.Parse<TestStateEnum>(xDocument.Element("state").Value);
-            CodePointer = int.Parse(xDocument.Element("codePointer").Value);
-            foreach (var item in xDocument.Element("stringRegisters").Elements())
-            {
-                StringRegisters.Add(item.Attribute("key").Value, item.Value);
-            }
+
+        }
+
+        public TestRunContext(XElement root)
+        {
+            State = Enum.Parse<TestStateEnum>(root.Element("state").Value);
+            CodePointer = int.Parse(root.Element("codePointer").Value);
+            if (root.Element("stringRegisters") != null)
+                foreach (var item in root.Element("stringRegisters").Elements())
+                {
+                    StringRegisters.Add(item.Attribute("key").Value, item.Value);
+                }
         }
 
         public XElement ToXml()
@@ -39,6 +45,7 @@ namespace AutoUI.Common
                 t.Add(new XAttribute("key", item.Key));
                 srNode.Add(t);
             }
+            element.Add(srNode);
             return element;
         }
 
