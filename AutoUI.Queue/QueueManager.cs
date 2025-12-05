@@ -76,7 +76,16 @@ namespace AutoUI.Queue
                         ctx.SaveChanges();
                         try
                         {
-                            await wr.WriteLineAsync($"START_TEST_SET");
+                            StringBuilder sb = new StringBuilder();
+                            var doc2 = XDocument.Parse(toRun.Xml);
+                            foreach (var pitem in doc2.Descendants("param"))
+                            {
+                                sb.Append(pitem.Attribute("name").Value);
+                                sb.Append("=");
+                                sb.Append($"{pitem.Value} ");
+                            }
+
+                            await wr.WriteLineAsync($"START_TEST_SET={sb.ToString()}");
                             await wr.FlushAsync();
                             await rdr.ReadLineAsync();
 
@@ -134,17 +143,9 @@ namespace AutoUI.Queue
             tri.Status = RunStatus.InProgress;
             toRun.Tests.Add(tri);
             ctx.SaveChanges();
-            StringBuilder sb = new StringBuilder();
-            var doc = XDocument.Parse(toRun.Xml);
-            foreach (var pitem in doc.Descendants("param"))
-            {
-                sb.Append(pitem.Attribute("name").Value);
-                sb.Append("=");
-                sb.Append($"{pitem.Value} ");
-            }
-
+            
             Stopwatch sw = Stopwatch.StartNew();
-            var ret = await RemoteRunner.RunRemotely(wr, rdr, testIdx, sb.ToString());
+            var ret = await RemoteRunner.RunRemotely(wr, rdr, testIdx);
             sw.Stop();
 
             tri.Duration = (int)sw.ElapsedMilliseconds;

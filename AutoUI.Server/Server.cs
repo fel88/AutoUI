@@ -49,7 +49,7 @@ namespace AutoUI.Server
                         CurrentSet = TestSet.LoadFromAZipStream(ms);
 
                         CurrentSetContext = new SetRunContext(CurrentSet);
-                        
+
 
                         Console.WriteLine($"{DateTime.Now.ToShortDateString()} {DateTime.Now.ToLongTimeString()} [TEST_SET_AZIP] recieved");
                         wrt2.WriteLine($"OK");
@@ -67,14 +67,14 @@ namespace AutoUI.Server
                         CurrentSet = new TestSet(doc.Root);
 
                         CurrentSetContext = new SetRunContext(CurrentSet);
-                        
+
 
                         Console.WriteLine($"{DateTime.Now.ToShortDateString()} {DateTime.Now.ToLongTimeString()} [TEST_SET] recieved");
                         wrt2.WriteLine($"OK");
                         wrt2.Flush();
                     }
                     else if (line.StartsWith("FINISH_TEST_SET"))
-                    {              
+                    {
                         Compiler.CompileAndGetInstance<ISetRun>(CurrentSet.FinalizerScript)?.Run(CurrentSetContext);
 
                         Console.WriteLine($"{DateTime.Now.ToShortDateString()} {DateTime.Now.ToLongTimeString()} [FINISH_TEST_SET] recieved");
@@ -82,7 +82,22 @@ namespace AutoUI.Server
                         wrt2.Flush();
                     }
                     else if (line.StartsWith("START_TEST_SET"))
-                    {                        
+                    {
+                        var ln = line.Substring("START_TEST_SET".Length + 1);
+                        var spl = ln.Split(new[] { ";" }, StringSplitOptions.RemoveEmptyEntries);
+
+                        if (spl.Any())
+                        {
+                            var testParams = spl[0];
+                            var pp = testParams.Split(" ", StringSplitOptions.RemoveEmptyEntries).ToArray();
+
+                            foreach (var p in pp)
+                            {
+                                var spl1 = p.Split(new[] { "=" }, StringSplitOptions.RemoveEmptyEntries);
+                                CurrentSet.Vars[spl1[0]] = spl1[1];
+                            }
+                        }
+
                         Compiler.CompileAndGetInstance<ISetRun>(CurrentSet.StartupScript)?.Run(CurrentSetContext);
 
                         Console.WriteLine($"{DateTime.Now.ToShortDateString()} {DateTime.Now.ToLongTimeString()} [START_TEST_SET] recieved");
@@ -136,18 +151,7 @@ namespace AutoUI.Server
                         var testIdx = int.Parse(spl[0]);
 
                         var item = CurrentSet.Tests[testIdx];
-                        if (spl.Length > 1)
-                        {
-                            var testParams = spl[1];
-                            var pp = testParams.Split(" ", StringSplitOptions.RemoveEmptyEntries).ToArray();
 
-
-                            foreach (var p in pp)
-                            {
-                                var spl1 = ln.Split(new[] { "=" }, StringSplitOptions.RemoveEmptyEntries);
-                                item.Data[spl1[0]] = spl1[1];
-                            }
-                        }
 
                         Console.WriteLine($"{DateTime.Now.ToShortDateString()} {DateTime.Now.ToLongTimeString()} [RUN_TEST #{testIdx}] starting...");
                         try

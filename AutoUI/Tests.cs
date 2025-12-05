@@ -428,7 +428,7 @@ namespace AutoUI
                 await wr.FlushAsync();
                 var res = await rdr.ReadLineAsync();
 
-                await wr.WriteLineAsync($"START_TEST_SET");
+                await wr.WriteLineAsync($"START_TEST_SET=");
                 await wr.FlushAsync();
                 await rdr.ReadLineAsync();
 

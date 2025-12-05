@@ -7,13 +7,12 @@ namespace AutoUI.Common
     {
         public static async Task<TestRunContext> RunRemotely(StreamWriter wr,
             StreamReader rdr,
-            int testIdx,
-            string testParams = null)
+            int testIdx)
         {
-            await wr.WriteLineAsync($"RUN_TEST={testIdx};{testParams ?? string.Empty}");
+            await wr.WriteLineAsync($"RUN_TEST={testIdx}");
             await wr.FlushAsync();
             var res = await rdr.ReadLineAsync();
-            
+
             var sub = res.Substring("RESULT=".Length);
 
             //var tt = Enum.Parse<TestStateEnum>(spl[0]);
