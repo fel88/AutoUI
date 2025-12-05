@@ -510,8 +510,8 @@ namespace AutoUI
 
         private void toolStripButton5_Click(object sender, EventArgs e)
         {
-            VariablesEditor ved = new VariablesEditor();
-            ved.Init(set);
+            StringsListEditor ved = new StringsListEditor();
+            ved.Init(set.Vars);
             ved.Show();
         }
 

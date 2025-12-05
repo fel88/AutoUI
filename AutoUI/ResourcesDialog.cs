@@ -46,7 +46,12 @@ namespace AutoUI
             listView1.Items.Clear();
             foreach (var item in Set.Resources)
             {
-                listView1.Items.Add(new ListViewItem(new string[] { item.Name, item.GetType().Name, item.ResourceLoadType.ToString(), item.Path })
+                listView1.Items.Add(new ListViewItem([
+                    item.Name,
+                    item.GetType().Name,
+                    item.ResourceLoadType.ToString(), 
+                    item.Path,                    
+                ])
                 {
                     Tag = item
                 });
@@ -96,6 +101,7 @@ namespace AutoUI
             d.AddStringField("name", "Name", item.Name);
             d.AddStringField("path", "Path", item.Path);
             d.AddOptionsField("location", "Location", Enum.GetNames<ResourceLoadTypeEnum>(), item.ResourceLoadType.ToString());
+            d.AddOptionsField("internalStorageMode", "Internal storage mode", Enum.GetNames<InternalResourceStorageModeEnum>(), item.InternalStorageMode.ToString());
 
             if (!d.ShowDialog())
                 return;
@@ -103,6 +109,7 @@ namespace AutoUI
             item.Name = d.GetStringField("name");
             item.Path = d.GetStringField("path");
             item.ResourceLoadType = Enum.Parse<ResourceLoadTypeEnum>(d.GetOptionsField("location"));
+            item.InternalStorageMode = Enum.Parse<InternalResourceStorageModeEnum>(d.GetOptionsField("internalStorageMode"));
             UpdateList();
         }
     }

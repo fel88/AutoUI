@@ -1,14 +1,6 @@
-﻿using AutoUI.Common;
-using AutoUI.TestItems;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace AutoUI
@@ -28,20 +20,10 @@ namespace AutoUI
             d.AddStringField("key", "Key", "new_key");
             d.AddStringField("value", "Value", "");
 
-            if (d.ShowDialog())
-            {
-                if (listView3.Tag is AutoTest test)
-                {
-                    test.Data.Add(d.GetStringField("key"), d.GetStringField("value"));
-                }
-                else
-                if (listView3.Tag is TestSet set)
-                {
-                    set.Vars.Add(d.GetStringField("key"), d.GetStringField("value"));
-                }                
-            }
+            if (!d.ShowDialog())
+                return;
 
-            //update lv3
+            Dictionary.Add(d.GetStringField("key"), d.GetStringField("value"));            
             UpdateKeyValueList();
         }
 
@@ -103,7 +85,7 @@ namespace AutoUI
             if (!d.ShowDialog() || !IsEditable)
                 return;
 
-            Dictionary[pair.Key]= d.GetStringField("value");
+            Dictionary[pair.Key] = d.GetStringField("value");
             UpdateKeyValueList();
         }
 
