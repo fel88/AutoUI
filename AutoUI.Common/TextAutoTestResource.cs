@@ -16,7 +16,9 @@ namespace AutoUI.Common
             Name = item.Attribute("name").Value;
             Path = item.Element("path").Value;
             ResourceLoadType = Enum.Parse<ResourceLoadTypeEnum>(item.Attribute("location").Value);
-            InternalStorageMode = Enum.Parse<InternalResourceStorageModeEnum>(item.Attribute("internalStorageMode").Value);
+            if (item.Attribute("internalStorageMode") != null)
+                InternalStorageMode = Enum.Parse<InternalResourceStorageModeEnum>(item.Attribute("internalStorageMode").Value);
+
             if (ResourceLoadType == ResourceLoadTypeEnum.Internal)
             {
                 if (InternalStorageMode == InternalResourceStorageModeEnum.Text)
@@ -55,7 +57,7 @@ namespace AutoUI.Common
                 if (InternalStorageMode == InternalResourceStorageModeEnum.Text)
                     ret.Add(new XElement("data", new XCData(Text)));
                 else
-                    ret.Add(new XElement("data", new XCData(Convert.ToBase64String(Encoding.UTF8.GetBytes(Text)))));                
+                    ret.Add(new XElement("data", new XCData(Convert.ToBase64String(Encoding.UTF8.GetBytes(Text)))));
             }
 
             return ret;
