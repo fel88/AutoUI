@@ -1,0 +1,121 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <set>
+    <test id="0" name="new test1" failedAction="Ignore">
+      <vars></vars>
+      <section name="" role="FsmState">
+        <processRun storeRegister="True" registerKey="app1" checkFileExist="False" var="" runFromVar="False">
+          <exePath><![CDATA[notepad.exe]]></exePath>
+        </processRun>
+        <delay delay="500" />
+        <searchPattern patternId="10" preCheck="False" clickIfSucceed="False" mouseMoveIfSucceed="True" statusIfFailed="Failed" delayEnabled="False" delay="0"></searchPattern>
+        <cursorPos isRelative="True" cursorToFindItem="False" findItemVarName="" x="0" y="150" />
+        <keyboard name="KeyboardTestItem_2"><![CDATA[hello world!]]></keyboard>
+        <delay delay="333" />
+        <keyboard name="KeyboardTestItem_4"><![CDATA[^{a}]]></keyboard>
+        <delay delay="222" />
+        <keyboard name="KeyboardTestItem_6"><![CDATA[^{c}]]></keyboard>
+        <delay delay="222" />
+        <script name="ScriptTestItem_8" failedOnException="True"><![CDATA[using AutoUI.Common;
+using System.Windows.Forms;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System;
+
+class Program : IRun
+{
+    public void Run(TestRunContext ctx)
+    {
+        var text = TestRunContext.GetClipboardTextSafe().ToLower();
+        if (text != "hello world!")
+            throw new Exception();
+    }
+}]]></script>
+        <processTerminate registerKey="app1"></processTerminate>
+      </section>
+    </test>
+    <pool>
+      <pattern type="image" id="10" name="patternMatchingImage">
+        <item name="pm image item" mode="TemplateMatching" pixelsMode="Precise" pixelDist="15" pixelErrorRate="0">
+iVBORw0KGgoAAAANSUhEUgAAACEAAAAbCAYAAADyBeakAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAOvwAADr8BOAVTJAAAAiFJREFUSEvtkktPE2EUhtmwqT/LGEBuimhRrIiKiFcUqobE+CNcFLesTDABqoiCoNylBVpaWi5yUZiZdqZFkbJ//b5v+Bolh5zEhcakiyeZTCbv855zpiiXy+FfUyihKZTQ/D8lilufKfTzUe/+FLbEk5V9VPdFUNU7j8eJXSVsj31D2cswSrtDuDvvqHc3w2m0hFJkBgdboiO5J+Q/8HBxV8nbFnZwP5rFvUgGd+Yc3Jp15c0zFq5/MskMDrbEIyH3x7+jLXZYbqvpbxzIr00buDK5TWZwsCXk9A+iO/l/gOKYvxONE1toGP9KZnCwJVrF9PLut+fs31bfNG3i6tQ2Gidd+aWxL7g4uklmcLAlfr17fvVTcvVbuDwh5OOu/MLHDdSNrJMZHGwJdfeQRZ5B4/EH4B1ew9n3q2QGB1uiecYUqzfc1R/c3SdWXz+6gfMf1uEdWcO54c+oHVpFzeAymcHBltB3pzag8bQHcPrdMqoHkmQGB1uCurtXTC5Xf2ZoxZW/XULlQALl/YtkBgdbwje2iXoh16uX8lohl6s/JeRVYvqK/gROvo6j9FWMzOBgS0h53aG75+Vv3OnLhLwkuIATfVEyg4MtIeVq9YN69UlUarmYviQYU/LjPRF0hZfIDA62RDabRSaTgeM4Ctu2kU6nkUqlFJZlwTRNGIaBF099ZAYHW+J5hQed5Tzyu3gwQGZwsCX+BoUSmkIJlxx+AuOqoO3imFTbAAAAAElFTkSuQmCC
+</item>
+      </pattern>
+    </pool>
+    <resources></resources>
+    <scripts>
+      <script type="StartupScript"><![CDATA[using System;
+using System.IO;
+using AutoUI.Common;
+using System.Linq;
+using AutoUI.Common;
+using System.Windows.Forms;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Threading;
+using System.Threading.Tasks;
+using OBSWebsocketDotNet;
+
+class Program : ISetRun
+{
+    public void Run(SetRunContext set)
+    {
+    }
+}]]></script>
+      <script type="FinalizerScript"><![CDATA[using System;
+using System.IO;
+using AutoUI.Common;
+using System.Linq;
+using AutoUI.Common;
+using System.Windows.Forms;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Threading;
+using System.Threading.Tasks;
+using OBSWebsocketDotNet;
+
+class Program : ISetRun
+{
+    public void Run(SetRunContext set)
+    {
+    }
+}]]></script>
+      <script type="BeforeTestScript"><![CDATA[using System;
+using System.IO;
+using AutoUI.Common;
+using System.Linq;
+using AutoUI.Common;
+using System.Windows.Forms;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Threading;
+using System.Threading.Tasks;
+using OBSWebsocketDotNet;
+
+class Program : IRun
+{
+    public void Run(TestRunContext ctx)
+    {
+    }
+}]]></script>
+      <script type="AfterTestScript"><![CDATA[using System;
+using System.IO;
+using AutoUI.Common;
+using System.Linq;
+using AutoUI.Common;
+using System.Windows.Forms;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Threading;
+using System.Threading.Tasks;
+using OBSWebsocketDotNet;
+
+class Program : IRun
+{
+    public void Run(TestRunContext ctx)
+    {
+    }
+}]]></script>
+    </scripts>
+    <vars></vars>
+  </set>
+</root>
