@@ -4,6 +4,7 @@ using OBSWebsocketDotNet;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO.Compression;
 using System.Reflection;
 using System.Reflection.Emit;
 
@@ -34,7 +35,9 @@ namespace AutoUI.Common
             assembliesToBind.Add(Assembly.GetAssembly(typeof(IRun)).FullName);
             assembliesToBind.Add(Assembly.GetAssembly(typeof(OBSWebsocket)).FullName);
             assembliesToBind.Add(Assembly.GetAssembly(typeof(Form)).FullName);
-
+            assembliesToBind.Add(Assembly.GetAssembly(typeof(ZipFile)).FullName);
+            assembliesToBind.Add(Assembly.GetAssembly(typeof(ZipArchive)).FullName);
+            
             foreach (var item in assembliesToBind)
             {
                 try
