@@ -70,7 +70,7 @@ namespace AutoUI.Editors
         private void toolStripButton2_Click(object sender, EventArgs e)
         {
             try
-            {
+            {                
                 var results = Compiler.Compile(Editor.Text);
 
                 errorPanel.Visible = false;

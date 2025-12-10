@@ -7,7 +7,7 @@ using System.Linq;
 using System.Xml.Linq;
 
 namespace AutoUI.TestItems
-{    
+{
     [XmlParse(XmlKey = "waitPattern")]
     public class WaitPatternImage : AutoTestItem
     {
@@ -19,12 +19,16 @@ namespace AutoUI.TestItems
             if (item.Attribute("moveCursor") != null)
                 MoveCursorOnSuccessed = bool.Parse(item.Attribute("moveCursor").Value);
             if (item.Attribute("timeout") != null)
-                Timeout = int.Parse(item.Attribute("timeout").Value);                      
+                Timeout = int.Parse(item.Attribute("timeout").Value);
+
+            if (item.Attribute("statusIfTimeout") != null)
+                StatusIfTimeout = Enum.Parse<TestItemProcessResultEnum>(item.Attribute("statusIfTimeout").Value);
 
             var pns = pIds.Select(zz => parent.Parent.Pool.Patterns.First(z => z.Id == zz)).ToList();
             Patterns = pns;
             base.ParseXml(parent, item);
         }
+        public TestItemProcessResultEnum StatusIfTimeout { get; set; } = TestItemProcessResultEnum.Failed;
 
         public bool MoveCursorOnSuccessed { get; set; } = false;
         public int Timeout { get; set; } = 100 * 1000;
@@ -39,7 +43,7 @@ namespace AutoUI.TestItems
             {
                 if (start.Elapsed.TotalMilliseconds > Timeout)
                 {
-                    return TestItemProcessResultEnum.Failed;
+                    return StatusIfTimeout;
                 }
                 var screen = SearchByPatternImage.GetScreenshot();
                 Bitmap target = null;
@@ -75,7 +79,12 @@ namespace AutoUI.TestItems
 
         public override string ToXml()
         {
-            return $"<waitPattern name=\"{Name}\" patternIds=\"{string.Join(";", Patterns.Select(z => z.Id).ToArray())}\" timeout=\"{Timeout}\"  moveCursor=\"{MoveCursorOnSuccessed}\" ></waitPattern>";
+            return $"<waitPattern name=\"{Name}\" " +
+                $"patternIds=\"{string.Join(";", Patterns.Select(z => z.Id).ToArray())}\" " +
+                $"timeout=\"{Timeout}\"  " +
+                $"statusIfTimeout=\"{StatusIfTimeout}\" " +
+                $"moveCursor=\"{MoveCursorOnSuccessed}\" " +
+                $"></waitPattern>";
         }
 
         public bool Assert { get; set; }

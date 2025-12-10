@@ -12,7 +12,7 @@ namespace AutoUI.Common
 {
     public class Compiler
     {
-        public static RoslynCompilerResults Compile(string program)
+        public static RoslynCompilerResults Compile(string program, string[] assemblies = null)
         {
             List<MetadataReference> References = new List<MetadataReference>();
 
@@ -37,7 +37,10 @@ namespace AutoUI.Common
             assembliesToBind.Add(Assembly.GetAssembly(typeof(Form)).FullName);
             assembliesToBind.Add(Assembly.GetAssembly(typeof(ZipFile)).FullName);
             assembliesToBind.Add(Assembly.GetAssembly(typeof(ZipArchive)).FullName);
-            
+
+            if (assemblies != null)
+                assembliesToBind.AddRange(assemblies);
+
             foreach (var item in assembliesToBind)
             {
                 try

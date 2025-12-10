@@ -18,7 +18,7 @@ namespace AutoUI.Common.TestItems
         public string Program = DefaultScripts.DefaultTestScript;
 
         public RoslynCompilerResults Compile()
-        {
+        {            
             return Compiler.Compile(Program);
         }
 
