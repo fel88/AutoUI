@@ -407,12 +407,14 @@ namespace AutoUI
             var d = AutoDialog.DialogHelpers.StartDialog();
             d.AddStringField("ip", "IP", "127.0.0.1");
             d.AddIntegerNumericField("port", "Port", 8888, 100000, 10);
+            d.AddStringField("params", "Params");
 
             if (!d.ShowDialog())
                 return;
 
             var ip = d.GetStringField("ip");
             var port = d.GetIntegerNumericField("port");
+            var _params = d.GetStringField("params");
             var s1 = $"TEST_SET={Convert.ToBase64String(Encoding.Default.GetBytes(set.ToXml().ToString()))}";
 
             TestReport report = new TestReport();
@@ -428,7 +430,7 @@ namespace AutoUI
                 await wr.FlushAsync();
                 var res = await rdr.ReadLineAsync();
 
-                await wr.WriteLineAsync($"START_TEST_SET=");
+                await wr.WriteLineAsync($"START_TEST_SET={_params}");
                 await wr.FlushAsync();
                 await rdr.ReadLineAsync();
 

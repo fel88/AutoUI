@@ -86,16 +86,10 @@ namespace AutoUI.Server
                         var ln = line.Substring("START_TEST_SET".Length + 1);
                         var spl = ln.Split(new[] { ";" }, StringSplitOptions.RemoveEmptyEntries);
 
-                        if (spl.Any())
+                        foreach (var p in spl)
                         {
-                            var testParams = spl[0];
-                            var pp = testParams.Split(" ", StringSplitOptions.RemoveEmptyEntries).ToArray();
-
-                            foreach (var p in pp)
-                            {
-                                var spl1 = p.Split(new[] { "=" }, StringSplitOptions.RemoveEmptyEntries);
-                                CurrentSet.Vars[spl1[0]] = spl1[1];
-                            }
+                            var spl1 = p.Split(new[] { "=" }, StringSplitOptions.RemoveEmptyEntries);
+                            CurrentSet.Vars[spl1[0]] = spl1[1];
                         }
 
                         Compiler.CompileAndGetInstance<ISetRun>(CurrentSet.StartupScript)?.Run(CurrentSetContext);

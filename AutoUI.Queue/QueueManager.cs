@@ -82,7 +82,7 @@ namespace AutoUI.Queue
                             {
                                 sb.Append(pitem.Attribute("name").Value);
                                 sb.Append("=");
-                                sb.Append($"{pitem.Value} ");
+                                sb.Append($"{pitem.Value};");
                             }
 
                             await wr.WriteLineAsync($"START_TEST_SET={sb.ToString()}");
